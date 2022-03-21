@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 3030;
 require("dotenv").config();
-console.log(process.env.SERVER);
 const sql = require("mssql");
 
 app.get("/", (req, res) => {
