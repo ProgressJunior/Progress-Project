@@ -4,19 +4,6 @@ const port = 3030;
 require("dotenv").config();
 const sql = require("mssql");
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.get("/:arg", (req, res) => {
-  req.param.arg;
-  res.send("Hello World!");
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
-
 const sqlConfig = {
   user: process.env.USER,
   password: process.env.PASSWORD,
@@ -28,21 +15,47 @@ const sqlConfig = {
     trustServerCertificate: true, // change to true for local dev / self-signed certs
   },
 };
-sql.connect(sqlConfig, (err) => {
-  if (err) {
-    console.log(err);
-    throw err;
-  }
-  console.log("Connection Successful!");
 
-  new sql.Request().query("select * from dbo.LocPalHistory", (err, result) => {
-    //handle err
-    console.dir(result);
-    // This example uses callbacks strategy for getting results.
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.get('/updateTable/:arg', (req, res) => {
+  queryDatabase(req.params.arg)
+})
+
+function queryDatabase(query){
+  sql.connect(sqlConfig, (err) => {
+    if (err) {
+      throw err;
+    }
+    console.log("Connection Successful !");
+    //"select * from dbo.LocPalHistory"
+    new sql.Request().query(query, (err, result) => {
+      console.dir(result);
+    });
   });
-});
+  res.end();
+}
 
-sql.on("error", (err) => {
-  // ... error handler
-  console.log("Sql database connection error ", err);
-});
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+// sql.connect(sqlConfig, (err) => {
+//   if (err) {
+//     throw err;
+//   }
+//   console.log("Connection Successful !");
+
+//   new sql.Request().query("select * from dbo.LocPalHistory", (err, result) => {
+//     //handle err
+//     console.dir(result);
+//     // This example uses callbacks strategy for getting results.
+//   });
+// });
+
+// sql.on("error", (err) => {
+//   // ... error handler
+//   console.log("Sql database connection error ", err);
+// });
