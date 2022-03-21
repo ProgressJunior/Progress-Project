@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.3",
+    "mssql": "^8.0.2",
     "mysql": "^2.18.1",
     "tedious": "^14.3.0"
   }
