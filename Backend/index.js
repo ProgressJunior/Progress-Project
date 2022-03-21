@@ -1,29 +1,29 @@
-const express = require('express')
-const app = express()
-const port = 3000
-
+const express = require("express");
+const app = express();
+const port = 3000;
+require("dotenv").config();
+console.log(process.env.SERVER);
 const sql = require("mssql");
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.get('/:arg', (req, res) => {
+app.get("/:arg", (req, res) => {
   req.param.arg;
-  res.send('Hello World!')
-})
+  res.send("Hello World!");
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});
 
 const sqlConfig = {
-  user: "userTeam1",
-  password: "KennwortTeam1",
-  database: "ebos_Progress_Team1",
-  server: "10.10.30.219",
-  port: 50915,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
+  server: process.env.SERVER,
+  port: process.env.PORT,
   options: {
     encrypt: false, // for azure
     trustServerCertificate: true, // change to true for local dev / self-signed certs
@@ -31,9 +31,10 @@ const sqlConfig = {
 };
 sql.connect(sqlConfig, (err) => {
   if (err) {
+    console.log(err);
     throw err;
   }
-  console.log("Connection Successful !");
+  console.log("Connection Successful!");
 
   new sql.Request().query("select * from dbo.LocPalHistory", (err, result) => {
     //handle err
