@@ -1,15 +1,15 @@
-const express = require('express')
-const app = express()
-const port = 3000
-
+const express = require("express");
+const app = express();
+const port = 3030;
+require("dotenv").config();
 const sql = require("mssql");
 
 const sqlConfig = {
-  user: "userTeam1",
-  password: "KennwortTeam1",
-  database: "ebos_Progress_Team1",
-  server: "10.10.30.219",
-  port: 50915,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
+  server: process.env.SERVER,
+  port: process.env.PORT,
   options: {
     encrypt: false, // for azure
     trustServerCertificate: true, // change to true for local dev / self-signed certs
