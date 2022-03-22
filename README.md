@@ -52,7 +52,16 @@ Das Progress Sample Data Projekt hat als Ziel ein Programm welches in Zusammenar
 
 ## Installation <a name = "Installation"></a>
 
-Hot der Silo grot koane Zeit
+
+Docker zu installieren ist auf beiden  Betriebssystemen recht ainfach. Zu Problemen kommt es bei Docker Compose
+
+### Windows
+
+Unter Windows 
+
+### Linux
+
+
 
 ## Ausführen <a name = "Ausfuehren"></a>
 
