@@ -4,18 +4,11 @@ const express_port = 3030;
 require("dotenv").config();
 const sql = require("mssql");
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+/*
 
-app.get("/:arg", (req, res) => {
-  req.param.arg;
-  res.send("Hello World!");
-});
+        SQL
 
-app.listen(express_port, () => {
-  console.log(`Example app listening on port ${express_port}`);
-});
+*/
 
 const sqlConfig = {
   user: process.env.USER,
@@ -24,25 +17,50 @@ const sqlConfig = {
   server: process.env.SERVER,
   port: 50915,
   options: {
-    encrypt: false, // for azure
+    // encrypt: false, // for azure
     trustServerCertificate: true, // change to true for local dev / self-signed certs
   },
 };
-sql.connect(sqlConfig, (err) => {
-  if (err) {
-    console.log(err);
-    throw err;
-  }
-  console.log("Connection Successful!");
 
-  new sql.Request().query("select * from dbo.LocPalHistory", (err, result) => {
-    //handle err
-    console.dir(result);
-    // This example uses callbacks strategy for getting results.
+// Function that connects to and Database
+// and then queries the passed parameter
+function queryDatabase(query){
+
+  // Establishes connection to database
+  sql.connect(sqlConfig, (err) => {
+    if (err) {
+      throw err;
+    }
+
+    // Queries passed param to database
+    new sql.Request().query(query, (err, result) => {
+      console.dir(result);
+    });
   });
-});
+}
 
+// Error handler
 sql.on("error", (err) => {
-  // ... error handler
   console.log("Sql database connection error ", err);
 });
+
+
+
+/*
+
+        EXPRESS
+
+*/
+app.listen(express_port, () => {
+  console.log(`Example app listening on port ${express_port}`);
+});
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.get('/updateTable/:arg', (req, res) => {
+  // res.send(req.params.arg)
+  queryDatabase(req.params.arg)
+  res.end();
+})
