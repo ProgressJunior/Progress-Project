@@ -4,6 +4,9 @@ const app = express();
 require("dotenv").config();
 const sql = require("mssql");
 
+
+let queries = []
+
 /*
 
         SQL
@@ -33,12 +36,6 @@ async function connect(){
   }
 }
 
-async function query(query){
-  //await new Promise(r => setTimeout(r, 2000));
-  return await sql.query`${query}`
-  console.dir(result)
-}
-
 async function main() {
 
   await connect();
@@ -46,7 +43,6 @@ async function main() {
   console.log(res)
     
 }
-main();
 
 /*
 
@@ -73,16 +69,37 @@ let minute = 0;
 let date = new Date().toISOString().substring(0, 10) + " 10:";
 
 function genQuery(taktplatz, palette, duration, date) {
+
   let minStr = minute.toString();
   if (minStr.length == 1) minStr = "0" + minStr;
   let locDate = date + minStr + ":00.000";
-  let query1 = `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, ${locDate});`;
+
+  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, ${locDate});`);
+
+  if(duration == 2){
+    // es ist ein Kran
+    //let kranId = sql.query(`SELECT Id FROM SampleValueHistoryValue_Ids WHERE Value_ID LIKE '${taktplatz.replace(/\s/g, "")}_Pos'`);
+    let kranId = 23
+    console.log("KranId: " + kranId);
+
+    minStr = minute.toString();
+
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 1, ${locDate};`);
+    minute+=duration;
+    if ((minute + duration).toString().length == 1)  locDate = date + "0" + (minute).toString() + ":00.000";
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 1, ${locDate};`);
+    minute+=1;
+    if ((minute + duration).toString().length == 1)  locDate = date + "0" + (minute).toString() + ":00.000";
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 1, ${locDate};`);
+    minute-=5;
+  }
+
+  minute += duration;
   minStr = (minute + duration).toString();
   if (minStr.length == 1) minStr = "0" + minStr;
   locDate = date + minStr + ":00.000";
-  let query2 = `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, ${locDate});`;
-  minute += duration;
-  return query1 + query2;
+
+  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, ${locDate});`);
 }
 
 let path = [
@@ -124,3 +141,6 @@ let path = [
 //     queryDatabase("insert into dbo.PalDataMilestonesHistory (PalData_Id, TimeStamp) values ("))
 //   }
 // })
+
+
+main();
