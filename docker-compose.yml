@@ -3,13 +3,13 @@ version: "3.9"
 
 services:
   frontend:
-    build: ./frontend
+    build: ./Frontend
     networks:
       - main
     ports:
       - "3000:3000"
   backend:
-    build: ./backend
+    build: ./Fackend
     networks:
       - main
     ports:
