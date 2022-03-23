@@ -9,7 +9,7 @@ services:
     ports:
       - "3000:3000"
   backend:
-    build: ./Fackend
+    build: ./Backend
     networks:
       - main
     ports:
