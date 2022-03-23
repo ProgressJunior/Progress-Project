@@ -21,7 +21,7 @@ const sqlConfig = {
   },
 };
 
-// Function that connects to and Database
+// Function that connects to Database
 // and then queries the passed parameter
 async function connect(){
   // connect
@@ -97,30 +97,38 @@ let path = [
   "TP 18",   "TP 23", "TP 25",
 ]
 
-// Pseudocode to write Data to palette
-// let currentePaletteId = 2;
-// path.forEach((e)=>{
-//   e.startsWith("Q") ? console.log(genQuery(e, currentePaletteId, 2, date)) : console.log(genQuery(e, currentePaletteId, 1, date))
-//   if(e.equals("TP 6")){
-//     if(queryDatabase("select PalNo from dbo.PalDataBelHistory where PalNo = " + currentePaletteId) is empty){
-//       queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
-//       queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
-//     }
-//   }
-// })
-
 
 // Pseudocode to write Data to palette
-// let currentePaletteId = 2;
-// path.forEach((e)=>{
-//   e.startsWith("Q") ? console.log(genQuery(e, currentePaletteId, 2, date)) : console.log(genQuery(e, currentePaletteId, 1, date))
-//   if(e.equals("TP 6")){
-//     if(queryDatabase("select PalNo from dbo.PalDataBelHistory where PalNo = " + currentePaletteId) is empty){
-//       queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
-//       queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
-//     }
-//   }
-//   else if(e.equals("TP 12")){
-//     queryDatabase("insert into dbo.PalDataMilestonesHistory (PalData_Id, TimeStamp) values ("))
-//   }
-// })
+let currentePaletteId = 2;
+path.forEach((e)=>{
+  e.startsWith("Q") ? console.log(genQuery(e, currentePaletteId, 2, date)) : console.log(genQuery(e, currentePaletteId, 1, date))
+  
+  if(e.equals("TP 5")){
+    queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromPalUnit)")
+  }
+  else if(e.equals("TP 6")){
+    if(queryDatabase("select PalNo from dbo.PalDataBelHistory where PalNo = " + currentePaletteId) is empty){
+      queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
+      queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
+      queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ShutteringFinished)")
+    }
+  }
+  else if(e.equals("TP 12")){
+    queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (BarsPlaced)")
+  }
+  else if(e.equals("TP 13")){
+    queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (GirdersPlaced)")
+  }
+  else if(e.equals("TP 23")){
+    queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ConcretingFinished)")
+  }
+  // LG bei Path einfuegen
+  // Lagerplatz bestimmen
+  else if(e.equals("LG 1")){
+    queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (EnteredInDryingChamber)")
+  }
+  // Finished Variable bei Path einfuegen
+  else if(e.equals("Vaffanculo")){
+    queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromDryingChamber)")
+  }
+})
