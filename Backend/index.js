@@ -1,3 +1,4 @@
+const { json } = require("express");
 const express = require("express");
 const app = express();
 require("dotenv").config();
@@ -32,7 +33,14 @@ function queryDatabase(query) {
 
     // Queries passed param to database
     new sql.Request().query(query, (err, result) => {
-      console.dir(result);
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+      arr = result.recordset.map((row) => {
+        return row.LocationName;
+      });
+      console.log(arr);
     });
   });
 }
@@ -63,18 +71,18 @@ app.get("/updateTable/:arg", (req, res) => {
   res.end();
 });
 
-const date = '2022-03-22 10:';
+const date = "2022-03-22 10:";
 let minute = 0;
 
-function genQuery(taktplatz,palette,duration){
+function genQuery(taktplatz, palette, duration) {
   let minStr = minute.toString();
-  if (minStr.length == 1) minStr = ("0" + minStr).slice(-2)
+  if (minStr.length == 1) minStr = ("0" + minStr).slice(-2);
   let locDate = date + minStr + ":00.000";
   let query1 = `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, ${locDate});`;
   minStr = (minute + duration).toString();
-  if (minStr.length == 1) minStr = ("0" + minStr).slice(-2)
+  if (minStr.length == 1) minStr = ("0" + minStr).slice(-2);
   locDate = date + minStr + ":00.000";
   let query2 = `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, ${locDate});`;
-  minute+=duration;
+  minute += duration;
   return query1 + query2;
 }
