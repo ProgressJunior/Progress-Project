@@ -23,32 +23,30 @@ const sqlConfig = {
 
 // Function that connects to and Database
 // and then queries the passed parameter
-function queryDatabase(query) {
-  // Establishes connection to database
-  sql.connect(sqlConfig, (err) => {
-    if (err) {
-      console.log(err);
-      throw err;
-    }
-
-    // Queries passed param to database
-    new sql.Request().query(query, (err, result) => {
-      if (err) {
-        console.log(err);
-        throw err;
-      }
-      arr = result.recordset.map((row) => {
-        return row.LocationName;
-      });
-      console.log(arr);
-    });
-  });
+async function connect(){
+  // connect
+  try {
+    // make sure that any items are correctly URL encoded in the connection string
+    await sql.connect(sqlConfig)
+  } catch (err) {
+    // ... error checks
+  }
 }
 
-// Error handler
-sql.on("error", (err) => {
-  console.log("Sql database connection error ", err);
-});
+async function query(query){
+  //await new Promise(r => setTimeout(r, 2000));
+  return await sql.query`${query}`
+  console.dir(result)
+}
+
+async function main() {
+
+  await connect();
+  let res = await sql.query`SELECT * FROM LocPalHistory`
+  console.log(res)
+    
+}
+main();
 
 /*
 
@@ -108,5 +106,21 @@ let path = [
 //       queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
 //       queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
 //     }
+//   }
+// })
+
+
+// Pseudocode to write Data to palette
+// let currentePaletteId = 2;
+// path.forEach((e)=>{
+//   e.startsWith("Q") ? console.log(genQuery(e, currentePaletteId, 2, date)) : console.log(genQuery(e, currentePaletteId, 1, date))
+//   if(e.equals("TP 6")){
+//     if(queryDatabase("select PalNo from dbo.PalDataBelHistory where PalNo = " + currentePaletteId) is empty){
+//       queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
+//       queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
+//     }
+//   }
+//   else if(e.equals("TP 12")){
+//     queryDatabase("insert into dbo.PalDataMilestonesHistory (PalData_Id, TimeStamp) values ("))
 //   }
 // })
