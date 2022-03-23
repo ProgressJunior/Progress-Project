@@ -40,6 +40,14 @@ async function main() {
   await connect();
   let res = await sql.query`SELECT * FROM LocPalHistory`;
   console.log(res);
+
+  path.forEach((e)=>{
+    if(e.startsWith("Q")) genQuery(e, 2, 2, date)
+    else genQuery(e, 2, 1, date)
+  });
+
+  console.log(queries);
+
 }
 
 /*
@@ -80,24 +88,37 @@ function genQuery(taktplatz, palette, duration, date) {
     let kranId = 23
     console.log("KranId: " + kranId);
 
-    minStr = minute.toString();
+    // console.log(taktplatz)
+    // console.log(path.indexOf(taktplatz))
+    // console.log(path[path.indexOf(taktplatz)-1])
 
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 1, ${locDate};`);
+    minStr = minute.toString();
+    
+    let temp = path[path.indexOf(taktplatz)-1]
+    if(temp == "TP 17" && taktplatz == "QV 5") temp = "TP 17.1"
+    else temp = "TP 17.2"
+    let index = qv_index[temp]
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, ${locDate};`);
     minute+=duration;
+
+    temp = path[path.indexOf(taktplatz)+1]
+    if(temp == "TP 17" && taktplatz == "QV 5") temp = "TP 17.1"
+    else temp = "TP 17.2"
+    index = qv_index[temp]
     if ((minute + duration).toString().length == 1)  locDate = date + "0" + (minute).toString() + ":00.000";
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 1, ${locDate};`);
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, ${locDate};`);
     minute+=1;
     if ((minute + duration).toString().length == 1)  locDate = date + "0" + (minute).toString() + ":00.000";
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 1, ${locDate};`);
-    minute-=5;
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 0, ${locDate};`);
+    minute-=3;
   }
-
-  minute += duration;
+  console.log("Minute: " + minute)
   minStr = (minute + duration).toString();
   if (minStr.length == 1) minStr = "0" + minStr;
   locDate = date + minStr + ":00.000";
 
   queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, ${locDate});`);
+  minute += duration;
 }
 
 let path = [
@@ -159,14 +180,6 @@ let currentePaletteId = 2;
 //   }
 // })
 
-
-main();
-//   // Finished Variable bei Path einfuegen
-//   else if(e.equals("Vaffanculo")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromDryingChamber)")
-//   }
-// })
-
 var qv_index = {
   "TP 2": 1,
   "TP 3": 2,
@@ -190,3 +203,12 @@ var qv_index = {
   "TP 19": 3,
   "TP 20": 4,
 };
+
+main();
+//   // Finished Variable bei Path einfuegen
+//   else if(e.equals("Vaffanculo")){
+//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromDryingChamber)")
+//   }
+// })
+
+
