@@ -87,47 +87,26 @@ function genQuery(taktplatz, palette, duration, date) {
   return query1 + query2;
 }
 
-let path = ["TP 1",
-            "TP 2",
-            "QV 2",
-            "TP 3",
-            "TP 4",
-            "QV 1",
-            "TP 5",
-            "TP 6",
-            "QV 3",
-            "TP 10",
-            "QV 8",
-            "TP 9",
-            "TP 11",
-            "QV 4",
-            "TP 12",
-            "TP 13",
-            "TP 14",
-            "QV 7",
-            "TP 14.1",
-            "TP 15",
-            "QV 5",
-            "TP 17",
-            "QV 6",
-            "TP 18",
-            "TP 23",
-            "TP 25",
-            ]
+let path = [
+  "TP 1",    "TP 2",           "QV 2",
+  "TP 3",    "TP 4",           "QV 1",
+  "TP 5",    "TP 6",           "QV 3",
+  "TP 10",                     "QV 8",
+  "TP 9",    "TP 11",          "QV 4",
+  "TP 12",   "TP 13", "TP 14", "QV 7",
+  "TP 14.1", "TP 15",          "QV 5",
+  "TP 17",                     "QV 6",
+  "TP 18",   "TP 23", "TP 25",
+]
 
+// Pseudocode to write Data to palette
+// let currentePaletteId = 2;
 // path.forEach((e)=>{
-// e.startsWith("Q") ? console.log(genQuery(e, 2, 2, date)) : console.log(genQuery(e, 2, 1, date))
+//   e.startsWith("Q") ? console.log(genQuery(e, currentePaletteId, 2, date)) : console.log(genQuery(e, currentePaletteId, 1, date))
+//   if(e.equals("TP 6")){
+//     if(queryDatabase("select PalNo from dbo.PalDataBelHistory where PalNo = " + currentePaletteId) is empty){
+//       queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
+//       queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
+//     }
+//   }
 // })
-
-
-function isStationOccupied(station, startDate, endDate) {
-  // Query database for given station and
-  // check between startDate and endDate
-  // if there is an entry and its not the Pallette leaving
-  // return false
-  
-  // This is the query to be used
-  // SELECT LocationName, PalNo, TimeStamp FROM dbo.LocPalHistory
-  // WHERE TimeStamp >= '2022-03-22 10:05:00' AND TimeStamp <= '2022-03-22 10:09:00'
-  // ORDER BY TimeStamp asc;
-}
