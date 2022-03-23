@@ -63,18 +63,53 @@ app.get("/updateTable/:arg", (req, res) => {
   res.end();
 });
 
-const date = '2022-03-22 10:';
-let minute = 0;
 
-function genQuery(taktplatz,palette,duration){
+
+console.log(minStr)
+
+function genQuery(taktplatz,palette,duration,date){
+
+  let minute = 0;
+
   let minStr = minute.toString();
-  if (minStr.length == 1) minStr = ("0" + minStr).slice(-2)
+  if (minStr.length == 1) minStr = ("0" + minStr)
   let locDate = date + minStr + ":00.000";
   let query1 = `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, ${locDate});`;
   minStr = (minute + duration).toString();
-  if (minStr.length == 1) minStr = ("0" + minStr).slice(-2)
+  if (minStr.length == 1) minStr = ("0" + minStr)
   locDate = date + minStr + ":00.000";
   let query2 = `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, ${locDate});`;
   minute+=duration;
   return query1 + query2;
 }
+
+let path = ["TP 1",
+            "TP 2",
+            "QV 2",
+            "TP 3",
+            "TP 4",
+            "QV 1",
+            "TP 5",
+            "TP 6",
+            "QV 3",
+            "TP 10",
+            "QV 8",
+            "TP 9",
+            "TP 11",
+            "QV 4",
+            "TP 12",
+            "TP 13",
+            "TP 14",
+            "QV 7",
+            "TP 14.1",
+            "TP 15",
+            "QV 5",
+            "TP 18",
+            "TP 23",
+            "TP 25",
+            ]
+
+// path.forEach((e)=>{
+//   e.startsWith("Q") ? console.log(genQuery(e, 2, 5)) : console.log(genQuery(e, 2, 1))
+// })
+// let date = new Date().toISOString().substring(0,10) + " 10:";
