@@ -118,3 +118,16 @@ let path = ["TP 1",
 // path.forEach((e)=>{
 // e.startsWith("Q") ? console.log(genQuery(e, 2, 2, date)) : console.log(genQuery(e, 2, 1, date))
 // })
+
+
+function isStationOccupied(station, startDate, endDate) {
+  // Query database for given station and
+  // check between startDate and endDate
+  // if there is an entry and its not the Pallette leaving
+  // return false
+  
+  // This is the query to be used
+  // SELECT LocationName, PalNo, TimeStamp FROM dbo.LocPalHistory
+  // WHERE TimeStamp >= '2022-03-22 10:05:00' AND TimeStamp <= '2022-03-22 10:09:00'
+  // ORDER BY TimeStamp asc;
+}
