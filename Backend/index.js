@@ -64,12 +64,10 @@ app.get("/updateTable/:arg", (req, res) => {
 });
 
 
-
-console.log(minStr)
+let minute = 0;
+let date = new Date().toISOString().substring(0,10) + " 10:";
 
 function genQuery(taktplatz,palette,duration,date){
-
-  let minute = 0;
 
   let minStr = minute.toString();
   if (minStr.length == 1) minStr = ("0" + minStr)
@@ -109,7 +107,7 @@ let path = ["TP 1",
             "TP 25",
             ]
 
+
 // path.forEach((e)=>{
-//   e.startsWith("Q") ? console.log(genQuery(e, 2, 5)) : console.log(genQuery(e, 2, 1))
+// e.startsWith("Q") ? console.log(genQuery(e, 2, 2, date)) : console.log(genQuery(e, 2, 1, date))
 // })
-// let date = new Date().toISOString().substring(0,10) + " 10:";
