@@ -31,7 +31,7 @@ async function query(query) {
 }
 
 //move RBG Portal
-async function moveRBG(x, y, start, end) {
+async function moveRBG(x, y,time) {
   await connect();
 
   //select id of RBG Portal
@@ -52,16 +52,20 @@ async function moveRBG(x, y, start, end) {
     await sql.query`SELECT Value FROM SampleValueHistoryT WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM SampleValueHistoryT GROUP BY Value_Id_Ref HAVING Value_Id_Ref =${hub_id.recordset[0].Id});`;
   console.log(istposy);
 
-  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values ('2','${x}','${time}');`;
-  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values ('8','${x}','${time}');`;
+  console.log("Vor Insert")
 
-  moveRBG(istposx, x, TimeStamp, 2);
-  moveRBG(istposy, y, TimeStamp, 8);
+  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,11000,${time})`;
+  // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (${portal_id.recordset[0].Id},${x},${time})`;
+  // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (${hub_id.recordset[0].Id},${y},${time})`;
+  // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values ('${hub_id}','${y}','${time}')`;
+
+  console.log("Nach Insert")
+
 
   sql.close();
 }
 
-moveRBG(0, 0);
+moveRBG(0,5115,'2022-03-24 17:24:00.000');
 
 // module.exports = {
 //   //
