@@ -62,12 +62,10 @@ let path = [
     "Finished"
 ];
 
-// Pseudocode to write Data to palette
 let currentePaletteId = 5;
-let minute = 0;
-// let date = new Date().toISOString().substring(0, 10) + " 10:";
+let currentEndTime = new Date();
 
-function genQuery(taktplatz, palette, duration, date) {
+function genQuery(duration, date) {
 
   let anfangsDay = date.toISOString().substring(0, 10)
   let anfangsUhrzeit = date.toISOString().substring(11,19)
@@ -98,23 +96,66 @@ function genQuery(taktplatz, palette, duration, date) {
 
 async function main(){
   await connect();
-  
-  for(let i = 0; i < path.length; i++){
-    let nextMaxTs = await sql.query`select Max(Timestamp) from dbo.LocPalHistory where LocationName like ${path[i+1]} and PalNo = 2`
-    
-    // console.log(path[i+1])
-    // console.dir(nextMaxTs.recordset[0][""])
-    // console.log("frei \n")
-    path[i].startsWith("Q") ? console.log(genQuery(path[i], 2, 2, nextMaxTs.recordset[0][""])) : console.log(genQuery(path[i], 2, 1, nextMaxTs.recordset[0][""]))
+  let currentStartTime;
 
-    // extraSteps(e)
+  for(let i = 0; i < path.length-1; i++){
+
+    currentStartTime = currentEndTime
+    // CurrentEndTime = Ankunftszeit bei path[i]
+
+    // Extra steps wird mit currentEndTime gequeriet
+    // Da currentEndTime vor dem addieren der duration
+    // gleich der Ankunftszeit ist
+    // extraSteps(path[i], currentStartTime)
+
+    
+    // Endzeit von momentanem Vorgang wird berechnent
+    // indem jedes mal die Duration vom Vorgang hinzu
+    // gezählt wird
+    let duration = 0;
+    path[i].startsWith("Q") ? duration = 5 : duration = 1;
+    currentEndTime = moment(currentStartTime).add(duration, 'm').toDate();
+
+    // CurrentEndTime = Abfahrtzeit bei path[i]
+
+
+    // schauen wann als nächstes frei
+    let nextFreeTs = await sql.query`select Max(Timestamp) from dbo.LocPalHistory where LocationName like ${path[i+1]} and PalNo = 2`
+    nextFreeTs = nextFreeTs.recordset[0][""]
+
+    // Wenn nächste Station erst NACH dem fertigstellen
+    // des momentanen Prozesses frei ist, wird
+    // currentEndTime auf die Zeit gesetzt,
+    // wann die nächste Station frei wird
+    if (moment(currentEndTime).isBefore(nextFreeTs)){
+      // Query mit nextFreeTs
+      currentEndTime = nextFreeTs
+    }
+
+    // currentEndTime besagt, wann es die Momentane Station
+    // verlässt und bei der nächsten Station ankommt
+
+    // Query für path[i] generieren mit currentStartTime und currentEndTime
+    console.log(path[i] + " geht von " + currentStartTime + " bis " + currentEndTime);
   }
+  
+  // for(let i = 0; i < path.length; i++){
+  //   let nextMaxTs = await sql.query`select Max(Timestamp) from dbo.LocPalHistory where LocationName like ${path[i+1]} and PalNo = 2`
+  //   let currentFinishTime = 
+  //   // console.log(path[i+1])
+  //   // console.dir(nextMaxTs.recordset[0][""])
+  //   // console.log("frei \n")
+  //   genQuery(path[i], 2, 2, nextMaxTs.recordset[0][""])
+  //   // path[i].startsWith("Q") ? console.log(genQuery(path[i], 2, 2, nextMaxTs.recordset[0][""])) : console.log(genQuery(path[i], 2, 1, nextMaxTs.recordset[0][""]))
+
+  //   // extraSteps(e)
+  // }
 }
 
 async function extraSteps(e){
   switch(e){
     case "TP 5":
-      query("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromPalUnit)")
+      query("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('RemovedFromPalUnit')")
     
     case "TP 6":
   
