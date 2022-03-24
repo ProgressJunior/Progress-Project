@@ -88,14 +88,13 @@ function genDate(year, month, day, hours, minutes){
   return `${year}-${month}-${day} ${hours}:${minutes}:00.000`;
 }
 
-async function genQuery(taktplatz, palette, duration, date) {
+async function genQuery(taktplatz, palette, startMoment, endMoment) {
 
   //console.log(parseInt(minute/60))
-  let deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
 
-  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, ${deit});`);
+  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, '${startMoment.format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
 
-  if(duration == 2){
+  if(taktplatz.startsWith("Q")){
     // es ist ein Kran
     let kranId = await sql.query(`SELECT Id FROM SampleValueHistoryValue_Ids WHERE Value_ID LIKE '${taktplatz.replace(/\s/g, "")}_Pos'`);
     kranId = kranId.recordset[0].Id;
@@ -105,25 +104,17 @@ async function genQuery(taktplatz, palette, duration, date) {
     if(temp == "TP 17" && taktplatz == "QV 5") temp = "TP 17.1"
     else if (temp == "TP 17" && taktplatz == "QV 6") temp = "TP 17.2"
     let index = qv_index[temp]
-    deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, ${deit};`);
-    minute+=duration;
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${startMoment.format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
+    
 
     temp = path[indexOfTaktplatz+1]
     if(temp == "TP 17" && taktplatz == "QV 5") temp = "TP 17.1"
     else if (temp == "TP 17" && taktplatz == "QV 6") temp = "TP 17.2"
     index = qv_index[temp]
-    deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, ${deit};`);
-    minute+=1;
-    deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 0, ${deit};`);
-    minute-=3;
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${endMoment.format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 0, '${endMoment.add(1, 'm').format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
   }
-
-  minute += duration;
-  deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
-  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, ${deit});`);
+  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, '${endMoment.format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
   
 }
 
