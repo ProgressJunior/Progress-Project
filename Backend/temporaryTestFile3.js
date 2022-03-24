@@ -138,19 +138,7 @@ async function main(){
     // Query für path[i] generieren mit currentStartTime und currentEndTime
     console.log(path[i] + " geht von " + currentStartTime + " bis " + currentEndTime);
   }
-  
-  // for(let i = 0; i < path.length; i++){
-  //   let nextMaxTs = await sql.query`select Max(Timestamp) from dbo.LocPalHistory where LocationName like ${path[i+1]} and PalNo = 2`
-  //   let currentFinishTime = 
-  //   // console.log(path[i+1])
-  //   // console.dir(nextMaxTs.recordset[0][""])
-  //   // console.log("frei \n")
-  //   genQuery(path[i], 2, 2, nextMaxTs.recordset[0][""])
-  //   // path[i].startsWith("Q") ? console.log(genQuery(path[i], 2, 2, nextMaxTs.recordset[0][""])) : console.log(genQuery(path[i], 2, 1, nextMaxTs.recordset[0][""]))
-
-  //   // extraSteps(e)
-  // }
-}
+  }
 
 async function extraSteps(e){
   switch(e){
