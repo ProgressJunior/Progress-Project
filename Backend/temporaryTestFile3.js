@@ -1,6 +1,3 @@
-const { json } = require("express");
-const express = require("express");
-const app = express();
 require("dotenv").config();
 const sql = require("mssql");
 var moment = require('moment');  
@@ -65,34 +62,18 @@ let path = [
 let currentePaletteId = 5;
 let currentEndTime = new Date();
 
-function genQuery(duration, date) {
+// function genQuery(duration, date) {
 
-  let anfangsDay = date.toISOString().substring(0, 10)
-  let anfangsUhrzeit = date.toISOString().substring(11,19)
+//   let anfangsDay = date.toISOString().substring(0, 10)
+//   let anfangsUhrzeit = date.toISOString().substring(11,19)
 
-  let endDate = moment(date).add(duration, 'm').toDate();
-  let endDay = endDate.toISOString().substring(0, 10)
-  let endUhrzeit = endDate.toISOString().substring(11,19)
+//   let endDate = moment(date).add(duration, 'm').toDate();
+//   let endDay = endDate.toISOString().substring(0, 10)
+//   let endUhrzeit = endDate.toISOString().substring(11,19)
 
 
-  console.log(`${anfangsDay}  ${anfangsUhrzeit} bis ${endDay} ${endUhrzeit}`)
-
-  // console.log(date.toISOString().substring(0, 10))
-
-  // let locDate = date.toISOString().substring(0, 10) + "   " + date.toISOString().substring(11,19)
-
-  // let query1 = `Palette ${palette} ist um ${locDate} auf ${taktplatz}`;
-
-  // minStr = (minute + duration).toString();
-  // if (minStr.length == 1) minStr = "0" + minStr;
-
-  // locDate = date.toISOString().substring(0, 10) + minStr;
-
-  // let query2 = `Palette ${palette} weg um ${locDate} von ${taktplatz}`;
-
-  // minute += duration;
-  // return query1 + "\n" + query2 + "\n\n";
-}
+//   console.log(`${anfangsDay}  ${anfangsUhrzeit} bis ${endDay} ${endUhrzeit}`)
+// }
 
 async function main(){
   await connect();
@@ -138,7 +119,7 @@ async function main(){
     // Query für path[i] generieren mit currentStartTime und currentEndTime
     console.log(path[i] + " geht von " + currentStartTime + " bis " + currentEndTime);
   }
-  }
+}
 
 async function extraSteps(e){
   switch(e){
