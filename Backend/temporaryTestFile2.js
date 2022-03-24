@@ -33,19 +33,13 @@ async function connect() {
     }
 }
 
-// async function query(query){
-//   //await new Promise(r => setTimeout(r, 2000));
-//   return await sql.query`${query}`
-//   console.dir(result)
-// }
-
 async function query(question) {
     await connect();
-    let res = await sql.query`${question}`;
-    console.log(res);
+    // let res = await sql.query`select * from dbo.PalDataBelHistory`;
+    let res = await sql.query(`${question}`);
+    // console.log(res);
     return res;
 }
-
 
 let path = [
     "TP 1",
@@ -57,11 +51,8 @@ let path = [
     "TP 5",
     "TP 6",
     "QV 3",
+    "TP 7",
     "TP 10",
-    "QV 8",
-    "TP 9",
-    "TP 11",
-    "QV 4",
     "TP 12",
     "TP 13",
     "TP 14",
@@ -74,43 +65,82 @@ let path = [
     "TP 18",
     "TP 23",
     "TP 25",
+    "LG 1",
+    "Finished"
 ];
 
 // Pseudocode to write Data to palette
-let currentePaletteId = 2;
+let currentePaletteId = 5;
+let minute = 0;
+let date = new Date().toISOString().substring(0, 10) + " 10:";
 
-console.log(query(""))
+function genQuery(taktplatz, palette, duration, date) {
+  let minStr = minute.toString();
+  if (minStr.length == 1) minStr = "0" + minStr;
+  let locDate = date + minStr + ":00.000";
+  let query1 = `Palette ${palette} ist um ${locDate} auf ${taktplatz}`;
+  minStr = (minute + duration).toString();
+  if (minStr.length == 1) minStr = "0" + minStr;
+  locDate = date + minStr + ":00.000";
+  let query2 = `Palette ${palette} weg um ${locDate} von ${taktplatz}`;
+  minute += duration;
+  return query1 + "\n" + query2 + "\n\n";
+}
 
-// path.forEach((e)=>{
-//   e.startsWith("Q") ? console.log(genQuery(e, currentePaletteId, 2, date)) : console.log(genQuery(e, currentePaletteId, 1, date))
+path.forEach(async (e)=>{
+  e.startsWith("Q") ? console.log(genQuery(e, currentePaletteId, 2, date)) : console.log(genQuery(e, currentePaletteId, 1, date))
 
-//   if(e.equals("TP 5")){
-//     // query("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromPalUnit)")
-//     console.log("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromPalUnit)")
-//   }
-//   else if(e.equals("TP 6")){
-//     if(query("select PalNo from dbo.PalDataBelHistory where PalNo = " + currentePaletteId) == ""){
-//       queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
-//       queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
-//       queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ShutteringFinished)")
-//     }
-//   }
-//   else if(e.equals("TP 12")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (BarsPlaced)")
-//   }
-//   else if(e.equals("TP 13")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (GirdersPlaced)")
-//   }
-//   else if(e.equals("TP 23")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ConcretingFinished)")
-//   }
-//   // LG bei Path einfuegen
-//   // Lagerplatz bestimmen
-//   else if(e.equals("LG 1")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (EnteredInDryingChamber)")
-//   }
-//   // Finished Variable bei Path einfuegen
-//   else if(e.equals("Vaffanculo")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromDryingChamber)")
-//   }
-// })
+  if(e == "TP 5"){
+    // query("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromPalUnit)")
+    console.log("TP 5")
+    console.log("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromPalUnit)")
+  }
+  else if(e == "TP 6"){
+
+    // Needed to check if the given palette is already in the list
+    let isIncluded = false;
+    let res = await query("select PalNo from dbo.PalDataBelHistory")
+    res.recordset.forEach((e)=> {
+      if(e.PalNo==currentePaletteId) isIncluded = true;
+    });
+
+    // Time muss noch geadded werden
+    if(isIncluded){
+      // queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
+      // queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
+      // queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ShutteringFinished)")
+      console.log("Wenn schon drinn")
+      console.log("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
+      console.log("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+",)")
+      console.log("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ShutteringFinished)")
+    }
+  }
+  else if(e == "TP 12"){
+    // queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (BarsPlaced)")
+    console.log("TP 12")
+    console.log("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (BarsPlaced)")
+  }
+  else if(e == "TP 13"){
+    // queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (GirdersPlaced)")
+    console.log("TP 13")
+    console.log("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (GirdersPlaced)")
+  }
+  else if(e == "TP 23"){
+    // queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ConcretingFinished)")
+    console.log("TP 23")
+    console.log("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ConcretingFinished)")
+  }
+  // LG bei Path einfuegen
+  // Lagerplatz bestimmen
+  else if(e == "LG 1"){
+    // queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (EnteredInDryingChamber)")
+    console.log("LG 1")
+    console.log("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (EnteredInDryingChamber)")
+  }
+  // Finished Variable bei Path einfuegen
+  else if(e == "Finished"){
+    // queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromDryingChamber)")
+    console.log("Finished")
+    console.log("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromDryingChamber)")
+  }
+})
