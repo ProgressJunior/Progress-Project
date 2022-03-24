@@ -5,7 +5,9 @@ require("dotenv").config();
 const sql = require("mssql");
 
 
-let queries = []
+let queries = [];
+let minute = 0;
+let dt = new Date();
 
 /*
 
@@ -38,13 +40,20 @@ async function connect() {
 
 async function main() {
   await connect();
-  let res = await sql.query`SELECT * FROM LocPalHistory`;
-  console.log(res);
+  //let res = await sql.query`SELECT * FROM LocPalHistory`;
+  //console.log(res);
 
-  path.forEach((e)=>{
-    if(e.startsWith("Q")) genQuery(e, 2, 2, date)
-    else genQuery(e, 2, 1, date)
-  });
+
+  for(i=0;i<path.length;i++){
+    e = path[i];
+    //console.log(dt)
+    if(e.startsWith("Q")) await genQuery(e, 2, 2, dt)
+    else await genQuery(e, 2, 1, dt)
+  }
+  // path.forEach((e)=>{
+  //   if(e.startsWith("Q")) await genQuery(e, 2, 2, date)
+  //   else await genQuery(e, 2, 1, date)
+  // });
 
   console.log(queries);
 
@@ -71,54 +80,60 @@ app.get("/updateTable/:arg", (req, res) => {
   res.end();
 });
 
-let minute = 0;
-let date = new Date().toISOString().substring(0, 10) + " 10:";
+function genDate(year, month, day, hours, minutes){
 
-function genQuery(taktplatz, palette, duration, date) {
+  if (minutes.toString().length == 1){
+    minutes = "0" + minutes.toString();
+  }
+  return `${year}-${month}-${day} ${hours}:${minutes}:00.000`;
+}
 
-  let minStr = minute.toString();
-  if (minStr.length == 1) minStr = "0" + minStr;
-  let locDate = date + minStr + ":00.000";
+async function genQuery(taktplatz, palette, duration, date) {
 
-  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, ${locDate});`);
+  //console.log(parseInt(minute/60))
+  let deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
+
+  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, ${deit});`);
 
   if(duration == 2){
     // es ist ein Kran
-    //let kranId = sql.query(`SELECT Id FROM SampleValueHistoryValue_Ids WHERE Value_ID LIKE '${taktplatz.replace(/\s/g, "")}_Pos'`);
-    let kranId = 23
-    console.log("KranId: " + kranId);
-
-    // console.log(taktplatz)
-    // console.log(path.indexOf(taktplatz))
-    // console.log(path[path.indexOf(taktplatz)-1])
-
-    minStr = minute.toString();
+    let kranId = await sql.query(`SELECT Id FROM SampleValueHistoryValue_Ids WHERE Value_ID LIKE '${taktplatz.replace(/\s/g, "")}_Pos'`);
+    kranId = kranId.recordset[0].Id;
+    //console.log(kranId);
     
-    let temp = path[path.indexOf(taktplatz)-1]
+    let indexOfTaktplatz = parseInt(path.indexOf(taktplatz));
+    let temp = path[indexOfTaktplatz-1]
     if(temp == "TP 17" && taktplatz == "QV 5") temp = "TP 17.1"
-    else temp = "TP 17.2"
+    else if (temp == "TP 17" && taktplatz == "QV 6") temp = "TP 17.2"
     let index = qv_index[temp]
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, ${locDate};`);
+    deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
+    console.log("Taktplatz: " + taktplatz);
+    console.log("path.indexOf(taktplatz): " + indexOfTaktplatz);
+    console.log("path[path.indexOf(taktplatz)-1]: " + temp)
+    console.log("Index: " + index)
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, ${deit};`);
     minute+=duration;
 
-    temp = path[path.indexOf(taktplatz)+1]
+    temp = path[indexOfTaktplatz+1]
     if(temp == "TP 17" && taktplatz == "QV 5") temp = "TP 17.1"
-    else temp = "TP 17.2"
+    else if (temp == "TP 17" && taktplatz == "QV 6") temp = "TP 17.2"
     index = qv_index[temp]
-    if ((minute + duration).toString().length == 1)  locDate = date + "0" + (minute).toString() + ":00.000";
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, ${locDate};`);
+    deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
+    console.log("Taktplatz: " + taktplatz);
+    console.log("path.indexOf(taktplatz)+1: " + indexOfTaktplatz+1);
+    console.log("path[path.indexOf(taktplatz)+1]: " + temp)
+    console.log("Index: " + index)
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, ${deit};`);
     minute+=1;
-    if ((minute + duration).toString().length == 1)  locDate = date + "0" + (minute).toString() + ":00.000";
-    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 0, ${locDate};`);
+    deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
+    queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 0, ${deit};`);
     minute-=3;
   }
-  console.log("Minute: " + minute)
-  minStr = (minute + duration).toString();
-  if (minStr.length == 1) minStr = "0" + minStr;
-  locDate = date + minStr + ":00.000";
 
-  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, ${locDate});`);
   minute += duration;
+  deit = genDate(dt.getFullYear(),dt.getMonth() + 1, dt.getDate(), 10, minute);
+  queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, ${deit});`);
+  
 }
 
 let path = [
