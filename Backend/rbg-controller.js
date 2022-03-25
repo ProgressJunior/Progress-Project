@@ -54,7 +54,10 @@ async function moveRBG(x, y,time) {
 
   console.log("Vor Insert")
 
-  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,11000,${time})`;
+  //y-Richtung
+  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${y},${time})`;
+  //x-Richtung
+  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${x},${time})`;
   // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (${portal_id.recordset[0].Id},${x},${time})`;
   // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (${hub_id.recordset[0].Id},${y},${time})`;
   // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values ('${hub_id}','${y}','${time}')`;
