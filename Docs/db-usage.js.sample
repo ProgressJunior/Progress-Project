@@ -1,0 +1,9 @@
+let db = require('./db');
+
+
+async function main() {
+    await db.connect()
+    console.log(await db.queryDatabase('SELECT * FROM LocPalHistory'))
+}
+
+main();

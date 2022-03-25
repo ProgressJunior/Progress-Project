@@ -1,0 +1,7 @@
+let server = require('./server');
+
+async function main() {
+    server.startServer()
+}
+
+main();

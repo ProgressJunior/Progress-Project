@@ -31,8 +31,8 @@ async function query(query) {
 }
 
 //move RBG Portal
-async function moveRBG(x, y,time) {
-  await connect();
+async function moveRBG(x, y, time) {
+  // await connect();
 
   //select id of RBG Portal
   let portal_id =
@@ -52,20 +52,37 @@ async function moveRBG(x, y,time) {
     await sql.query`SELECT Value FROM SampleValueHistoryT WHERE TIMESTAMP = (SELECT MAX(TIMESTAMP) FROM SampleValueHistoryT GROUP BY Value_Id_Ref HAVING Value_Id_Ref =${hub_id.recordset[0].Id});`;
   console.log(istposy);
 
-  console.log("Vor Insert")
+  console.log("Vor Insert");
 
-  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,11000,${time})`;
+  //y-Richtung
+  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${y},${time})`;
+  //x-Richtung
+  await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${x},${time})`;
   // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (${portal_id.recordset[0].Id},${x},${time})`;
   // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (${hub_id.recordset[0].Id},${y},${time})`;
   // await sql.query`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values ('${hub_id}','${y}','${time}')`;
 
-  console.log("Nach Insert")
+  console.log("Nach Insert");
 
-
-  sql.close();
+  // sql.close();
 }
 
-moveRBG(0,5115,'2022-03-24 17:24:00.000');
+//check LG for empty spaces
+async function checkLG() {
+  // await connect();
+  let query =
+    await sql.query`SELECT * FROM dbo.LocPalHistory WHERE LocationName LIKE 'LG%'`;
+  console.log(query);
+  // sql.close();
+}
+
+async function init() {
+  await connect();
+  checkLG();
+  moveRBG(0, 5115, "2022-03-24 17:24:00.000");
+}
+
+init();
 
 // module.exports = {
 //   //
