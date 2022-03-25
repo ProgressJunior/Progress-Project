@@ -80,15 +80,10 @@ app.get("/updateTable/:arg", (req, res) => {
   res.end();
 });
 
-function genDate(year, month, day, hours, minutes){
 
-  if (minutes.toString().length == 1){
-    minutes = "0" + minutes.toString();
-  }
-  return `${year}-${month}-${day} ${hours}:${minutes}:00.000`;
-}
-
-
+/*
+gets the kranId from the SampleValueHistoryValue_Ids
+*/
 async function getKranId(taktplatz){
   let kranId = await sql.query(`SELECT Id FROM SampleValueHistoryValue_Ids WHERE Value_ID LIKE '${taktplatz.replace(/\s/g, "")}_Pos'`);
   return kranId.recordset[0].Id;
@@ -97,32 +92,53 @@ async function getKranId(taktplatz){
 async function genQvQuery(taktplatz, startMoment, endMoment){
   // es ist ein Kran
 
-  let kranId = getKranId(taktplatz);
+  let kranId = getKranId(taktplatz);  // id of the kran
   
-  let indexOfTaktplatz = parseInt(path.indexOf(taktplatz));
-  let temp = path[indexOfTaktplatz-1]
-  if(temp == "TP 17" && taktplatz == "QV 5") temp = "TP 17.1"
-  else if (temp == "TP 17" && taktplatz == "QV 6") temp = "TP 17.2"
-  let index = qv_index[temp]
+  let indexOfTaktplatz = parseInt(path.indexOf(taktplatz));   // gets the index of the taktplatz in the path array
+  // with the index of the taktplatz you can get the taktplätze that are before and after the original taktplatz
+  let taktplatzbef = path[indexOfTaktplatz-1]   // one Taktplatz before
+
+  // one extra case
+  if(taktplatzbef == "TP 17" && taktplatz == "QV 5") taktplatzbef = "TP 17.1"
+  else if (taktplatzbef == "TP 17" && taktplatz == "QV 6") taktplatzbef = "TP 17.2"
+
+  // get the index of the taktplatz before
+  let index = qv_index[taktplatzbef]
+
+  // query one - set the startindex and the startmoment of the kran
   queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${startMoment.format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
   
 
-  temp = path[indexOfTaktplatz+1]
-  if(temp == "TP 17" && taktplatz == "QV 5") temp = "TP 17.1"
-  else if (temp == "TP 17" && taktplatz == "QV 6") temp = "TP 17.2"
-  index = qv_index[temp]
+  let taktplatzaf = path[indexOfTaktplatz+1]   // one Taktplatz after
+
+  // one extra case
+  if(taktplatzaf == "TP 17" && taktplatz == "QV 5") taktplatzaf = "TP 17.1"
+  else if (taktplatzaf == "TP 17" && taktplatz == "QV 6") taktplatzaf = "TP 17.2"
+
+  index = qv_index[taktplatzaf] // get the index of the taktplatz before
+
+
+  // query two - set the endindex and the enmoment of the kran
   queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${endMoment.format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
+  // query threee - set the kran to defaultposition one minute after  endmoment
   queries.push(`INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 0, '${endMoment.add(1, 'm').format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
 }
 
 
+/*
+generates a set of queries for each Taktplatz. 
+If the Taktplatz type is of TP it generates 2 queries
+if the Taktplatz type is QV it generates 5 queries: 2 of them are the same as the ones of TP, the other 3 are for the crane position and queries another database
 
+
+*/
 async function genQuery(taktplatz, palette, startMoment, endMoment) {
 
+  // first query - sets the moment at wich the palette arrives at the 
   queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, '${startMoment.format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
-
+  // detects if it's a crane
   if(taktplatz.startsWith("Q")) await genQvQuery(taktplatz, startMoment, endMoment)
-  
+  // seccond query - frees up the taktplatz - at the same moment the palette gets set to new taktplatz
   queries.push(`INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, '${endMoment.format('YYYY-MM-DD HH:mm:ss.SSS')}');`);
   
 }
