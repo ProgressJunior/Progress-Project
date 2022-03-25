@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const sql = require("mssql");
+var moment = require('moment');  
 
 
 let queries = [];
@@ -44,16 +45,57 @@ async function main() {
   //console.log(res);
 
 
-  for(i=0;i<path.length;i++){
-    e = path[i];
-    //console.log(dt)
-    if(e.startsWith("Q")) await genQuery(e, 2, 2, dt)
-    else await genQuery(e, 2, 1, dt)
+  // for(i=0;i<path.length;i++){
+  //   e = path[i];
+  //   //console.log(dt)
+  //   if(e.startsWith("Q")) await genQuery(e, 2, 2, dt)
+  //   else await genQuery(e, 2, 1, dt)
+  // }
+
+  let currentEndTime = Date.now()
+  let currentStartTime;
+
+  for(let i = 0; i < path.length; i++){
+
+    currentStartTime = currentEndTime
+    // CurrentEndTime = Ankunftszeit bei path[i]
+
+    // Extra steps wird mit currentEndTime gequeriet
+    // Da currentEndTime vor dem addieren der duration
+    // gleich der Ankunftszeit ist
+    // extraSteps(path[i], currentStartTime)
+
+    
+    // Endzeit von momentanem Vorgang wird berechnent
+    // indem jedes mal die Duration vom Vorgang hinzu
+    // gezählt wird
+    let duration = 0;
+    path[i].startsWith("Q") ? duration = 2 : duration = 1;
+    currentEndTime = moment(currentStartTime).add(duration, 'm').toDate();
+
+    // CurrentEndTime = Abfahrtzeit bei path[i]
+
+
+    // schauen wann als nächstes frei
+    let nextFreeTs = await sql.query`select Max(Timestamp) from dbo.LocPalHistory where LocationName like ${path[i+1]} and PalNo = 2`
+    nextFreeTs = nextFreeTs.recordset[0][""]
+
+    // Wenn nächste Station erst NACH dem fertigstellen
+    // des momentanen Prozesses frei ist, wird
+    // currentEndTime auf die Zeit gesetzt,
+    // wann die nächste Station frei wird
+    if (moment(currentEndTime).isBefore(nextFreeTs)){
+      // Query mit nextFreeTs
+      currentEndTime = nextFreeTs
+    }
+
+    // currentEndTime besagt, wann es die Momentane Station
+    // verlässt und bei der nächsten Station ankommt
+
+    // Query für path[i] generieren mit currentStartTime und currentEndTime
+    // console.log(path[i] + " geht von " + currentStartTime + " bis " + currentEndTime);
+    await genQuery(path[i], 2, moment(currentStartTime), moment(currentEndTime))
   }
-  // path.forEach((e)=>{
-  //   if(e.startsWith("Q")) await genQuery(e, 2, 2, date)
-  //   else await genQuery(e, 2, 1, date)
-  // });
 
   console.log(queries);
 
@@ -92,7 +134,7 @@ async function getKranId(taktplatz){
 async function genQvQuery(taktplatz, startMoment, endMoment){
   // es ist ein Kran
 
-  let kranId = getKranId(taktplatz);  // id of the kran
+  let kranId = await getKranId(taktplatz);  // id of the kran
   
   let indexOfTaktplatz = parseInt(path.indexOf(taktplatz));   // gets the index of the taktplatz in the path array
   // with the index of the taktplatz you can get the taktplätze that are before and after the original taktplatz
@@ -175,33 +217,7 @@ let path = [
 
 // Pseudocode to write Data to palette
 let currentePaletteId = 2;
-// path.forEach((e)=>{
-//   e.startsWith("Q") ? console.log(genQuery(e, currentePaletteId, 2, date)) : console.log(genQuery(e, currentePaletteId, 1, date))
 
-//   if(e.equals("TP 5")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromPalUnit)")
-//   }
-//   else if(e.equals("TP 6")){
-//     if(queryDatabase("select PalNo from dbo.PalDataBelHistory where PalNo = " + currentePaletteId) is empty){
-//       queryDatabase("insert into dbo.PalData (ProdSeqId) values ("+currentePaletteId+")")
-//       queryDatabase("insert into dbo.PalDataBelHistory (PalNo, TimeStamp) values ("+currentePaletteId+","+time+")")
-//       queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ShutteringFinished)")
-//     }
-//   }else if(e.equals("TP 12")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (BarsPlaced)")
-//   }
-//   else if(e.equals("TP 13")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (GirdersPlaced)")
-//   }
-//   else if(e.equals("TP 23")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (ConcretingFinished)")
-//   }
-//   // LG bei Path einfuegen
-//   // Lagerplatz bestimmen
-//   else if(e.equals("LG 1")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (EnteredInDryingChamber)")
-//   }
-// })
 
 var qv_index = {
   "TP 2": 1,
@@ -228,10 +244,3 @@ var qv_index = {
 };
 
 main();
-//   // Finished Variable bei Path einfuegen
-//   else if(e.equals("Vaffanculo")){
-//     queryDatabase("insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values (RemovedFromDryingChamber)")
-//   }
-// })
-
-

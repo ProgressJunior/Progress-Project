@@ -79,7 +79,7 @@ async function main(){
   await connect();
   let currentStartTime;
 
-  for(let i = 0; i < path.length-1; i++){
+  for(let i = 0; i < path.length; i++){
 
     currentStartTime = currentEndTime
     // CurrentEndTime = Ankunftszeit bei path[i]
@@ -94,7 +94,7 @@ async function main(){
     // indem jedes mal die Duration vom Vorgang hinzu
     // gezählt wird
     let duration = 0;
-    path[i].startsWith("Q") ? duration = 5 : duration = 1;
+    path[i].startsWith("Q") ? duration = 2 : duration = 1;
     currentEndTime = moment(currentStartTime).add(duration, 'm').toDate();
 
     // CurrentEndTime = Abfahrtzeit bei path[i]
