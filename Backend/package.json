@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "start": "node index.js"
   },
   "author": "",
@@ -16,5 +16,8 @@
     "mssql": "^8.0.2",
     "mysql": "^2.18.1",
     "tedious": "^14.3.0"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
   }
 }
