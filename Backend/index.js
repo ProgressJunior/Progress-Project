@@ -11,6 +11,8 @@ let minute = 0;
 let dt = new Date();
 
 async function main() {
+
+
     await db.connect()
 
 	let startDate = moment(new Date())
@@ -25,13 +27,16 @@ async function main() {
 
 		// 1 hour needs to be subtract because casting to moment adds 1 hour
 		let nextFreeTs = await sql.query`SELECT TOP 1 TimeStamp FROM dbo.LocPalHistory WHERE LocationName LIKE ${path[i+1]} AND PalNo = 0 ORDER BY TimeStamp DESC`
-
-        console.log(nextFreeTs.recordset[0])
-        nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(1, "hours")
-    
-        if (moment(endDate).isBefore(nextFreeTs)) {
-            console.log("Palette has to wait")
-            endDate = nextFreeTs
+        //check if attribute of json is empty
+        if (nextFreeTs.recordset.length > 0) {
+            nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(2, "hours")
+            nextFreeTs = moment(nextFreeTs).add(1, "minutes")
+            console.log("NextFreeTs: " + nextFreeTs.format("YYYY-MM-DD HH:mm:ss.SSS"));
+            
+            if (moment(endDate).isBefore(nextFreeTs)) {
+                console.log("Palette has to wait")
+                endDate = nextFreeTs
+            }
         }
 
 		console.log("Starttime: " + startDate.format("YYYY-MM-DD HH:mm:ss.SSS"))
@@ -40,7 +45,7 @@ async function main() {
 		console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
 		console.log("\n");
 
-		await genQuery(path[i], 3, startDate, endDate)
+		await genQuery(path[i], 2, startDate, endDate)
 	}
 
 	console.log(queries)
