@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=767px height=115px src="https://github.com/ProgressJunior/Progress-Project/blob/main/Docs/logo1.png?raw=true" alt="Project logo"></a>
+ <img src="https://github.com/ProgressJunior/Progress-Project/blob/main/Docs/Logo.png?raw=true" alt="Project logo"></a>
 </p>
 
 <h3 align="center">Progress Sample Data Projekt</h3>
