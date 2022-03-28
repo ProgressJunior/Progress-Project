@@ -77,6 +77,9 @@ async function main() {
 	let duration = 0
 
 	for (let i = 0; i < path.length - 2; i++) {
+        // check if first station is free and wait if its not
+        // still to add ^^
+        
 		startDate = endDate
 
 		path[i].startsWith("Q") ? duration = 2 : duration = 1
