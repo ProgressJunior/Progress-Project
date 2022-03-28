@@ -21,8 +21,8 @@ let path = [
     "TP 5",
     "TP 6",
     "QV 3",
-    "TP 10",
-    "QV 8",
+    "TP 7",
+    "TP 8",
     "TP 9",
     "TP 11",
     "QV 4",
@@ -77,16 +77,22 @@ async function main() {
 	let duration = 0
 
 	for (let i = 0; i < path.length - 2; i++) {
-        // check if first station is free and wait if its not
-        // still to add ^^
-        
 		startDate = endDate
+        // check if first station is free and wait if its not
+        if(i == 0) {
+            let freeStartTime = await nextFreeTime(path[i])
+            
+            if(freeStartTime.recordset.length > 0) {
+                startDate = moment(freeStartTime.recordset[0].TimeStamp).subtract(2,"hours")
+                startDate = moment(startDate).add(1,"minutes")
+            }
+        }
 
 		path[i].startsWith("Q") ? duration = 2 : duration = 1
 		endDate = moment(startDate).add(duration, "minutes")
 
 		// 1 hour needs to be subtract because casting to moment adds 1 hour
-		let nextFreeTs = await sql.query`SELECT TOP 1 TimeStamp FROM dbo.LocPalHistory WHERE LocationName LIKE ${path[i+1]} AND PalNo = 0 ORDER BY TimeStamp DESC`
+		let nextFreeTs = await nextFreeTime(path[i+1])
         //check if attribute of json is empty
         if (nextFreeTs.recordset.length > 0) {
             nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(2, "hours")
@@ -99,20 +105,22 @@ async function main() {
             }
         }
 
-		console.log("Starttime: " + startDate.format("YYYY-MM-DD HH:mm:ss.SSS"))
-		console.log(path[i+1] + " free at ");
-		console.log(nextFreeTs);
-		console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
-		console.log("\n");
+		// console.log("Starttime: " + startDate.format("YYYY-MM-DD HH:mm:ss.SSS"))
+		// console.log(path[i+1] + " free at ");
+		// console.log(nextFreeTs);
+		// console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
+		// console.log("\n");
 
-		await genQuery(path[i], 2, startDate, endDate)
+		await genQuery(path[i], 3, startDate, endDate)
 	}
 
 	console.log(queries)
     queries.forEach(async (query) => {await sql.query(`${query}`)})
 }
 
-
+async function nextFreeTime(station){
+    return await sql.query`SELECT TOP 1 TimeStamp FROM dbo.LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`
+}
 
 
 /*
