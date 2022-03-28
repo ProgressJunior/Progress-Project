@@ -4,42 +4,14 @@ const app = express();
 require("dotenv").config();
 const sql = require("mssql");
 var moment = require("moment");
+const db = require('./db');
 
 let queries = [];
 let minute = 0;
 let dt = new Date();
 
-/*
-
-        SQL
-
-*/
-const sqlConfig = {
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
-    server: process.env.SERVER,
-    port: parseInt(process.env.PORT),
-    options: {
-        // encrypt: false, // for azure
-        trustServerCertificate: true, // change to true for local dev / self-signed certs
-    },
-};
-
-// Function that connects to Database
-// and then queries the passed parameter
-async function connect() {
-    // connect
-    try {
-        // make sure that any items are correctly URL encoded in the connection string
-        await sql.connect(sqlConfig);
-    } catch (err) {
-        // ... error checks
-    }
-}
-
 async function main() {
-    await connect();
+    await db.connect()
 
 	let startDate = moment(new Date())
 	let endDate = moment(new Date())
