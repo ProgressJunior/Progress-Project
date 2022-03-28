@@ -21,8 +21,8 @@ let path = [
     "TP 5",
     "TP 6",
     "QV 3",
-    "TP 10",
-    "QV 8",
+    "TP 7",
+    "TP 8",
     "TP 9",
     "TP 11",
     "QV 4",
@@ -68,6 +68,8 @@ var qv_index = {
 };
 
 async function main() {
+
+
     await db.connect()
 
 	let startDate = moment(new Date())
@@ -76,26 +78,38 @@ async function main() {
 
 	for (let i = 0; i < path.length - 2; i++) {
 		startDate = endDate
+        // check if first station is free and wait if its not
+        if(i == 0) {
+            let freeStartTime = await nextFreeTime(path[i])
+            
+            if(freeStartTime.recordset.length > 0) {
+                startDate = moment(freeStartTime.recordset[0].TimeStamp).subtract(2,"hours")
+                startDate = moment(startDate).add(1,"minutes")
+            }
+        }
 
 		path[i].startsWith("Q") ? duration = 2 : duration = 1
 		endDate = moment(startDate).add(duration, "minutes")
 
 		// 1 hour needs to be subtract because casting to moment adds 1 hour
-		let nextFreeTs = await sql.query`SELECT TOP 1 TimeStamp FROM dbo.LocPalHistory WHERE LocationName LIKE ${path[i+1]} AND PalNo = 0 ORDER BY TimeStamp DESC`
-
-        console.log(nextFreeTs.recordset[0])
-        nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(1, "hours")
-    
-        if (moment(endDate).isBefore(nextFreeTs)) {
-            console.log("Palette has to wait")
-            endDate = nextFreeTs
+		let nextFreeTs = await nextFreeTime(path[i+1])
+        //check if attribute of json is empty
+        if (nextFreeTs.recordset.length > 0) {
+            nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(2, "hours")
+            nextFreeTs = moment(nextFreeTs).add(1, "minutes")
+            console.log("NextFreeTs: " + nextFreeTs.format("YYYY-MM-DD HH:mm:ss.SSS"));
+            
+            if (moment(endDate).isBefore(nextFreeTs)) {
+                console.log("Palette has to wait")
+                endDate = nextFreeTs
+            }
         }
 
-		console.log("Starttime: " + startDate.format("YYYY-MM-DD HH:mm:ss.SSS"))
-		console.log(path[i+1] + " free at ");
-		console.log(nextFreeTs);
-		console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
-		console.log("\n");
+		// console.log("Starttime: " + startDate.format("YYYY-MM-DD HH:mm:ss.SSS"))
+		// console.log(path[i+1] + " free at ");
+		// console.log(nextFreeTs);
+		// console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
+		// console.log("\n");
 
 		await genQuery(path[i], 3, startDate, endDate)
 	}
@@ -104,7 +118,9 @@ async function main() {
     queries.forEach(async (query) => {await sql.query(`${query}`)})
 }
 
-
+async function nextFreeTime(station){
+    return await sql.query`SELECT TOP 1 TimeStamp FROM dbo.LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`
+}
 
 
 /*
@@ -171,9 +187,9 @@ async function genQvQuery(taktplatz, startMoment, endMoment) {
 /*
 generates a set of queries for each Taktplatz. 
 If the Taktplatz type is of TP it generates 2 queries
-if the Taktplatz type is QV it generates 5 queries: 2 of them are the same as the ones of TP, the other 3 are for the crane position and queries another database
-
-
+if the Taktplatz type is QV it generates 5 queries: 
+2 of them are the same as the ones of TP, the other 
+3 are for the crane position and queries another database
 */
 async function genQuery(taktplatz, palette, startMoment, endMoment) {
 

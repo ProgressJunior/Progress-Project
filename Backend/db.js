@@ -33,4 +33,10 @@ const sqlConfig = {
     return sql.query(query);
   }
 
-  module.exports = {sqlConfig, connect, queryDatabase};
+  async function close(){
+    console.log("Closing connection");
+    sql.close();
+  }
+  
+
+  module.exports = {sqlConfig, connect, queryDatabase, close};

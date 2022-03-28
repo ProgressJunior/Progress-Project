@@ -37,16 +37,19 @@ function App() {
   const [date, setDate] = useState(Date.now);
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        label="Basic example"
-        value={date}
-        onChange={(newValue) => {
-          setDate(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-      {/* display date */}
-      <p>test: {}</p>
+      <div>
+        <DatePicker
+          label="Basic example"
+          value={date}
+          onChange={(newValue) => {
+            setDate(newValue);
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+        {/* display date */}
+        <p>test: {}</p>
+      </div>
+
     </LocalizationProvider>
   );
 }
