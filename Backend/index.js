@@ -132,9 +132,9 @@ async function genQvQuery(taktplatz, startMoment, endMoment) {
 /*
 generates a set of queries for each Taktplatz. 
 If the Taktplatz type is of TP it generates 2 queries
-if the Taktplatz type is QV it generates 5 queries: 2 of them are the same as the ones of TP, the other 3 are for the crane position and queries another database
-
-
+if the Taktplatz type is QV it generates 5 queries: 
+2 of them are the same as the ones of TP, the other 
+3 are for the crane position and queries another database
 */
 async function genQuery(taktplatz, palette, startMoment, endMoment) {
 
