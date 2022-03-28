@@ -5,10 +5,67 @@ require("dotenv").config();
 const sql = require("mssql");
 var moment = require("moment");
 const db = require('./db');
+const server = require('./server');
 
 let queries = [];
 let minute = 0;
 let dt = new Date();
+
+let path = [
+    "TP 1",
+    "TP 2",
+    "QV 2",
+    "TP 3",
+    "TP 4",
+    "QV 1",
+    "TP 5",
+    "TP 6",
+    "QV 3",
+    "TP 10",
+    "QV 8",
+    "TP 9",
+    "TP 11",
+    "QV 4",
+    "TP 12",
+    "TP 13",
+    "TP 14",
+    "QV 7",
+    "TP 14.1",
+    "TP 15",
+    "QV 5",
+    "TP 17",
+    "QV 6",
+    "TP 18",
+    "TP 23",
+    "TP 25",
+];
+
+// Pseudocode to write Data to palette
+let currentePaletteId = 2;
+
+var qv_index = {
+    "TP 2": 1,
+    "TP 3": 2,
+    "TP 4": 2,
+    "TP 5": 3,
+    "TP 6": 1,
+    "TP 7": 2,
+    "TP 8": 3,
+    "TP 9": 2,
+    "TP 10": 1,
+    "TP 11": 1,
+    "TP 12": 2,
+    "TP 14": 1,
+    "TP 14.1": 2,
+    "TP 15": 1,
+    "TP 16": 2,
+    "TP 16.1": 3,
+    "TP 17.1": 4,
+    "TP 17.2": 1,
+    "TP 18": 2,
+    "TP 19": 3,
+    "TP 20": 4,
+};
 
 async function main() {
     await db.connect()
@@ -47,26 +104,8 @@ async function main() {
     queries.forEach(async (query) => {await sql.query(`${query}`)})
 }
 
-/*
 
-        EXPRESS
 
-*/
-const express_port = process.env.EXPRESS_PORT;
-
-app.listen(express_port, () => {
-    console.log(`Example app listening on port ${express_port}`);
-});
-
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
-
-app.get("/updateTable/:arg", (req, res) => {
-    // res.send(req.params.arg)
-    queryDatabase(req.params.arg);
-    res.end();
-});
 
 /*
 gets the kranId from the SampleValueHistoryValue_Ids
@@ -155,60 +194,12 @@ async function genQuery(taktplatz, palette, startMoment, endMoment) {
     );
 }
 
-let path = [
-    "TP 1",
-    "TP 2",
-    "QV 2",
-    "TP 3",
-    "TP 4",
-    "QV 1",
-    "TP 5",
-    "TP 6",
-    "QV 3",
-    "TP 10",
-    "QV 8",
-    "TP 9",
-    "TP 11",
-    "QV 4",
-    "TP 12",
-    "TP 13",
-    "TP 14",
-    "QV 7",
-    "TP 14.1",
-    "TP 15",
-    "QV 5",
-    "TP 17",
-    "QV 6",
-    "TP 18",
-    "TP 23",
-    "TP 25",
-];
 
-// Pseudocode to write Data to palette
-let currentePaletteId = 2;
+/*
 
-var qv_index = {
-    "TP 2": 1,
-    "TP 3": 2,
-    "TP 4": 2,
-    "TP 5": 3,
-    "TP 6": 1,
-    "TP 7": 2,
-    "TP 8": 3,
-    "TP 9": 2,
-    "TP 10": 1,
-    "TP 11": 1,
-    "TP 12": 2,
-    "TP 14": 1,
-    "TP 14.1": 2,
-    "TP 15": 1,
-    "TP 16": 2,
-    "TP 16.1": 3,
-    "TP 17.1": 4,
-    "TP 17.2": 1,
-    "TP 18": 2,
-    "TP 19": 3,
-    "TP 20": 4,
-};
+        EXPRESS
+
+*/
+server.startServer();
 
 main();
