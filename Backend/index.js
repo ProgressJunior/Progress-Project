@@ -111,7 +111,7 @@ async function main() {
 		// console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
 		// console.log("\n");
 
-		await genQuery(path[i], 3, startDate, endDate)
+		queries = await genQuery(queries, path[i], 3, startDate, endDate)
 	}
 
 	console.log(queries)
@@ -136,7 +136,7 @@ async function getKranId(taktplatz) {
     return kranId.recordset[0].Id;
 }
 
-async function genQvQuery(taktplatz, startMoment, endMoment) {
+async function genQvQuery(query, taktplatz, startMoment, endMoment) {
     // es ist ein Kran
 
     let kranId = await getKranId(taktplatz); // id of the kran
@@ -155,11 +155,15 @@ async function genQvQuery(taktplatz, startMoment, endMoment) {
     let index = qv_index[taktplatzbef];
 
     // query one - set the startindex and the startmoment of the kran
-    queries.push(
+
+    //let queryStr = `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`;
+    
+    query.push(
         `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(startMoment).format(
             "YYYY-MM-DD HH:mm:ss.SSS"
         )}');`
     );
+    
 
     let taktplatzaf = path[indexOfTaktplatz + 1]; // one Taktplatz after
 
@@ -171,17 +175,23 @@ async function genQvQuery(taktplatz, startMoment, endMoment) {
     index = qv_index[taktplatzaf]; // get the index of the taktplatz before
 
     // query two - set the endindex and the enmoment of the kran
-    queries.push(
+    //queryStr += `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`;
+    
+    query.push(
         `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(endMoment).format(
             "YYYY-MM-DD HH:mm:ss.SSS"
         )}');`
     );
+    
     // query threee - set the kran to defaultposition one minute after  endmoment
-    queries.push(
+    //queryStr += `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`;
+    query.push(
         `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 0, '${moment(endMoment)
             .add(1, "m")
             .format("YYYY-MM-DD HH:mm:ss.SSS")}');`
     );
+
+    return query;
 }
 
 /*
@@ -191,23 +201,26 @@ if the Taktplatz type is QV it generates 5 queries:
 2 of them are the same as the ones of TP, the other 
 3 are for the crane position and queries another database
 */
-async function genQuery(taktplatz, palette, startMoment, endMoment) {
+async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
 
     // first query - sets the moment at wich the palette arrives at the
-    queries.push(
+    query.push(
         `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, '${moment(startMoment).format(
             "YYYY-MM-DD HH:mm:ss.SSS"
         )}');`
     );
     // detects if it's a crane
     if (taktplatz.startsWith("Q"))
-        await genQvQuery(taktplatz, startMoment, endMoment);
+        await genQvQuery(query, taktplatz, startMoment, endMoment);
     // seccond query - frees up the taktplatz - at the same moment the palette gets set to new taktplatz
-    queries.push(
+    query.push(
         `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, '${moment(endMoment).format(
             "YYYY-MM-DD HH:mm:ss.SSS"
         )}');`
     );
+
+
+    return query;
 }
 
 
@@ -219,3 +232,6 @@ async function genQuery(taktplatz, palette, startMoment, endMoment) {
 server.startServer();
 
 main();
+
+// export functions for testing
+module.exports = {main,genQuery,genQvQuery,getKranId,nextFreeTime};
