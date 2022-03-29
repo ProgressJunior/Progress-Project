@@ -72,50 +72,52 @@ async function main() {
 
     await db.connect()
 
-	let startDate = moment(new Date())
-	let endDate = moment(new Date())
-	let duration = 0
+    freeLG();
 
-	for (let i = 0; i < path.length - 2; i++) {
-		startDate = endDate
-        // check if first station is free and wait if its not
-        if(i == 0) {
-            let freeStartTime = await nextFreeTime(path[i])
+	// let startDate = moment(new Date())
+	// let endDate = moment(new Date())
+	// let duration = 0
+
+	// for (let i = 0; i < path.length - 2; i++) {
+	// 	startDate = endDate
+    //     // check if first station is free and wait if its not
+    //     if(i == 0) {
+    //         let freeStartTime = await nextFreeTime(path[i])
             
-            if(freeStartTime.recordset.length > 0) {
-                startDate = moment(freeStartTime.recordset[0].TimeStamp).subtract(2,"hours")
-                startDate = moment(startDate).add(1,"minutes")
-            }
-        }
+    //         if(freeStartTime.recordset.length > 0) {
+    //             startDate = moment(freeStartTime.recordset[0].TimeStamp).subtract(2,"hours")
+    //             startDate = moment(startDate).add(1,"minutes")
+    //         }
+    //     }
 
-		path[i].startsWith("Q") ? duration = 2 : duration = 1
-		endDate = moment(startDate).add(duration, "minutes")
+	// 	path[i].startsWith("Q") ? duration = 2 : duration = 1
+	// 	endDate = moment(startDate).add(duration, "minutes")
 
-		// 1 hour needs to be subtract because casting to moment adds 1 hour
-		let nextFreeTs = await nextFreeTime(path[i+1])
-        //check if attribute of json is empty
-        if (nextFreeTs.recordset.length > 0) {
-            nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(2, "hours")
-            nextFreeTs = moment(nextFreeTs).add(1, "minutes")
-            console.log("NextFreeTs: " + nextFreeTs.format("YYYY-MM-DD HH:mm:ss.SSS"));
+	// 	// 1 hour needs to be subtract because casting to moment adds 1 hour
+	// 	let nextFreeTs = await nextFreeTime(path[i+1])
+    //     //check if attribute of json is empty
+    //     if (nextFreeTs.recordset.length > 0) {
+    //         nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(2, "hours")
+    //         nextFreeTs = moment(nextFreeTs).add(1, "minutes")
+    //         console.log("NextFreeTs: " + nextFreeTs.format("YYYY-MM-DD HH:mm:ss.SSS"));
             
-            if (moment(endDate).isBefore(nextFreeTs)) {
-                console.log("Palette has to wait")
-                endDate = nextFreeTs
-            }
-        }
+    //         if (moment(endDate).isBefore(nextFreeTs)) {
+    //             console.log("Palette has to wait")
+    //             endDate = nextFreeTs
+    //         }
+    //     }
 
-		// console.log("Starttime: " + startDate.format("YYYY-MM-DD HH:mm:ss.SSS"))
-		// console.log(path[i+1] + " free at ");
-		// console.log(nextFreeTs);
-		// console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
-		// console.log("\n");
+	// 	// console.log("Starttime: " + startDate.format("YYYY-MM-DD HH:mm:ss.SSS"))
+	// 	// console.log(path[i+1] + " free at ");
+	// 	// console.log(nextFreeTs);
+	// 	// console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
+	// 	// console.log("\n");
 
-		queries = await genQuery(queries, path[i], 3, startDate, endDate)
-	}
+	// 	queries = await genQuery(queries, path[i], 3, startDate, endDate)
+	// }
 
-	console.log(queries)
-    queries.forEach(async (query) => {await sql.query(`${query}`)})
+	// console.log(queries)
+    // queries.forEach(async (query) => {await sql.query(`${query}`)})
 }
 
 async function nextFreeTime(station){
@@ -223,6 +225,21 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
     return query;
 }
 
+
+// freeLG function to check if a Lagerplatz is free
+async function occLG(){
+    let lgs = await sql.query(
+        `SELECT LocationName FROM LocPalHistory WHERE LocationName LIKE 'LG%';`);
+    
+    //console.log(lgs.recordset);
+
+    let arrayLG = []
+    lgs.recordset.forEach(async (lg) => {
+        arrayLG.push(lg.LocationName);
+    });
+    //console.log(arrayLG);
+    return arrayLG;
+}
 
 /*
 
