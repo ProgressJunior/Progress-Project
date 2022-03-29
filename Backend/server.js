@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const index = require("./index.js");
 require("dotenv").config();
 /*
 
@@ -21,11 +22,15 @@ function startServer(){
         res.send("Hello World!");
     });
       
-    app.get("/updateTable/:arg", (req, res) => {
-        // res.send(req.params.arg)
-        queryDatabase(req.params.arg);
-        res.end();
+    app.get("/path/:path/:date", (req, res) => {
+        console.log(req.params.arg);
+        index.start(req.params.path, req.params.date);
     });
+
+    app.get("/freeLG", (req, res) => {
+        res.send(index.freeLG());
+    });
+
 }
 
 
