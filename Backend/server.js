@@ -27,8 +27,8 @@ function startServer(){
         index.start(req.params.path, req.params.date);
     });
 
-    app.get("/freeLG", (req, res) => {
-        res.send(index.freeLG());
+    app.get("/occLG", (req, res) => {
+        res.send(index.occLG());
     });
 
 }
