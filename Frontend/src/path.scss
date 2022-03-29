@@ -1,0 +1,26 @@
+.parent {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 1vw;
+    grid-row-gap: 2vh;
+}
+
+.rectangle{
+    width: 15vw;
+    height: 10vh;
+}
+
+.active{
+    background-color: rgb(181, 194, 5);
+}
+
+.disabled{
+    background-color: rgb(65, 61, 61);
+}
+
+.empty{
+    width: 5vw;
+    height: 2.5vh;
+    background-color: rgba(0, 0, 0, 0);
+}

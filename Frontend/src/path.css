@@ -1,0 +1,30 @@
+.parent {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[6];
+      grid-template-columns: repeat(6, 1fr);
+  -ms-grid-rows: (1fr)[6];
+      grid-template-rows: repeat(6, 1fr);
+  grid-column-gap: 1vw;
+  grid-row-gap: 2vh;
+}
+
+.rectangle {
+  width: 15vw;
+  height: 10vh;
+}
+
+.active {
+  background-color: #b5c205;
+}
+
+.disabled {
+  background-color: #413d3d;
+}
+
+.empty {
+  width: 5vw;
+  height: 2.5vh;
+  background-color: rgba(0, 0, 0, 0);
+}
+/*# sourceMappingURL=path.css.map */
