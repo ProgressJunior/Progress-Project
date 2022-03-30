@@ -3,50 +3,81 @@ import Xarrow from "react-xarrows";
 import "./path.css";
 import useWindowDimensions from "./useWindowDimensions.js";
 
-function Path() {
+function Path(props) {
     const { height, width } = useWindowDimensions();
     let arrowStrokeWidth = 0.0015*width;
     let count = 0;
 
-    let pathArray = [   "TP8","TP9","TP11","EMPTY","TP14.1","TP18",
+
+    let pathTemplate = [   "TP8","TP9","TP11","EMPTY","TP14.1","TP18",
                         "TP7","TP10","TP12","TP13","TP14","TP16",
                         "TP6","TP5","EMPTY","TP24","TP22","TP17",
                         "TP3","TP4","EMPTY", "TP25","TP23","TP18",
                         "TP2","TP1","EMPTY","TP26","EMPTY","TP19",
                         "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"]
     
-    let path1 = [       "TP8","TP9","TP11","EMPTY","TP14.1","TP18",
-                        "ACTIVE","ACTIVE","ACTIVE","ACTIVE","ACTIVE","ACTIVE",
+
+    let pathArray = {
+        "Path 1" : [    "TP8","TP9","TP11","EMPTY","TP14.1","TP18",
+                        "ACTIVED","ACTIVED","ACTIVE","ACTIVED","ACTIVED","ACTIVED",
                         "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
                         "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
                         "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
-                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"]   
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
 
-    let path2 = [   "ACTIVE","ACTIVE","ACTIVE","EMPTY","TP14.1","TP18",
-                        "ACTIVE","TP10","ACTIVE","ACTIVE","ACTIVE","ACTIVE",
+        "Path 2" : [    "ACTIVED","ACTIVED","ACTIVED","EMPTY","TP14.1","TP18",
+                        "ACTIVED","TP10","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
                         "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
                         "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
                         "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
-                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"] 
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
 
-    let path3 = [   "TP8","TP9","TP11","EMPTY","ACTIVE","ACTIVE",
-                    "ACTIVE","ACTIVE","ACTIVE","ACTIVE","ACTIVE","ACTIVE",
-                    "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
-                    "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
-                    "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
-                    "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"]  
+        "Path 3" : [    "TP8","TP9","TP11","EMPTY","ACTIVED","ACTIVED",
+                        "ACTIVED","ACTIVED","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
+                        "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
+                        "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
+                        "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
 
-    let path4 = [   "ACTIVE","ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE",
-                    "ACTIVE","TP10","ACTIVE","ACTIVE","ACTIVE","ACTIVE",
-                    "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
-                    "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
-                    "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
-                    "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"]
+        "Path 4" : [    "ACTIVED","ACTIVED","ACTIVED","EMPTY","ACTIVED","ACTIVED",
+                        "ACTIVED","TP10","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
+                        "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
+                        "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
+                        "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"]
+    }
+    
+    let arrowPaths = {
+        "Path 1": [ <Xarrow start="TP7" end="TP10" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP10" end="TP12" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP14" end="TP16" strokeWidth={arrowStrokeWidth} color="red"/>],
+
+        "Path 2" : [ <Xarrow start="TP7" end="TP8" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP8" end="TP9" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP9" end="TP11" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP11" end="TP12" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP14" end="TP16" strokeWidth={arrowStrokeWidth} color="red"/>],
+
+        "Path 3" : [ <Xarrow start="TP7" end="TP10" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP10" end="TP12" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP14" end="TP14.1" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP14.1" end="TP18" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP18" end="TP16" strokeWidth={arrowStrokeWidth} color="red"/>],
+
+        "Path 4" : [ <Xarrow start="TP7" end="TP8" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP8" end="TP9" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP9" end="TP11" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP11" end="TP12" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP14" end="TP14.1" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP14.1" end="TP18" strokeWidth={arrowStrokeWidth} color="red"/>,
+        <Xarrow start="TP18" end="TP16" strokeWidth={arrowStrokeWidth} color="red"/>]
+    }
+
+    let temp = props.obj;
 
     return (
         <div className="parent">
-
-            {pathArray.map((element) => {
+            {pathTemplate.map((element) => {
                 // count needs to be incremented first and subtracted at path
                 // because it cant be incremented at the end due to the fact
                 // that divs are returned first
@@ -55,54 +86,21 @@ function Path() {
                     return (<div className="empty"></div>)
                 }
                 else {
-                    if(path4[count-1] === "ACTIVE") {
+                    if(pathArray["Path 1"][count-1] === "ACTIVE") {
                         return (<div id={element} className="rectangle active" />)
+                    }
+                    // ActiveD = ActiveDynamic
+                    // aka. the part of the path that actually changes
+                    else if(pathArray[temp][count-1] === "ACTIVED"){
+                        return (<div id={element} className="rectangle activeD" />)
                     }
                     return (<div id={element} className="rectangle disabled" />)
                 }
             })}
 
-            {/* <div id="TP8" className="rectangle disabled" />
-            <div id="TP9" className="rectangle disabled" />
-            <div id="TP11" className="rectangle disabled" />
-            <div className="empty" />
-            <div id="TP14.1" className="rectangle disabled" />
-            <div id="TP18" className="rectangle disabled" />
-
-            <div id="TP7" className="rectangle disabled" />
-            <div id="TP10" className="rectangle disabled" />
-            <div id="TP12" className="rectangle active" />
-            <div id="TP13" className="rectangle disabled" />
-            <div id="TP14" className="rectangle disabled" />
-            <div id="TP16" className="rectangle active" />
-
-            <div id="TP6" className="rectangle active" />
-            <div id="TP5" className="rectangle active" />
-            <div className="empty" />
-            <div id="TP24" className="rectangle active" />
-            <div id="TP22" className="rectangle active" />
-            <div id="TP17" className="rectangle active" />
-
-            <div id="TP3" className="rectangle active" />
-            <div id="TP4" className="rectangle active" />
-            <div className="empty" />
-            <div id="TP25" className="rectangle disabled" />
-            <div id="TP23" className="rectangle disabled" />
-            <div id="TP18" className="rectangle disabled" />
-
-            <div id="TP2" className="rectangle active" />
-            <div id="TP1" className="rectangle active" />
-            <div className="empty" />
-            <div id="TP26" className="rectangle disabled" />
-            <div className="empty" />
-            <div id="TP19" className="rectangle disabled" />
-
-            <div className="empty" />
-            <div className="empty" />
-            <div className="empty" />
-            <div id="TP27" className="rectangle disabled" />
-            <div id="TP21" className="rectangle disabled" />
-            <div id="TP20" className="rectangle disabled" /> */}
+            {arrowPaths[temp].map((element) => {
+                return element
+            })}
 
             <Xarrow
                 start="TP1" //can be react ref
@@ -138,7 +136,13 @@ function Path() {
                 strokeWidth={arrowStrokeWidth}
                 color="red"
             />
-
+    
+            <Xarrow
+                start="TP6" //can be react ref
+                end="TP7" //or an id
+                strokeWidth={arrowStrokeWidth}
+                color="red"
+            />
 
             <Xarrow
                 start="TP12" //can be react ref

@@ -18,6 +18,10 @@
   background-color: #b5c205;
 }
 
+.activeD {
+  background-color: #057dc2;
+}
+
 .disabled {
   background-color: #413d3d;
 }
