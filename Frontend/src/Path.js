@@ -14,8 +14,7 @@ function Path(props) {
                         "TP6","TP5","EMPTY","TP24","TP22","TP17",
                         "TP3","TP4","EMPTY", "TP25","TP23","TP18",
                         "TP2","TP1","EMPTY","TP26","EMPTY","TP19",
-                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"]
-    
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"] 
 
     let pathArray = {
         "Path 1" : [    "TP8","TP9","TP11","EMPTY","TP14.1","TP18",
@@ -48,32 +47,47 @@ function Path(props) {
     }
     
     let arrowPaths = {
-        "Path 1": [ <Xarrow start="TP7" end="TP10" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP10" end="TP12" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP14" end="TP16" strokeWidth={arrowStrokeWidth} color="red"/>],
+        "Path 1": [ {start: "TP7"   , end: "TP10"  },
+                    {start: "TP10"  , end: "TP12"  },
+                    {start: "TP14"  , end: "TP16"  }],
 
-        "Path 2" : [ <Xarrow start="TP7" end="TP8" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP8" end="TP9" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP9" end="TP11" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP11" end="TP12" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP14" end="TP16" strokeWidth={arrowStrokeWidth} color="red"/>],
+        "Path 2": [ {start: "TP7"   , end: "TP8"   },
+                    {start: "TP8"   , end: "TP9"   },
+                    {start: "TP9"   , end: "TP11"  },
+                    {start: "TP11"  , end: "TP12"  },
+                    {start: "TP14"  , end: "TP16"  }],
 
-        "Path 3" : [ <Xarrow start="TP7" end="TP10" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP10" end="TP12" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP14" end="TP14.1" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP14.1" end="TP18" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP18" end="TP16" strokeWidth={arrowStrokeWidth} color="red"/>],
+        "Path 3": [ {start: "TP7"   , end: "TP10"  },
+                    {start: "TP10"  , end: "TP12"  },
+                    {start: "TP14"  , end: "TP14.1"},
+                    {start: "TP14.1", end: "TP18"  },
+                    {start: "TP18"  , end: "TP16"  }],
 
-        "Path 4" : [ <Xarrow start="TP7" end="TP8" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP8" end="TP9" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP9" end="TP11" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP11" end="TP12" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP14" end="TP14.1" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP14.1" end="TP18" strokeWidth={arrowStrokeWidth} color="red"/>,
-        <Xarrow start="TP18" end="TP16" strokeWidth={arrowStrokeWidth} color="red"/>]
+        "Path 4": [ {start: "TP7"   , end: "TP8"   },
+                    {start: "TP8"   , end: "TP9"   },
+                    {start: "TP9"   , end: "TP11"  },
+                    {start: "TP11"  , end: "TP12"  },
+                    {start: "TP14"  , end: "TP14.1"},
+                    {start: "TP14.1", end: "TP18"  },
+                    {start: "TP18"  , end: "TP16"  }],        
     }
 
-    let temp = props.obj;
+
+
+    let fixedArrows = [{start: "TP1",   end: "TP2"},
+                        {start: "TP2",  end: "TP3"},
+                        {start: "TP3",  end: "TP4"},
+                        {start: "TP4",  end: "TP5"},
+                        {start: "TP5",  end: "TP6"},
+                        {start: "TP6",  end: "TP7"},
+                        {start: "TP12", end: "TP13"},
+                        {start: "TP13", end: "TP14"},
+                        {start: "TP14", end: "TP16"},
+                        {start: "TP16", end: "TP17"},
+                        {start: "TP17", end: "TP22"},
+                        {start: "TP22", end: "TP24"}]
+
+    let temp = props.path;
 
     return (
         <div className="parent">
@@ -99,85 +113,14 @@ function Path(props) {
             })}
 
             {arrowPaths[temp].map((element) => {
-                return element
+                return (<Xarrow start={element.start} end={element.end} strokeWidth={arrowStrokeWidth} color="red"/>)
             })}
 
-            <Xarrow
-                start="TP1" //can be react ref
-                end="TP2" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
+            {fixedArrows.map((element) => {
+                return (<Xarrow start={element.start} end={element.end} strokeWidth={arrowStrokeWidth} color="red"/>)
+            })}
 
-            <Xarrow
-                start="TP2" //can be react ref
-                end="TP3" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
-
-            <Xarrow
-                start="TP3" //can be react ref
-                end="TP4" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
-
-            <Xarrow
-                start="TP4" //can be react ref
-                end="TP5" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
-
-            <Xarrow
-                start="TP5" //can be react ref
-                end="TP6" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
-    
-            <Xarrow
-                start="TP6" //can be react ref
-                end="TP7" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
-
-            <Xarrow
-                start="TP12" //can be react ref
-                end="TP13" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
-
-            <Xarrow
-                start="TP13" //can be react ref
-                end="TP14" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
-
-            <Xarrow
-                start="TP16" //can be react ref
-                end="TP17" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
-
-            <Xarrow
-                start="TP17" //can be react ref
-                end="TP22" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
             
-            <Xarrow
-                start="TP22" //can be react ref
-                end="TP24" //or an id
-                strokeWidth={arrowStrokeWidth}
-                color="red"
-            />
         </div>
     );
 }

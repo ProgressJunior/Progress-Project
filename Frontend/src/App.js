@@ -43,7 +43,7 @@ function App() {
                     </Dropdown.Menu>
                 </Dropdown>
 
-                <Path obj={path}/>
+                <Path path={path}/>
             </div>
         </LocalizationProvider>
     );
