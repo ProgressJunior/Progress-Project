@@ -1,22 +1,31 @@
+// For Date picker
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import { TextField } from "@mui/material";
-import React, { useState } from "react";
 
+// For Dropdown
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Path from "./Path";
-import "./app.css"
+// For React
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
-function App() {
+// For Path
+import Path from "./Path";
+import "./firstStep.css"
+
+function FirstStep() {
     const [date, setDate] = useState(Date.now);
     const [path, setPath] = useState("Path 1");
 
     let test = {
         path: 'Path 1',
     }
+
+    let navigate = useNavigate();
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -44,9 +53,11 @@ function App() {
                 </Dropdown>
 
                 <Path path={path}/>
+
+                <Button variant="outline-primary" onClick={()=> {navigate('/storage')}}>Primary</Button>{' '}
             </div>
         </LocalizationProvider>
     );
 }
 
-export default App;
+export default FirstStep;
