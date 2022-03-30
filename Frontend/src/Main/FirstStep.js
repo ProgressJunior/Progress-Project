@@ -21,10 +21,6 @@ function FirstStep() {
     const [date, setDate] = useState(Date.now);
     const [path, setPath] = useState("Path 1");
 
-    let test = {
-        path: 'Path 1',
-    }
-
     let navigate = useNavigate();
 
     return (

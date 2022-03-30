@@ -1,6 +1,12 @@
 const { json } = require("express");
 const express = require("express");
+
+const cors = require("cors");
 const app = express();
+app.use(cors())
+// Cors
+
+
 require("dotenv").config();
 const sql = require("mssql");
 var moment = require("moment");
@@ -316,4 +322,4 @@ server.startServer();
 main();
 
 // export functions for testing
-module.exports = { main, genQuery, genQvQuery, getKranId, nextFreeTime };
+module.exports = { main, genQuery, genQvQuery, getKranId, nextFreeTime, occLG };
