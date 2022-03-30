@@ -100,14 +100,10 @@ function Path(props) {
                     return (<div className="empty"></div>)
                 }
                 else {
-                    if(pathArray["Path 1"][count-1] === "ACTIVE") {
+                    if(pathArray["Path 1"][count-1] === "ACTIVE")
                         return (<div id={element} className="rectangle active" />)
-                    }
-                    // ActiveD = ActiveDynamic
-                    // aka. the part of the path that actually changes
-                    else if(pathArray[temp][count-1] === "ACTIVED"){
+                    else if(pathArray[temp][count-1] === "ACTIVED")
                         return (<div id={element} className="rectangle activeD" />)
-                    }
                     return (<div id={element} className="rectangle disabled" />)
                 }
             })}
@@ -119,7 +115,6 @@ function Path(props) {
             {fixedArrows.map((element) => {
                 return (<Xarrow start={element.start} end={element.end} strokeWidth={arrowStrokeWidth} color="red"/>)
             })}
-
             
         </div>
     );

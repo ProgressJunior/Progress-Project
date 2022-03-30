@@ -1,12 +1,3 @@
-const { json } = require("express");
-const express = require("express");
-
-const cors = require("cors");
-const app = express();
-app.use(cors())
-// Cors
-
-
 require("dotenv").config();
 const sql = require("mssql");
 var moment = require("moment");
@@ -302,7 +293,7 @@ async function occLG(){
     let lgs = await sql.query(
         `SELECT LocationName FROM LocPalHistory WHERE LocationName LIKE 'LG%';`);
     
-    //console.log(lgs.recordset);
+    // console.dir(lgs.recordset);
 
     let arrayLG = []
     lgs.recordset.forEach(async (lg) => {
@@ -322,4 +313,4 @@ server.startServer();
 main();
 
 // export functions for testing
-module.exports = { main, genQuery, genQvQuery, getKranId, nextFreeTime, occLG };
+module.exports = { main, genQuery, genQvQuery, getKranId, nextFreeTime, occLG};
