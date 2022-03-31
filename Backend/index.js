@@ -301,7 +301,8 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
 
 // freeLG function to check if a Lagerplatz is free
 async function occLG() {
-  let lgs = await sql.query(
+  await db.connect();
+  let lgs = await db.queryDatabase(
     `SELECT LocationName FROM LocPalHistory WHERE LocationName LIKE 'LG%';`
   );
 
@@ -311,13 +312,12 @@ async function occLG() {
   lgs.recordset.forEach(async (lg) => {
     arrayLG.push(lg.LocationName);
   });
-  //console.log(arrayLG);
   return arrayLG;
 }
 
 var path = [];
 //default path is always 0
-function start(path_number = 0) {
+function start(path_number = 0, date) {
   //select the path with path_number switch
 
   switch (path_number) {
@@ -345,9 +345,6 @@ function start(path_number = 0) {
         EXPRESS
 
 */
-
-server.startServer();
-start(2);
 
 // export functions for testing
 module.exports = {

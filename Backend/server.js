@@ -4,7 +4,7 @@ const index = require("./index.js");
 require("dotenv").config();
 
 const cors = require("cors");
-app.use(cors())
+app.use(cors());
 /*
 
         EXPRESS
@@ -12,31 +12,27 @@ app.use(cors())
 */
 const express_port = process.env.EXPRESS_PORT;
 
+function startServer() {
+  app.listen(express_port, () => {
+    console.log(`Example app listening on port ${express_port}`);
+  });
 
+  app.get("/", (req, res) => {
+    res.send("Hello World!");
+  });
 
+  app.get("/path/:path/:date", (req, res) => {
+    console.log(req.params.arg);
+    index.start(req.params.path, req.params.date);
+  });
 
-function startServer(){
+  app.get("/occLG", async (req, res) => {
+    // res.send(index.occLG());
 
-    app.listen(express_port, () => {
-        console.log(`Example app listening on port ${express_port}`);
-    });
-      
-    app.get("/", (req, res) => {
-        res.send("Hello World!");
-    });
-      
-    app.get("/path/:path/:date", (req, res) => {
-        console.log(req.params.arg);
-        index.start(req.params.path, req.params.date);
-    });
-
-    app.get("/occLG", (req, res) => {
-        // res.send(index.occLG());
-        let temp = index.occLG();
-        res.send(temp);
-    });
-
+    //await index.occLG();
+    //create async
+    data = await index.occLG();
+    res.send(data);
+  });
 }
-
-
-module.exports = {startServer};
+startServer();
