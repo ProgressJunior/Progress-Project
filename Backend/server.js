@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const index = require("./index.js");
 require("dotenv").config();
+
+const cors = require("cors");
+app.use(cors())
 /*
 
         EXPRESS
@@ -28,7 +31,9 @@ function startServer(){
     });
 
     app.get("/occLG", (req, res) => {
-        res.send(index.occLG());
+        // res.send(index.occLG());
+        let temp = index.occLG();
+        res.send(temp);
     });
 
 }

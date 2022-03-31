@@ -305,7 +305,7 @@ async function occLG() {
     `SELECT LocationName FROM LocPalHistory WHERE LocationName LIKE 'LG%';`
   );
 
-  //console.log(lgs.recordset);
+  // console.dir(lgs.recordset);
 
   let arrayLG = [];
   lgs.recordset.forEach(async (lg) => {
@@ -314,6 +314,7 @@ async function occLG() {
   //console.log(arrayLG);
   return arrayLG;
 }
+
 var path = [];
 //default path is always 0
 function start(path_number = 0) {

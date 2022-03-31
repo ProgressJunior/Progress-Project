@@ -14,7 +14,8 @@ function Path(props) {
                         "TP6","TP5","EMPTY","TP24","TP22","TP17",
                         "TP3","TP4","EMPTY", "TP25","TP23","TP18",
                         "TP2","TP1","EMPTY","TP26","EMPTY","TP19",
-                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"] 
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"
+    ] 
 
     let pathArray = {
         "Path 1" : [    "TP8","TP9","TP11","EMPTY","TP14.1","TP18",
@@ -72,8 +73,6 @@ function Path(props) {
                     {start: "TP18"  , end: "TP16"  }],        
     }
 
-
-
     let fixedArrows = [{start: "TP1",   end: "TP2"},
                         {start: "TP2",  end: "TP3"},
                         {start: "TP3",  end: "TP4"},
@@ -85,7 +84,8 @@ function Path(props) {
                         {start: "TP14", end: "TP16"},
                         {start: "TP16", end: "TP17"},
                         {start: "TP17", end: "TP22"},
-                        {start: "TP22", end: "TP24"}]
+                        {start: "TP22", end: "TP24"}
+    ]
 
     let temp = props.path;
 
@@ -100,14 +100,10 @@ function Path(props) {
                     return (<div className="empty"></div>)
                 }
                 else {
-                    if(pathArray["Path 1"][count-1] === "ACTIVE") {
+                    if(pathArray["Path 1"][count-1] === "ACTIVE")
                         return (<div id={element} className="rectangle active" />)
-                    }
-                    // ActiveD = ActiveDynamic
-                    // aka. the part of the path that actually changes
-                    else if(pathArray[temp][count-1] === "ACTIVED"){
+                    else if(pathArray[temp][count-1] === "ACTIVED")
                         return (<div id={element} className="rectangle activeD" />)
-                    }
                     return (<div id={element} className="rectangle disabled" />)
                 }
             })}
@@ -119,7 +115,6 @@ function Path(props) {
             {fixedArrows.map((element) => {
                 return (<Xarrow start={element.start} end={element.end} strokeWidth={arrowStrokeWidth} color="red"/>)
             })}
-
             
         </div>
     );

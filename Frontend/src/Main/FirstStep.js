@@ -26,14 +26,20 @@ function FirstStep() {
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <div>
-                <DatePicker
-                    label="Basic example"
-                    value={date}
-                    onChange={(newValue) => {
-                        setDate(newValue);
-                    }}
-                    renderInput={(params) => <TextField {...params} />}
-                />
+                
+                <div className="optionsWrapper"> 
+
+                <div className="fixed20vw">
+                    <DatePicker
+                        className="fixed20vw"
+                        value={date}
+                        onChange={(newValue) => {
+                            setDate(newValue);
+                        }}
+                        renderInput={(params) => <TextField className="fixed20vw" {...params} />}
+                    />
+                </div>
+                
 
                 <Dropdown className="fixed20vw">
                     <Dropdown.Toggle variant="primary" id="dropdown-basic"  className="fixed20vw">
@@ -47,6 +53,10 @@ function FirstStep() {
                         <Dropdown.Item onClick={()=> {setPath("Path 4")}}>Path 4</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
+                </div>
+                
+
+
 
                 <Path path={path}/>
 
