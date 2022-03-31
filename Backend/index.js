@@ -1,3 +1,11 @@
+const { json } = require("express");
+const express = require("express");
+
+const cors = require("cors");
+const app = express();
+app.use(cors());
+// Cors
+
 require("dotenv").config();
 const sql = require("mssql");
 var moment = require("moment");
@@ -8,7 +16,7 @@ let queries = [];
 let minute = 0;
 let dt = new Date();
 
-let path = [
+let path1 = [
   "TP 1",
   "TP 2",
   "QV 2",
@@ -126,14 +134,15 @@ var qv_index = {
   "TP 20": 4,
 };
 
-async function main() {
+async function writeToDB() {
   await db.connect();
 
   let startDate = moment(new Date());
   let endDate = moment(new Date());
   let duration = 0;
+  console.log(path[0]);
 
-  for (let i = 0; i < path.length - 2; i++) {
+  for (let i = 0; i < path.length; i++) {
     startDate = endDate;
     // check if first station is free and wait if its not
     if (i == 0) {
@@ -152,7 +161,10 @@ async function main() {
     endDate = moment(startDate).add(duration, "minutes");
 
     // 1 hour needs to be subtract because casting to moment adds 1 hour
-    let nextFreeTs = await nextFreeTime(path[i + 1]);
+    let nextFreeTs;
+    if (i != path.length) {
+      nextFreeTs = await nextFreeTime(path[i + 1]);
+    }
     //check if attribute of json is empty
     if (nextFreeTs.recordset.length > 0) {
       nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(
@@ -287,20 +299,45 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
   return query;
 }
 
-
 // freeLG function to check if a Lagerplatz is free
-async function occLG(){
-    let lgs = await sql.query(
-        `SELECT LocationName FROM LocPalHistory WHERE LocationName LIKE 'LG%';`);
-    
-    // console.dir(lgs.recordset);
+async function occLG() {
+  let lgs = await sql.query(
+    `SELECT LocationName FROM LocPalHistory WHERE LocationName LIKE 'LG%';`
+  );
 
-    let arrayLG = []
-    lgs.recordset.forEach(async (lg) => {
-        arrayLG.push(lg.LocationName);
-    });
-    //console.log(arrayLG);
-    return arrayLG;
+  // console.dir(lgs.recordset);
+
+  let arrayLG = [];
+  lgs.recordset.forEach(async (lg) => {
+    arrayLG.push(lg.LocationName);
+  });
+  //console.log(arrayLG);
+  return arrayLG;
+}
+
+var path = [];
+//default path is always 0
+function start(path_number = 0) {
+  //select the path with path_number switch
+
+  switch (path_number) {
+    case 0:
+      path = path1;
+      break;
+    case 1:
+      path = path2;
+      break;
+    case 2:
+      path = path3;
+      break;
+    case 3:
+      path = path4;
+      break;
+    default:
+      path = path1;
+  }
+  console.log("Chosen path:" + parseInt(path_number) + 1);
+  writeToDB();
 }
 
 /*
@@ -308,9 +345,16 @@ async function occLG(){
         EXPRESS
 
 */
-server.startServer();
 
-main();
+server.startServer();
+start(2);
 
 // export functions for testing
-module.exports = { main, genQuery, genQvQuery, getKranId, nextFreeTime, occLG};
+module.exports = {
+  start,
+  genQuery,
+  genQvQuery,
+  getKranId,
+  nextFreeTime,
+  occLG,
+};
