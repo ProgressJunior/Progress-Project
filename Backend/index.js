@@ -1,4 +1,5 @@
 const { json } = require("express");
+const values = require("./values.json");
 const express = require("express");
 
 const cors = require("cors");
@@ -10,129 +11,10 @@ require("dotenv").config();
 const sql = require("mssql");
 var moment = require("moment");
 const db = require("./db");
-const server = require("./server");
 
 let queries = [];
 let minute = 0;
 let dt = new Date();
-
-let path1 = [
-  "TP 1",
-  "TP 2",
-  "QV 2",
-  "TP 3",
-  "TP 4",
-  "QV 1",
-  "TP 5",
-  "TP 6",
-  "QV 3",
-  "TP 7",
-  "TP 10",
-  "TP 12",
-  "TP 13",
-  "TP 14",
-  "TP 16",
-  "QV 5",
-  "TP 17",
-  "TP 22",
-  "TP 24",
-];
-let path2 = [
-  "TP 1",
-  "TP 2",
-  "QV 2",
-  "TP 3",
-  "TP 4",
-  "QV 1",
-  "TP 5",
-  "TP 6",
-  "QV 3",
-  "TP 7",
-  "TP 10",
-  "TP 12",
-  "TP 13",
-  "TP 14",
-  "QV 7",
-  "TP 14.1",
-  "TP 15",
-  "QV 5",
-  "TP 17",
-  "TP 22",
-  "TP 24",
-];
-let path3 = [
-  "TP 1",
-  "TP 2",
-  "QV 2",
-  "TP 3",
-  "TP 4",
-  "QV 1",
-  "TP 5",
-  "TP 6",
-  "TP 8",
-  "TP 9",
-  "TP 11",
-  "QV 4",
-  "TP 12",
-  "TP 13",
-  "TP 14",
-  "TP 16",
-  "QV 5",
-  "TP 17",
-  "TP 22",
-  "TP 24",
-];
-let path4 = [
-  "TP 1",
-  "TP 2",
-  "QV 2",
-  "TP 3",
-  "TP 4",
-  "QV 1",
-  "TP 5",
-  "TP 6",
-  "TP 8",
-  "TP 9",
-  "TP 11",
-  "QV 4",
-  "TP 12",
-  "TP 13",
-  "TP 14",
-  "QV 7",
-  "TP 14.1",
-  "TP 15",
-  "QV 5",
-  "TP 17",
-  "TP 22",
-  "TP 24",
-];
-
-// Pseudocode to write Data to palette
-let currentePaletteId = 2;
-
-var qv_index = {
-  "TP 2": 1,
-  "TP 3": 2,
-  "TP 4": 2,
-  "TP 5": 3,
-  "TP 6": 1,
-  "TP 7": 2,
-  "TP 8": 3,
-  "TP 9": 2,
-  "TP 10": 1,
-  "TP 11": 1,
-  "TP 12": 2,
-  "TP 14": 2,
-  "TP 14.1": 1,
-  "TP 15": 1,
-  "TP 16": 2,
-  "TP 16.1": 3,
-  "TP 17.1": 4,
-  "TP 17.2": 1,
-  "TP 18": 2,
-  "TP 19": 3,
-  "TP 20": 4,
-};
 
 async function writeToDB() {
   await db.connect();
@@ -140,7 +22,6 @@ async function writeToDB() {
   let startDate = moment(new Date());
   let endDate = moment(new Date());
   let duration = 0;
-  console.log(path[0]);
 
   for (let i = 0; i < path.length; i++) {
     startDate = endDate;
@@ -316,37 +197,27 @@ async function occLG() {
 }
 
 var path = [];
+var qv_index = [];
 //default path is always 0
-function start(path_number = 0, date) {
-  //select the path with path_number switch
+function start(path_number = -1, date) {
+  if (path_number == -1) console.error("no path given");
 
-  switch (path_number) {
-    case 0:
-      path = path1;
-      break;
-    case 1:
-      path = path2;
-      break;
-    case 2:
-      path = path3;
-      break;
-    case 3:
-      path = path4;
-      break;
-    default:
-      path = path1;
+  //do something with date
+
+  //select the path with path_number
+  path = values.paths[path_number].path;
+
+  console.info(values.qv_index.length);
+  //dynamically create a qv_index key value pair
+  for (let i = 0; i < values.qv_index.length; i++) {
+    qv_index[values.qv_index[i].name] = values.qv_index[i].index;
   }
-  console.log("Chosen path:" + parseInt(path_number) + 1);
+
+  console.log(qv_index);
+  console.log("Chosen path:" + values.paths[path_number].name);
   writeToDB();
 }
-
-/*
-
-        EXPRESS
-
-*/
-
-// export functions for testing
+// export functions
 module.exports = {
   start,
   genQuery,

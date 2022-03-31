@@ -22,7 +22,7 @@ function startServer() {
   });
 
   app.get("/path/:path/:date", (req, res) => {
-    console.log(req.params.arg);
+    //console.log(req.params.arg);
     index.start(req.params.path, req.params.date);
   });
 

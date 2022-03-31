@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "type": "commonjs",
   "author": "",
