@@ -1,4 +1,27 @@
+:root {
+  font-size: 2vw;
+}
+
 .fixed20vw {
   width: clamp(20vw, 20vw, 20vw);
+  height: clamp(10vh, 10vh, 10vh);
+  overflow: hidden;
+  font-size: 2vw;
+}
+
+.MuiSvgIcon-fontSizeMedium {
+  font-size: 2vw;
+}
+
+.optionsWrapper {
+  max-width: 50vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 1vw;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 2vw;
 }
 /*# sourceMappingURL=firstStep.css.map */

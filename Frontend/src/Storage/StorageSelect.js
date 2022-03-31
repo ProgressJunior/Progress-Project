@@ -7,14 +7,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 function StorageSelect() {
-    //use state
-    // const [occLG, setOccLG] = useState("");
 
-    // let navigate = useNavigate()
-
-    // const response = await fetch('http://localhost:3030/');
-    // const data = "Test"
-    // setOccLG(data);
+    let navigate = useNavigate()
 
     useEffect(() => {
         const url = "http://localhost:3030/occLG";
@@ -34,10 +28,10 @@ function StorageSelect() {
 
     return (
         <div>
-            {/* <Button variant="outline-primary" 
+            <Button variant="outline-primary" 
                     onClick={()=> {navigate('/')}}>
                 Back
-            </Button> */}
+            </Button>
             <p>test</p>
         </div>
     );
