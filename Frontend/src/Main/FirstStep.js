@@ -1,8 +1,8 @@
 // For Date picker
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
-import { TextField } from "@mui/material";
+// import AdapterDateFns from "@mui/lab/AdapterDateFns";
+// import LocalizationProvider from "@mui/lab/LocalizationProvider";
+// import DatePicker from "@mui/lab/DatePicker";
+// import { TextField } from "@mui/material";
 
 // For Dropdown
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -24,25 +24,25 @@ function FirstStep() {
     let navigate = useNavigate();
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        // <LocalizationProvider dateAdapter={AdapterDateFns}>
             <div>
                 
-                <div className="optionsWrapper"> 
+                <div className="optionsWrapper "> 
 
-                <div className="fixed20vw">
+                {/* <div className="fixed20vw fixed10vh">
                     <DatePicker
-                        className="fixed20vw"
+                        className="fixed20vw fixed10vh"
                         value={date}
                         onChange={(newValue) => {
                             setDate(newValue);
                         }}
                         renderInput={(params) => <TextField className="fixed20vw" {...params} />}
                     />
-                </div>
+                </div> */}
                 
 
-                <Dropdown className="fixed20vw">
-                    <Dropdown.Toggle variant="primary" id="dropdown-basic"  className="fixed20vw">
+                <Dropdown className="fixed20vw fixed10vh">
+                    <Dropdown.Toggle variant="outline-primary" id="dropdown-basic"  className="fixed20vw">
                         {path}
                     </Dropdown.Toggle>
 
@@ -54,15 +54,14 @@ function FirstStep() {
                     </Dropdown.Menu>
                 </Dropdown>
                 </div>
-                
-
-
 
                 <Path path={path}/>
 
-                <Button variant="outline-primary" onClick={()=> {navigate('/storage')}}>Primary</Button>{' '}
+                <div className="buttonBarBottom">
+                    <Button variant="outline-primary" onClick={()=> {navigate('/storage')}}>Next</Button>{' '}
+                </div>
             </div>
-        </LocalizationProvider>
+        // </LocalizationProvider>
     );
 }
 

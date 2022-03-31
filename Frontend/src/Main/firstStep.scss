@@ -4,9 +4,13 @@
 
 .fixed20vw{
     width: clamp(20vw,20vw,20vw);
-    height: clamp(10vh, 10vh, 10vh);
-    overflow: hidden;
     font-size: 2vw;
+}
+
+.fixed10vh{
+    height: clamp(10vh, 10vh, 10vh);
+    min-height: 10vh;
+    max-height: 10vh;
 }
 
 .MuiSvgIcon-fontSizeMedium{

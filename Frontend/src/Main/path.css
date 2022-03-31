@@ -16,20 +16,30 @@
 }
 
 .active {
-  background-color: #b5c205;
+  background-color: #098bca;
 }
 
 .activeD {
-  background-color: #057dc2;
+  background-color: #fedd00;
 }
 
 .disabled {
-  background-color: #413d3d;
+  background-color: #333333;
 }
 
 .empty {
   width: 5vw;
   height: 2.5vh;
   background-color: rgba(0, 0, 0, 0);
+}
+
+.buttonBarBottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin: 2vw;
 }
 /*# sourceMappingURL=path.css.map */
