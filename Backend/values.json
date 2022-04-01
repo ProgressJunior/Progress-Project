@@ -1,4 +1,104 @@
 {
+  "storage_index": [
+    { "name": "TP 24", "index": 0 },
+    {
+      "name": "TP 25",
+      "index": 4400
+    },
+    {
+      "name": "TP 26",
+      "index": 8800
+    },
+    {
+      "name": "TP 27",
+      "index": 12130
+    },
+    {
+      "name": "R 1",
+      "index": 2350
+    },
+    { "name": "R 2", "index": 5660 },
+    {
+      "name": "R 3",
+      "index": 8800
+    },
+    {
+      "name": "R 4",
+      "index": 13130
+    },
+    {
+      "name": "R 5",
+      "index": 15380
+    },
+    {
+      "name": "E 0",
+      "index": -105
+    },
+    {
+      "name": "E 1",
+      "index": 490
+    },
+    {
+      "name": "E 2",
+      "index": 1086
+    },
+    {
+      "name": "E 3",
+      "index": 1682
+    },
+    {
+      "name": "E 4",
+      "index": 2278
+    },
+    {
+      "name": "E 5",
+      "index": 2874
+    },
+    {
+      "name": "E 6",
+      "index": 3469
+    },
+    {
+      "name": "E 7",
+      "index": 4065
+    },
+    {
+      "name": "E 8",
+      "index": 4661
+    },
+    {
+      "name": "E 9",
+      "index": 5257
+    },
+    {
+      "name": "E 10",
+      "index": 5853
+    },
+    {
+      "name": "E 11",
+      "index": 6449
+    },
+    {
+      "name": "E 12",
+      "index": 7045
+    },
+    {
+      "name": "E 13",
+      "index": 7641
+    },
+    {
+      "name": "E 14",
+      "index": 8237
+    },
+    {
+      "name": "E 15",
+      "index": 8833
+    },
+    {
+      "name": "E 16",
+      "index": 9429
+    }
+  ],
   "qv_index": [
     {
       "name": "TP 2",
