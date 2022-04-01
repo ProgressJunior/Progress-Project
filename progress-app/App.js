@@ -1,8 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Dimensions, Button } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Pressable } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 // Date Picker
 import DatePicker from "react-native-date-picker";
@@ -14,76 +15,104 @@ export default function App() {
     // For date picker
     const [date, setDate] = useState(new Date());
 
+    let pathTemplate = [["TP8","TP9","TP11","EMPTY","TP14.1","TP18"],
+                        ["TP7","TP10","TP12","TP13","TP14","TP16"],
+                        ["TP6","TP5","EMPTY","TP24","TP22","TP17"],
+                        ["TP3","TP4","EMPTY", "TP25","TP23","TP18"],
+                        ["TP2","TP1","EMPTY","TP26","EMPTY","TP19"],
+                        ["EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"]
+    ]
+
+    let pathArray = {
+        "Path 1" : [    "TP8","TP9","TP11","EMPTY","TP14.1","TP18",
+                        "ACTIVED","ACTIVED","ACTIVE","ACTIVED","ACTIVED","ACTIVED",
+                        "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
+                        "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
+                        "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
+
+        "Path 2" : [    "ACTIVED","ACTIVED","ACTIVED","EMPTY","TP14.1","TP18",
+                        "ACTIVED","TP10","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
+                        "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
+                        "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
+                        "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
+
+        "Path 3" : [    "TP8","TP9","TP11","EMPTY","ACTIVED","ACTIVED",
+                        "ACTIVED","ACTIVED","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
+                        "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
+                        "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
+                        "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
+
+        "Path 4" : [    "ACTIVED","ACTIVED","ACTIVED","EMPTY","ACTIVED","ACTIVED",
+                        "ACTIVED","TP10","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
+                        "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
+                        "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
+                        "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
+                        "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"]
+    }
+
+    let count = 0;
+
     // For dropdown
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState("Path 1");
     const [items, setItems] = useState([
-        { label: "Apple", value: "apple" },
-        { label: "Banana", value: "banana" },
+        { label: "Path 1", value: "Path 1" },
+        { label: "Path 2", value: "Path 2" },
+        { label: "Path 3", value: "Path 3" },
+        { label: "Path 4", value: "Path 4" },
     ]);
 
     return (
         <View style={styles.container}>
-            <View style={styles.rowWrapper}>
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-            </View>
 
-            <View style={styles.rowWrapper}>
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-            </View>
+            
+            {pathTemplate.map((element) =>{
+                let temp = []
+                for (let i = 0; i < element.length; i++) {
+                    count++;
+                    if (element[i] == "EMPTY") {
+                        temp.push(
+                            <View style={styles.empty}></View>
+                        )
+                    }
+                    else {
+                        if(pathArray["Path 1"][count-1] === "ACTIVE"){
+                            temp.push(
+                                <View style={styles.boxActive}>
+                                </View>
+                            )
+                        }
+                        else if(pathArray[value][count-1] === "ACTIVED")
+                            temp.push(
+                                <View style={styles.boxActiveD}>
+                                </View>)
+                        else
+                            temp.push( <View style={styles.boxActiveDisabled}>
+                                </View>)
 
-            <View style={styles.rowWrapper}>
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-            </View>
+                    }
+                }
+                return (<View style={styles.rowWrapper}>{temp}</View>)
+            })}
 
-            <View style={styles.rowWrapper}>
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-            </View>
+            <DatePicker
+                date={date}
+                onDateChange={setDate}
+                fadeToColor={"#333333"}
+                androidVariant={"iosClone"}
+                textColor={"#ababab"}
+            />
 
-            <View style={styles.rowWrapper}>
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-            </View>
-
-            <View style={styles.rowWrapper}>
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-                <View style={styles.box} />
-            </View>
-
-            <DatePicker date={date} onDateChange={setDate} />
-            <Button
-                title="Reset Date"
+            <Pressable
+                style={styles.button}
                 onPress={() => setDate(new Date())}
-            ></Button>
-            <Text>{date.toISOString()}</Text>
+            >
+                <Text>Reset Date</Text>
+            </Pressable>
+            <Text style={styles.text}>{date.toISOString()}</Text>
 
             <DropDownPicker
                 open={open}
@@ -94,8 +123,8 @@ export default function App() {
                 setItems={setItems}
             />
 
-			{/* Text for items */}
-			<Text>{value}</Text>
+            {/* Text for items */}
+            <Text style={styles.text}>{value}</Text>
 
             <StatusBar style="auto" />
         </View>
@@ -105,7 +134,7 @@ export default function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#333333",
         alignItems: "center",
         justifyContent: "center",
     },
@@ -115,7 +144,44 @@ const styles = StyleSheet.create({
         backgroundColor: "red",
         margin: windowWidth / 200,
     },
+    boxActive: {
+        width: windowWidth / 6.5,
+        height: 50,
+        backgroundColor: "green",
+        margin: windowWidth / 200,
+    },
+    boxActiveD: {
+        width: windowWidth / 6.5,
+        height: 50,
+        backgroundColor: "blue",
+        margin: windowWidth / 200,
+    },
+    boxActiveDisabled: {
+        width: windowWidth / 6.5,
+        height: 50,
+        backgroundColor: "gray",
+        margin: windowWidth / 200,
+    },
+    empty: {
+        width: windowWidth / 6.5,
+        height: 50,
+        backgroundColor: "rgba(0,0,0,0)",
+        margin: windowWidth / 200,
+    },
     rowWrapper: {
         flexDirection: "row",
     },
+    text: { 
+        color: "#ffffff"
+    },
+    button: {
+        color: "#333333",
+        backgroundColor: "#ffffff",
+        width: windowWidth / 3,
+        height: windowHeight / 20,
+        borderRadius: windowWidth / 50,
+        display: "flex", 
+        justifyContent: "center",
+        alignItems: "center",
+    }
 });
