@@ -197,6 +197,7 @@ async function occLG() {
 }
 
 var path = [];
+var storage_index = [];
 var qv_index = [];
 //default path is always 0
 function start(path_number = -1, date) {
@@ -212,7 +213,10 @@ function start(path_number = -1, date) {
   for (let i = 0; i < values.qv_index.length; i++) {
     qv_index[values.qv_index[i].name] = values.qv_index[i].index;
   }
-
+  for (let i = 0; i < values.storage_index.length; i++) {
+    storage_index[values.storage_index[i].name] = values.storage_index[i].index;
+  }
+  console.log(storage_index);
   console.log(qv_index);
   console.log("Chosen path:" + values.paths[path_number].name);
   writeToDB();
