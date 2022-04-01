@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "progress-app",
+    "slug": "progress-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "progress-app"
+}
