@@ -177,7 +177,68 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
+  if(taktplatz=="TP 24"){
+    moveRBG(query,palette,endMoment);
+  }
+
+
   return query;
+}
+
+async function moveRBG(query,palette,endMoment){
+
+  temp = storageIndex.split("|");
+
+  destEtage= temp[0];
+  destRow = temp[1];
+  
+  //move cran to TP 24
+
+  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["TP 24"]},'${moment(
+    endMoment
+  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
+  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["E 0"]},'${moment(
+    endMoment
+  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
+
+  //move cran to destination with delay
+
+  endMoment = moment(endMoment).add(3, "minutes");
+
+  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["E "+destEtage]},'${moment(
+    endMoment
+  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
+  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["R "+destRow]},'${moment(
+    endMoment
+  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);
+
+  endMoment = moment(endMoment).add(1, "minutes");
+
+  //move cran to final 
+
+  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["E "+destEtage]},'${moment(
+    endMoment
+  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
+  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["R "+destRow]},'${moment(
+    endMoment
+  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);
+
+  //store palette
+  taktplatz = "LG "+ storageIndex;
+  query.push(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',${palette} , '${moment(
+      endMoment
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
+
+
+
+}
+
+async function getLager(storageIndex){
+
+  
+
 }
 
 // freeLG function to check if a Lagerplatz is free
@@ -199,9 +260,12 @@ async function occLG() {
 var path = [];
 var storage_index = [];
 var qv_index = [];
+var storageIndex="";
 //default path is always 0
-function start(path_number = -1, date) {
+function start(path_number = -1, date,storageindex) {
   if (path_number == -1) console.error("no path given");
+
+  storageIndex= storageindex;
 
   //do something with date
 
