@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 // for css
 import "./Storage.css";
 
-function StorageSelect() {
+function StorageSelect({ childToParent }) {
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -28,8 +28,9 @@ function StorageSelect() {
         fetchData();
     }, []);
 
-    function test(row, col) {
-        console.log("row: " + row + " col: " + col);
+    function updatePath(row, col) {
+        childToParent("row: " + row + " col: " + col)
+        navigate("/date");
     }
 
     let storageRows = [1, 2, 3, 4, 5, 6];
@@ -42,7 +43,7 @@ function StorageSelect() {
 
                     for (let i = 0; i < 6; i++) {
                         storageColumn.push(
-                            <Button className="storageButton" onClick={() => {test(e, i);}}>
+                            <Button className="storageButton" onClick={() => {updatePath(e, i);}}>
 								Row {e} | Column {i}
 							</Button>
 					);}
@@ -52,6 +53,7 @@ function StorageSelect() {
             </div>
 
             <Button
+                className="backButton"
                 variant="outline-primary"
                 onClick={() => {
                     navigate("/");
@@ -60,12 +62,6 @@ function StorageSelect() {
                 Back
             </Button>
 
-            {/* <Button
-                variant="outline-primary"
-                onClick={() => {
-                    test();
-                }}
-            ></Button> */}
         </div>
     );
 }

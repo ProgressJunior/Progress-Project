@@ -17,11 +17,15 @@ import Button from "react-bootstrap/Button";
 import Path from "./Path";
 import "./firstStep.css"
 
-function FirstStep() {
-    const [date, setDate] = useState(Date.now);
+function FirstStep({ childToParent }) {
     const [path, setPath] = useState("Path 1");
 
     let navigate = useNavigate();
+
+    function nextButtonFunction(){
+        navigate('/storage');
+        childToParent(path);
+    }
 
     return (
         // <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -41,13 +45,17 @@ function FirstStep() {
                         <Dropdown.Item onClick={()=> {setPath("Path 4")}}>Path 4</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
+
+                <Button variant="outline-primary" onClick={()=> {nextButtonFunction()}}>Next</Button>{' '}
+
                 </div>
 
                 <Path path={path}/>
 
-                <div className="buttonBarBottom">
-                    <Button variant="outline-primary" onClick={()=> {navigate('/storage')}}>Next</Button>{' '}
-                </div>
+                {/* <div className="buttonBarBottom">
+                </div> */}
+
+                
             </div>
         // </LocalizationProvider>
     );

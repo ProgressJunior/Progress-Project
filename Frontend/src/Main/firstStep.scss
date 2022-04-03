@@ -1,18 +1,17 @@
 :root{
-    font-size: 2vw;
+    font-size: 1.5vw;
 }
 
 .fixed20vw{
-    width: clamp(20vw,20vw,20vw);
-    font-size: 2vw;
+    font-size: 1.5vw;
 }
 
 .MuiSvgIcon-fontSizeMedium{
-    font-size: 2vw;
+    font-size: 1.5vw;
 }
 
 .optionsWrapper{
-    max-width: 50vw;
+    max-width: 95vw;
     display: flex;
     margin: 1vw;
     justify-content: space-between;
