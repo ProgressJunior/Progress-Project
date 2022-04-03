@@ -33,19 +33,17 @@ export default function PathSelection({navigation}) {
             <Text id="elem2" style={styles.text}>{date.toISOString()}</Text>
 
             <View style={styles.navigationButtonWrapper}>
+                
                 <Pressable
                     style={styles.button}
                     onPress={() => navigation.navigate('PathSelection')}
-                >
-                    <Text>Back</Text>
-                </Pressable>
+                ><Text>Back</Text></Pressable>
 
                 <Pressable
                     style={styles.button}
                     // onPress={() => navigation.navigate('DateSelection')}
-                >
-                    <Text>Next</Text>
-                </Pressable>
+                ><Text>Next</Text></Pressable>
+
             </View>
 
             <StatusBar style="auto" />

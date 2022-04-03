@@ -246,14 +246,12 @@ export default function PathSelection({navigation}) {
             />
 
             {/* Text for items */}
-            <Text id="elem1" style={styles.text}>{value}</Text>
+            {/* <Text id="elem1" style={styles.text}>{value}</Text> */}
 
             <Pressable
                 style={styles.button}
                 onPress={() => navigation.navigate('DateSelection')}
-            >
-                <Text>Next</Text>
-            </Pressable>
+            ><Text>Next</Text></Pressable>
 
             <StatusBar style="auto" />
         </View>
@@ -312,5 +310,6 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        marginTop: windowHeight / 50,
     },
 });
