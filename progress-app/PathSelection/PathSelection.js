@@ -23,7 +23,7 @@ import ArrowUpRight from "react-native-bootstrap-icons/icons/arrow-90deg-right"
 import ArrowLeftUp from "react-native-bootstrap-icons/icons/arrow-90deg-up"
 import ArrowLeftDown from "react-native-bootstrap-icons/icons/arrow-90deg-down"
 
-export default function PathSelection() {
+export default function PathSelection({navigation}) {
     // For date picker
     const [date, setDate] = useState(new Date());
 
@@ -220,8 +220,6 @@ export default function PathSelection() {
 
             {/* draw arrow from elsoderfer/react-arrow */}
 
-            
-
             {pathTemplate.map((element) => {
                 let temp = [];
                 for (let i = 0; i < element.length; i++) {
@@ -252,7 +250,8 @@ export default function PathSelection() {
 
             <Pressable
                 style={styles.button}
-                onPress={() => setDate(new Date())}
+                // onPress={() => setDate(new Date())}
+                onPress={() => navigation.navigate('DateSelection')}
             >
                 <Text>Reset Date</Text>
             </Pressable>

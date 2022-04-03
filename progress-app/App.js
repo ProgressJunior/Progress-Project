@@ -1,14 +1,20 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, Dimensions, Pressable } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import PathSelection from "./PathSelection/PathSelection";
+import { NavigationContainer } from "@react-navigation/native";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-    // For date picker
-
-
     return (
-        <View style={styles.container}>
-
-        </View>
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="PathSelection" component={PathSelection} />
+                <Stack.Screen name="DateSelection" component={PathSelection} />
+                {/* <Stack.Screen name="Notifications" component={Notifications} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Settings" component={Settings} /> */}
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 }
