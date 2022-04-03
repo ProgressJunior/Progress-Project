@@ -5,9 +5,6 @@ import { StyleSheet, Text, View, Dimensions, Pressable } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-// Date Picker
-import DatePicker from "react-native-date-picker";
-
 // Dropdown
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -24,8 +21,6 @@ import ArrowLeftUp from "react-native-bootstrap-icons/icons/arrow-90deg-up"
 import ArrowLeftDown from "react-native-bootstrap-icons/icons/arrow-90deg-down"
 
 export default function PathSelection({navigation}) {
-    // For date picker
-    const [date, setDate] = useState(new Date());
 
     let pathTemplate = [
         ["TP8", "TP9", "TP11", "EMPTY", "TP14.1", "TP18"],
@@ -220,6 +215,7 @@ export default function PathSelection({navigation}) {
 
             {/* draw arrow from elsoderfer/react-arrow */}
 
+            {/* Draws correct rectangles for stations */}
             {pathTemplate.map((element) => {
                 let temp = [];
                 for (let i = 0; i < element.length; i++) {
@@ -240,23 +236,6 @@ export default function PathSelection({navigation}) {
                 return <View style={styles.rowWrapper}>{temp}</View>;
             })}
 
-            <DatePicker
-                date={date}
-                onDateChange={setDate}
-                fadeToColor={"#333333"}
-                androidVariant={"iosClone"}
-                textColor={"#ababab"}
-            />
-
-            <Pressable
-                style={styles.button}
-                // onPress={() => setDate(new Date())}
-                onPress={() => navigation.navigate('DateSelection')}
-            >
-                <Text>Reset Date</Text>
-            </Pressable>
-            <Text id="elem2" style={styles.text}>{date.toISOString()}</Text>
-
             <DropDownPicker
                 open={open}
                 value={value}
@@ -268,6 +247,13 @@ export default function PathSelection({navigation}) {
 
             {/* Text for items */}
             <Text id="elem1" style={styles.text}>{value}</Text>
+
+            <Pressable
+                style={styles.button}
+                onPress={() => navigation.navigate('DateSelection')}
+            >
+                <Text>Next</Text>
+            </Pressable>
 
             <StatusBar style="auto" />
         </View>
