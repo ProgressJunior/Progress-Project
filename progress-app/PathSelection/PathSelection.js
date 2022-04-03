@@ -250,7 +250,7 @@ export default function PathSelection({navigation}) {
 
             <Pressable
                 style={styles.button}
-                onPress={() => navigation.navigate('DateSelection')}
+                onPress={() => navigation.navigate('DateSelection',{path: {value}})}
             ><Text>Next</Text></Pressable>
 
             <StatusBar style="auto" />

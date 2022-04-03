@@ -8,12 +8,15 @@ const windowHeight = Dimensions.get("window").height;
 // Date Picker
 import DatePicker from "react-native-date-picker";
 
-export default function PathSelection({navigation}) {
+export default function PathSelection({route, navigation}) {
     // For date picker
     const [date, setDate] = useState(new Date());
+    const {path} = route.params;
 
     return (
         <View style={styles.container}>
+
+            <Text>{JSON.stringify(path)}</Text>
 
             <DatePicker
                 date={date}
@@ -33,7 +36,7 @@ export default function PathSelection({navigation}) {
             <Text id="elem2" style={styles.text}>{date.toISOString()}</Text>
 
             <View style={styles.navigationButtonWrapper}>
-                
+
                 <Pressable
                     style={styles.button}
                     onPress={() => navigation.navigate('PathSelection')}
