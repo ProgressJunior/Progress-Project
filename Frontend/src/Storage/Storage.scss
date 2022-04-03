@@ -1,0 +1,14 @@
+.storageParent {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 1vw;
+    grid-row-gap: 1vh;
+    margin: 1vw;
+}
+
+.storageButton{
+    width: 15vw;
+    height: 5vw;
+    font-size: 1vw;
+}

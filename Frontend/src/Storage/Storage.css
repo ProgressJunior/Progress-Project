@@ -1,0 +1,18 @@
+.storageParent {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[6];
+      grid-template-columns: repeat(6, 1fr);
+  -ms-grid-rows: (1fr)[6];
+      grid-template-rows: repeat(6, 1fr);
+  grid-column-gap: 1vw;
+  grid-row-gap: 1vh;
+  margin: 1vw;
+}
+
+.storageButton {
+  width: 15vw;
+  height: 5vw;
+  font-size: 1vw;
+}
+/*# sourceMappingURL=Storage.css.map */

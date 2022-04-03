@@ -7,12 +7,6 @@
     font-size: 2vw;
 }
 
-.fixed10vh{
-    height: clamp(10vh, 10vh, 10vh);
-    min-height: 10vh;
-    max-height: 10vh;
-}
-
 .MuiSvgIcon-fontSizeMedium{
     font-size: 2vw;
 }
@@ -23,4 +17,8 @@
     margin: 1vw;
     justify-content: space-between;
     font-size: 2vw;
+}
+
+.btn{
+    border: 0.5vw solid;
 }

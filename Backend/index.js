@@ -63,12 +63,6 @@ async function writeToDB() {
       }
     }
 
-    // console.log("Starttime: " + startDate.format("YYYY-MM-DD HH:mm:ss.SSS"))
-    // console.log(path[i+1] + " free at ");
-    // console.log(nextFreeTs);
-    // console.log("Endtime:   " + endDate.format("YYYY-MM-DD HH:mm:ss.SSS"));
-    // console.log("\n");
-
     queries = await genQuery(queries, path[i], 3, startDate, endDate);
   }
 

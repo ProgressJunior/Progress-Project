@@ -29,19 +29,7 @@ function FirstStep() {
                 
                 <div className="optionsWrapper "> 
 
-                {/* <div className="fixed20vw fixed10vh">
-                    <DatePicker
-                        className="fixed20vw fixed10vh"
-                        value={date}
-                        onChange={(newValue) => {
-                            setDate(newValue);
-                        }}
-                        renderInput={(params) => <TextField className="fixed20vw" {...params} />}
-                    />
-                </div> */}
-                
-
-                <Dropdown className="fixed20vw fixed10vh">
+                <Dropdown className="fixed20vw">
                     <Dropdown.Toggle variant="outline-primary" id="dropdown-basic"  className="fixed20vw">
                         {path}
                     </Dropdown.Toggle>

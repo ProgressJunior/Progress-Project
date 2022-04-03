@@ -81,7 +81,6 @@ function Path(props) {
                         {start: "TP6",  end: "TP7"},
                         {start: "TP12", end: "TP13"},
                         {start: "TP13", end: "TP14"},
-                        {start: "TP14", end: "TP16"},
                         {start: "TP16", end: "TP17"},
                         {start: "TP17", end: "TP22"},
                         {start: "TP22", end: "TP24"}
