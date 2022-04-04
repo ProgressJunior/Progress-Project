@@ -213,10 +213,6 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
       "insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('ConcretingFinished');"
     );
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 3309b7d18a3d122cb6df80cd5ecd6060fdd478f7
   // LG bei Path einfuegen
   // Lagerplatz bestimmen
   else if (taktplatz == "LG 1") {
@@ -261,16 +257,6 @@ async function moveRBG(query, palette, endMoment) {
 
   endMoment = moment(endMoment).add(3, "minutes");
 
-<<<<<<< HEAD
-
-  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["E "+destEtage]-50},'${moment(
-    endMoment
-  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
-  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["R "+destRow]-50},'${moment(
-    endMoment
-  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);
-
-=======
   query.push(
     `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
       storage_index["E " + destEtage]
@@ -281,7 +267,6 @@ async function moveRBG(query, palette, endMoment) {
       storage_index["R " + destRow]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
->>>>>>> 3309b7d18a3d122cb6df80cd5ecd6060fdd478f7
 
   endMoment = moment(endMoment).add(1, "minutes");
 
@@ -301,13 +286,7 @@ async function moveRBG(query, palette, endMoment) {
   endMoment = moment(endMoment).add(1, "minutes");
 
   //store palette
-<<<<<<< HEAD
-
   taktplatz = "LG " + storageIndex;
-
-=======
-  taktplatz = "LG " + storageIndex;
->>>>>>> 3309b7d18a3d122cb6df80cd5ecd6060fdd478f7
   query.push(
     `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',${palette} , '${moment(
       endMoment
@@ -315,10 +294,7 @@ async function moveRBG(query, palette, endMoment) {
   );
 }
 
-<<<<<<< HEAD
-=======
 async function getLager(storageIndex) {}
->>>>>>> 3309b7d18a3d122cb6df80cd5ecd6060fdd478f7
 
 // freeLG function to check if a Lagerplatz is free
 async function occLG(timeStamp) {

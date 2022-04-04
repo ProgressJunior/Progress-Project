@@ -24,6 +24,7 @@ function startServer() {
 
   app.get("/path/:path/:date/:storageindex", (req, res) => {
     //console.log(req.params.arg);
+    console.log("gavaii was here")
     index.start(req.params.path, req.params.date,req.params.storageindex);
   });
 

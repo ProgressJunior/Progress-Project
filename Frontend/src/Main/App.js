@@ -30,26 +30,20 @@ function App() {
         // console.log(date);
 
             const url = "http://localhost:3030/path/"+path+"/"+date+"/"+col + "|" + row
-            console.log(url);
-    
-            // const fetchData = async () => {
-            //     try {
-            //         const response = await fetch(url);
-            //         const json = await response.json();
-            //         json.forEach((e) => {
-            //             filter(e)
-            //         })
-            //     // console.log("occupied:" + occupied)
-            //     } catch (error) {
-            //         console.log("error", error);
-            //     }
-            //     genStorageButtons()
-            //     setButtons(storageRowButtons)
-            // };
-
-
+            // console.log(url);
+            fetchData(url)
 
     }
+
+    const fetchData = async (url) => {
+        try {
+            const response = await fetch(url);
+            const json = await response.json();
+            console.log(json)
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
 
     return (
         <Router>
