@@ -27,12 +27,11 @@ function startServer() {
     index.start(req.params.path, req.params.date,req.params.storageindex);
   });
 
-  app.get("/occLG", async (req, res) => {
+  app.get("/occLG/:date", async (req, res) => {
     // res.send(index.occLG());
-
-    //await index.occLG();
-    //create async
-    data = await index.occLG();
+   
+    data = await index.occLG(req.params.date);
+    
     res.send(data);
   });
 }

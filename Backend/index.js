@@ -174,8 +174,6 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
   if(taktplatz=="TP 24"){
     moveRBG(query,palette,endMoment);
   }
-
-
   return query;
 }
 
@@ -199,10 +197,10 @@ async function moveRBG(query,palette,endMoment){
 
   endMoment = moment(endMoment).add(3, "minutes");
 
-  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["E "+destEtage]},'${moment(
+  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["E "+destEtage]-50},'${moment(
     endMoment
   ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
-  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["R "+destRow]},'${moment(
+  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["R "+destRow]-50},'${moment(
     endMoment
   ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);
 
@@ -217,8 +215,11 @@ async function moveRBG(query,palette,endMoment){
     endMoment
   ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);
 
+  endMoment = moment(endMoment).add(1, "minutes");
+
   //store palette
   taktplatz = "LG "+ storageIndex;
+
   query.push(
     `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',${palette} , '${moment(
       endMoment
@@ -229,22 +230,39 @@ async function moveRBG(query,palette,endMoment){
 
 }
 
-async function getLager(storageIndex){
+
+// freeLG function to check if a Lagerplatz is free
+async function occLG(timeStamp) {
+  await db.connect();
+
+  // console.log(timeStamp);
+
+  timeStamp= new Date (timeStamp);
+  timeStamp= moment(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
+  console.log(timeStamp);
+
+   startMoment = moment(timeStamp).add(50, "minutes");
+
+   endMoment = moment(startMoment).add(10, "hours");
+
+  console.log(startMoment);
+  console.log(endMoment);
 
   
 
-}
-
-// freeLG function to check if a Lagerplatz is free
-async function occLG() {
-  await db.connect();
   let lgs = await db.queryDatabase(
-    `SELECT LocationName FROM LocPalHistory WHERE LocationName LIKE 'LG%';`
+    `SELECT * FROM LocPalHistory WHERE LocationName LIKE 'LG%' AND TimeStamp >= '${moment(
+      startMoment
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}' AND TimeStamp <=  '${moment(
+      endMoment
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}';`
   );
 
   // console.dir(lgs.recordset);
 
   let arrayLG = [];
+
+
   lgs.recordset.forEach(async (lg) => {
     arrayLG.push(lg.LocationName);
   });
