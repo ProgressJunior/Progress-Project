@@ -13,17 +13,17 @@ function App() {
 
     const updatePath = (path) =>{
         setPath(path);
-        console.log(path);
+        // console.log(path);
     }
 
     const updateStorage = (storage) =>{
         setStorage(storage);
-        console.log(storage);
+        // console.log(storage);
     }
 
     const updateDate = (date) =>{
         setDate(date);
-        console.log(date);
+        // console.log("Date in parent: " + date);
     }
 
     return (

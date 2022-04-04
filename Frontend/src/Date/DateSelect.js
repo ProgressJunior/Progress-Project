@@ -22,7 +22,8 @@ function DateSelect({ childToParent }) {
     const [time, setTime] = useState('00:00')
 
     function updateDate() {
-        childToParent(date.toISOString().substring(0,11) + time + ":00.000");
+        let temp = date.toISOString().substring(0,11) + time + ":00.000"
+        childToParent(temp);
         navigate("/Storage")
     }
 
@@ -30,7 +31,7 @@ function DateSelect({ childToParent }) {
         <div>
             <DatePicker selected={date} onChange={(date) => setDate(date)} />
             <TimePicker onChange={setTime} value={time}/>
-
+            
             <Button
                 className="backButton"
                 variant="outline-primary"

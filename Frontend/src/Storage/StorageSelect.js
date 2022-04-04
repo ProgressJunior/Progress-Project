@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 // for css
 import "./Storage.css";
 
-function StorageSelect({ childToParent }) {
+function StorageSelect({ childToParent, date }) {
     let navigate = useNavigate();
     const [buttons, setButtons] = useState([]);
     let storageRowButtons = [];
@@ -22,7 +22,8 @@ function StorageSelect({ childToParent }) {
     // it then sets the buttons to the state
 
     useEffect(() => {
-        const url = "http://localhost:3030/occLG/";
+        const url = "http://localhost:3030/occLG/"+date;
+        // console.log(url);
 
         const fetchData = async () => {
             try {
@@ -31,7 +32,7 @@ function StorageSelect({ childToParent }) {
                 json.forEach((e) => {
                     filter(e)
                 })
-            console.log("occupied:" + occupied)
+            // console.log("occupied:" + occupied)
             } catch (error) {
                 console.log("error", error);
             }
@@ -91,6 +92,9 @@ function StorageSelect({ childToParent }) {
                     {buttons.map((e)=>{return e})}
                 </div>
             </div>
+
+            <p>{date}</p>
+
 
             <Button
                 className="backButton"
