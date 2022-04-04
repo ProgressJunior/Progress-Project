@@ -48,16 +48,14 @@ function App() {
     return (
         <Router>
             <Routes>
+                {/*Needed so you cant access prop directly without first selecting path, etc.*/}
+
                 <Route exact path="/" element={<FirstStep childToParent={updatePath}/>} />
-                
-                {/* <Route path="/date" element={<DateSelect childToParent={updateDate} />} /> */}
                 {path != "" && (<Route path="/date" element={<DateSelect childToParent={updateDate} />} />)}
-                {/* {path == "" || date == "" || storage == "" (<Route exact path="/*" element={<FirstStep childToParent={updatePath}/>} />)} */}
-                {/* <Route path="/storage" element={<StorageSelect childToParent={updateStorage} date={date}/>} /> */}
                 {path != "" && date != "" && (<Route path="/storage" element={<StorageSelect childToParent={updateStorage} date={date}/>} />)}
-                
-                {/* <Route path="/lastStep" element={<LastStep value={"test"}/>} /> */}
                 {path != "" && date != "" && storage != "" && (<Route path="/lastStep" element={<LastStep value={"test"}/>} />)}
+                {/* Wildcard */}
+                <Route exact path="/*" element={<FirstStep childToParent={updatePath}/>} />
 
                 {/* <Route exact path="/login" element={<Login />} />
                     <Route
