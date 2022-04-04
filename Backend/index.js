@@ -213,8 +213,7 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
       "insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('ConcretingFinished');"
     );
   }
-<<<<<<< HEAD
-=======
+
   // LG bei Path einfuegen
   // Lagerplatz bestimmen
   else if (taktplatz == "LG 1") {
@@ -233,7 +232,6 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
     moveRBG(query, palette, endMoment);
   }
   //await db.close();
->>>>>>> 1f240cc6e7724933883ebbbdb53888f55ed50ead
   return query;
 }
 
@@ -260,25 +258,14 @@ async function moveRBG(query, palette, endMoment) {
 
   endMoment = moment(endMoment).add(3, "minutes");
 
-<<<<<<< HEAD
+
   query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["E "+destEtage]-50},'${moment(
     endMoment
   ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
   query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["R "+destRow]-50},'${moment(
     endMoment
   ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);
-=======
-  query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
-      storage_index["E " + destEtage]
-    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
-  );
-  query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
-      storage_index["R " + destRow]
-    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
-  );
->>>>>>> 1f240cc6e7724933883ebbbdb53888f55ed50ead
+
 
   endMoment = moment(endMoment).add(1, "minutes");
 
@@ -298,12 +285,9 @@ async function moveRBG(query, palette, endMoment) {
   endMoment = moment(endMoment).add(1, "minutes");
 
   //store palette
-<<<<<<< HEAD
-  taktplatz = "LG "+ storageIndex;
 
-=======
   taktplatz = "LG " + storageIndex;
->>>>>>> 1f240cc6e7724933883ebbbdb53888f55ed50ead
+
   query.push(
     `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',${palette} , '${moment(
       endMoment
@@ -311,10 +295,6 @@ async function moveRBG(query, palette, endMoment) {
   );
 }
 
-<<<<<<< HEAD
-=======
-async function getLager(storageIndex) {}
->>>>>>> 1f240cc6e7724933883ebbbdb53888f55ed50ead
 
 // freeLG function to check if a Lagerplatz is free
 async function occLG(timeStamp) {
@@ -326,7 +306,7 @@ async function occLG(timeStamp) {
   timeStamp= moment(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
   console.log(timeStamp);
 
-   startMoment = moment(timeStamp).add(50, "minutes");
+   startMoment = moment(timeStamp).add(35, "minutes");
 
    endMoment = moment(startMoment).add(10, "hours");
 
