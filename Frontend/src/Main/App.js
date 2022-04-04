@@ -23,9 +23,30 @@ function App() {
     const updateStorage = (storage) =>{
         setStorage(storage);
 
-        console.log(path);
-        console.log(storage);
-        console.log(date);
+        let col = storage.substring(storage.indexOf('col:') + 5)
+        let row = storage.substring(5, storage.indexOf('col:'))
+        // console.log(path);
+        // console.log(col + "|" + row);
+        // console.log(date);
+
+            const url = "http://localhost:3030/path/"+path+"/"+date+"/"+col + "|" + row
+            console.log(url);
+    
+            // const fetchData = async () => {
+            //     try {
+            //         const response = await fetch(url);
+            //         const json = await response.json();
+            //         json.forEach((e) => {
+            //             filter(e)
+            //         })
+            //     // console.log("occupied:" + occupied)
+            //     } catch (error) {
+            //         console.log("error", error);
+            //     }
+            //     genStorageButtons()
+            //     setButtons(storageRowButtons)
+            // };
+
 
 
     }
