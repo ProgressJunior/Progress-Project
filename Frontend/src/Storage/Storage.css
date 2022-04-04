@@ -1,18 +1,43 @@
 .storageParent {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[6];
-      grid-template-columns: repeat(6, 1fr);
-  -ms-grid-rows: (1fr)[6];
-      grid-template-rows: repeat(6, 1fr);
-  grid-column-gap: 1vw;
-  grid-row-gap: 1vh;
+  -ms-grid-columns: (1fr)[5];
+      grid-template-columns: repeat(5, 1fr);
+  -ms-grid-rows: (1fr)[16];
+      grid-template-rows: repeat(16, 1fr);
+  grid-column-gap: 2.5vw;
+  grid-row-gap: 0vw;
   margin: 1vw;
+}
+
+.storageParentContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .storageButton {
   width: 15vw;
-  height: 5vw;
-  font-size: 1vw;
+  height: 3vw;
+  font-size: 0.8vw;
+}
+
+.storageButtonDisabled {
+  background-color: #cccccc;
+  border: none;
+  color: #000000;
+  width: 15vw;
+  height: 3vw;
+  font-size: 0.8vw;
+}
+
+.storageButtonDisabled:hover {
+  background-color: red;
 }
 /*# sourceMappingURL=Storage.css.map */

@@ -1,34 +1,54 @@
 import React, { useState, useEffect } from "react";
 
+
 // import use navigate
 import { useNavigate } from "react-router-dom";
+
 
 import Button from "react-bootstrap/Button";
 
 // for css
 import "./date.css";
 
+// for Date and Time Picker
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import TimePicker from 'react-time-picker'
+
 function DateSelect({ childToParent }) {
     let navigate = useNavigate();
 
     const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState('00:00')
 
     function updateDate() {
-        childToParent(date)
+        let temp = date.toISOString().substring(0,11) + time + ":00.000"
+        childToParent(temp);
+        navigate("/Storage")
     }
-
 
     return (
         <div>
+            <DatePicker selected={date} onChange={(date) => setDate(date)} />
+            <TimePicker onChange={setTime} value={time}/>
+            
             <Button
                 className="backButton"
                 variant="outline-primary"
                 onClick={() => {
-                    navigate("/Storage");
+                    navigate("/");
                 }}
-            >
-                Back
-            </Button>
+            >Back</Button>
+
+            <Button
+                className="backButton"
+                variant="outline-primary"
+                onClick={() => {
+                    updateDate()
+                }}
+            >Next</Button>
+
+
         </div>
     );
 }

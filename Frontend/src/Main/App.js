@@ -13,25 +13,25 @@ function App() {
 
     const updatePath = (path) =>{
         setPath(path);
-        console.log(path);
+        // console.log(path);
     }
 
     const updateStorage = (storage) =>{
         setStorage(storage);
-        console.log(storage);
+        // console.log(storage);
     }
 
     const updateDate = (date) =>{
         setDate(date);
-        console.log(date);
+        // console.log("Date in parent: " + date);
     }
 
     return (
         <Router>
             <Routes>
                 <Route exact path="/" element={<FirstStep childToParent={updatePath}/>} />
-                <Route path="/storage" element={<StorageSelect childToParent={updateStorage} />} />
                 <Route path="/date" element={<DateSelect childToParent={updateDate} />} />
+                <Route path="/storage" element={<StorageSelect childToParent={updateStorage} date={date}/>} />
                 {/* <Route exact path="/login" element={<Login />} />
                     <Route
                         exact

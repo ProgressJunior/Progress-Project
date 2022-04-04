@@ -23,7 +23,7 @@ function FirstStep({ childToParent }) {
     let navigate = useNavigate();
 
     function nextButtonFunction(){
-        navigate('/storage');
+        navigate('/date');
         childToParent(path);
     }
 
