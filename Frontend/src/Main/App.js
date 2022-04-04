@@ -30,8 +30,8 @@ function App() {
         <Router>
             <Routes>
                 <Route exact path="/" element={<FirstStep childToParent={updatePath}/>} />
-                <Route path="/storage" element={<StorageSelect childToParent={updateStorage} />} />
                 <Route path="/date" element={<DateSelect childToParent={updateDate} />} />
+                <Route path="/storage" element={<StorageSelect childToParent={updateStorage} date={date}/>} />
                 {/* <Route exact path="/login" element={<Login />} />
                     <Route
                         exact

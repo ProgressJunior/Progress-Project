@@ -1,14 +1,32 @@
 .storageParent {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    grid-column-gap: 1vw;
-    grid-row-gap: 1vh;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+    grid-column-gap: 2.5vw;
+    grid-row-gap: 0vw;
     margin: 1vw;
+}
+
+.storageParentContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .storageButton{
     width: 15vw;
-    height: 5vw;
-    font-size: 1vw;
+    height: 3vw;
+    font-size: 0.8vw;
+}
+
+.storageButtonDisabled{
+    background-color: #cccccc;
+    border: none;
+    color: #000000;
+    width: 15vw;
+    height: 3vw;
+    font-size: 0.8vw;
+    &:hover{
+        background-color: red;
+    }
 }
