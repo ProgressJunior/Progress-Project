@@ -155,6 +155,7 @@ if the Taktplatz type is QV it generates 5 queries:
 3 are for the crane position and queries another database
 */
 async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
+  await db.connect();
   // first query - sets the moment at wich the palette arrives at the
   query.push(
     `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, '${moment(
@@ -171,65 +172,149 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
-  if(taktplatz=="TP 24"){
-    moveRBG(query,palette,endMoment);
+  if (taktplatz == "TP 5") {
+    query.push(
+      "INSERT INTO dbo.PalDataMilestoneHistory (PalUnitAssigned) VALUES ('RemovedFromPalUnit');"
+    );
+  } else if (taktplatz == "TP 6") {
+    if (
+      (await db.queryDatabase(
+        "SELECT * FROM dbo.PalDataBelHistory WHERE PalNo = '" + palette + "';"
+      ).recordset) == 0
+    ) {
+      query.push(
+        "INSERT INTO dbo.PalData (ProdSeqIdx) VALUES (" + palette + ");"
+      );
+      query.push(
+        "INSERT INTO dbo.PalDataBelHistory (PalNo, TimeStamp) VALUES (" +
+          palette +
+          "," +
+          startMoment +
+          ")"
+      );
+    }
+    console.log("Adding Milestone : Shuttering Finished");
+    query.push(
+      "INSERT INTO dbo.PalDataMilestoneHistory (PalUnitAssigned) VALUES ('ShutteringFinished');"
+    );
+  } else if (taktplatz == "TP 12") {
+    console.log("Adding Milestone : Bars Placed");
+    query.push(
+      "insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('BarsPlaced');"
+    );
+  } else if (taktplatz == "TP 13") {
+    console.log("Adding Milestone : Girders Placed");
+    query.push(
+      "insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('GirdersPlaced');"
+    );
+  } else if (taktplatz == "TP 23") {
+    console.log("Adding Milestone : Concreting Finished");
+    query.push(
+      "insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('ConcretingFinished');"
+    );
   }
+<<<<<<< HEAD
+=======
+  // LG bei Path einfuegen
+  // Lagerplatz bestimmen
+  else if (taktplatz == "LG 1") {
+    console.log("Adding Milestone : Entered In Drying Chamber");
+    query.push(
+      "INSERT INTO dbo.PalDataMilestoneHistory (PalUnitAssigned) VALUES ('EnteredInDryingChamber');"
+    );
+  }
+  // Finished Variable bei Path einfuegen
+  else if (taktplatz == "tbd") {
+    query.push(
+      "INSERT INTO dbo.PalDataMilestoneHistory (PalUnitAssigned) VALUES ('RemovedFromDryingChamber');"
+    );
+  }
+  if (taktplatz == "TP 24") {
+    moveRBG(query, palette, endMoment);
+  }
+  //await db.close();
+>>>>>>> 1f240cc6e7724933883ebbbdb53888f55ed50ead
   return query;
 }
 
-async function moveRBG(query,palette,endMoment){
-
+async function moveRBG(query, palette, endMoment) {
   temp = storageIndex.split("|");
 
-  destEtage= temp[0];
+  destEtage = temp[0];
   destRow = temp[1];
-  
+
   //move cran to TP 24
 
-  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["TP 24"]},'${moment(
-    endMoment
-  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
-  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["E 0"]},'${moment(
-    endMoment
-  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
+  query.push(
+    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+      storage_index["TP 24"]
+    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
+  query.push(
+    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+      storage_index["E 0"]
+    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
 
   //move cran to destination with delay
 
   endMoment = moment(endMoment).add(3, "minutes");
 
+<<<<<<< HEAD
   query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["E "+destEtage]-50},'${moment(
     endMoment
   ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
   query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["R "+destRow]-50},'${moment(
     endMoment
   ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);
+=======
+  query.push(
+    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+      storage_index["E " + destEtage]
+    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
+  query.push(
+    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+      storage_index["R " + destRow]
+    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
+>>>>>>> 1f240cc6e7724933883ebbbdb53888f55ed50ead
 
   endMoment = moment(endMoment).add(1, "minutes");
 
-  //move cran to final 
+  //move cran to final
 
-  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${storage_index["E "+destEtage]},'${moment(
-    endMoment
-  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);	
-  query.push(`insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${storage_index["R "+destRow]},'${moment(
-    endMoment
-  ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`);
+  query.push(
+    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+      storage_index["E " + destEtage]
+    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
+  query.push(
+    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+      storage_index["R " + destRow]
+    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
 
   endMoment = moment(endMoment).add(1, "minutes");
 
   //store palette
+<<<<<<< HEAD
   taktplatz = "LG "+ storageIndex;
 
+=======
+  taktplatz = "LG " + storageIndex;
+>>>>>>> 1f240cc6e7724933883ebbbdb53888f55ed50ead
   query.push(
     `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',${palette} , '${moment(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
-
-
-
 }
 
+<<<<<<< HEAD
+=======
+async function getLager(storageIndex) {}
+>>>>>>> 1f240cc6e7724933883ebbbdb53888f55ed50ead
 
 // freeLG function to check if a Lagerplatz is free
 async function occLG(timeStamp) {
@@ -272,12 +357,12 @@ async function occLG(timeStamp) {
 var path = [];
 var storage_index = [];
 var qv_index = [];
-var storageIndex="";
+var storageIndex = "";
 //default path is always 0
-function start(path_number = -1, date,storageindex) {
+function start(path_number = -1, date, storageindex) {
   if (path_number == -1) console.error("no path given");
 
-  storageIndex= storageindex;
+  storageIndex = storageindex;
 
   //do something with date
 

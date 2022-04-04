@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FirstStep from "./FirstStep";
 import StorageSelect from "../Storage/StorageSelect";
 import DateSelect from "../Date/DateSelect";
+import LastStep from "../LastStep/LastStep";
 import "./main.css";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -13,25 +14,29 @@ function App() {
 
     const updatePath = (path) =>{
         setPath(path);
-        console.log(path);
-    }
-
-    const updateStorage = (storage) =>{
-        setStorage(storage);
-        console.log(storage);
     }
 
     const updateDate = (date) =>{
         setDate(date);
+    }
+
+    const updateStorage = (storage) =>{
+        setStorage(storage);
+
+        console.log(path);
+        console.log(storage);
         console.log(date);
+
+
     }
 
     return (
         <Router>
             <Routes>
                 <Route exact path="/" element={<FirstStep childToParent={updatePath}/>} />
-                <Route path="/storage" element={<StorageSelect childToParent={updateStorage} />} />
                 <Route path="/date" element={<DateSelect childToParent={updateDate} />} />
+                <Route path="/storage" element={<StorageSelect childToParent={updateStorage} date={date}/>} />
+                <Route path="/lastStep" element={<LastStep value={"test"}/>} />
                 {/* <Route exact path="/login" element={<Login />} />
                     <Route
                         exact
