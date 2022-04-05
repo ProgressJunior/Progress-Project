@@ -28,26 +28,29 @@ function DateSelect({ childToParent }) {
     }
 
     return (
-        <div>
-            <DatePicker selected={date} onChange={(date) => setDate(date)} />
-            <TimePicker onChange={setTime} value={time}/>
-            
-            <Button
-                className="backButton"
-                variant="outline-primary"
-                onClick={() => {
-                    navigate("/");
-                }}
-            >Back</Button>
+        <div className="componentParent">
+            <div className="dateContainer">
+                <DatePicker className="dateWrapper" selected={date} onChange={(date) => setDate(date)} />
+                <TimePicker className="timeWrapper" onChange={setTime} value={time}/>
+            </div>
 
-            <Button
-                className="backButton"
-                variant="outline-primary"
-                onClick={() => {
-                    updateDate()
-                }}
-            >Next</Button>
+            <div className="buttonContainer">
+                <Button
+                    className="backButton"
+                    variant="outline-primary"
+                    onClick={() => {
+                        navigate("/");
+                    }}
+                >Back</Button>
 
+                <Button
+                    className="backButton"
+                    variant="outline-primary"
+                    onClick={() => {
+                        updateDate()
+                    }}
+                >Next</Button>
+            </div>
 
         </div>
     );

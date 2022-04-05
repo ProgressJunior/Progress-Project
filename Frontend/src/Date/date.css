@@ -1,1 +1,50 @@
-/* No CSS *//*# sourceMappingURL=date.css.map */
+.dateContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 90vw;
+  height: 5vw;
+  background-color: #fff;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timeWrapper {
+  margin-right: 5vw;
+}
+
+.dateWrapper {
+  margin-left: 2vw;
+}
+
+.react-time-picker__clock-button {
+  display: none;
+}
+
+.react-time-picker__clear-button {
+  display: none;
+}
+
+.react-time-picker__clock {
+  display: none;
+}
+
+.buttonContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+/*# sourceMappingURL=date.css.map */

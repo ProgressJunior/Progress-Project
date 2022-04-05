@@ -11,9 +11,13 @@ import "./lastStep.css";
 
 function LastSTep({ value }) {
 
+    let navigate = useNavigate();
+
     return (
         <div className="lastStepParent">
             <p>Thank you</p>
+            {/* Navigate to / */}                
+            <Button className="lastButton"onClick={()=>{navigate("/")}}>Restart</Button>
         </div>
     );
 }

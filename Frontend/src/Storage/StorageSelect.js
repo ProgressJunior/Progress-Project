@@ -93,16 +93,12 @@ function StorageSelect({ childToParent, date }) {
                 </div>
             </div>
 
-            <p>{date}</p>
-
-
             <Button
                 className="backButton"
                 variant="outline-primary"
                 onClick={() => {
                     navigate("/date");
-                }}
-            >Back</Button>
+                }}  >Back</Button>
 
         </div>
     );

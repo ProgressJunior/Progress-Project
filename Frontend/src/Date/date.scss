@@ -1,0 +1,39 @@
+.dateContainer{
+    display: flex;
+    // flex-direction: column; 
+
+    justify-content: space-around;
+    align-items: center;
+    width: 90vw;
+    height: 5vw;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timeWrapper{
+    margin-right: 5vw;
+}
+
+.dateWrapper{
+    margin-left: 2vw;
+}
+
+.react-time-picker__clock-button{
+    display: none;
+}
+
+.react-time-picker__clear-button{
+    display: none;
+}
+
+.react-time-picker__clock{
+    display: none;
+}
+
+.buttonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}

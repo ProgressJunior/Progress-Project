@@ -56,14 +56,6 @@ function App() {
                 {path != "" && date != "" && storage != "" && (<Route path="/lastStep" element={<LastStep value={"test"}/>} />)}
                 {/* Wildcard */}
                 <Route exact path="/*" element={<FirstStep childToParent={updatePath}/>} />
-
-                {/* <Route exact path="/login" element={<Login />} />
-                    <Route
-                        exact
-                        path="/recovery-password"
-                        element={<RecoveryPassword />}
-                    />
-                    <Route path="*" element={<NotFound />} /> */}
             </Routes>
         </Router>
     );

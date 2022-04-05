@@ -1,10 +1,16 @@
 .lastStepParent{
     width: 100vw;
     height: 100vh;
+    flex-direction: column;
     background-color: #4bae4f;
     color: white;
     font-size: 20vw;
     display:  flex;
     align-items: center;
     justify-content: center;
+}
+
+.lastButton{
+    width: 50vw;
+    height: 20vw;
 }

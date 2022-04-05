@@ -29,7 +29,7 @@ function FirstStep({ childToParent }) {
 
     return (
         // <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <div>
+            <div className="componentParent">
                 
                 <div className="optionsWrapper "> 
 
