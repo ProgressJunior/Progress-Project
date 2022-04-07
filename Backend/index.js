@@ -147,6 +147,21 @@ async function genQvQuery(query, taktplatz, startMoment, endMoment) {
   return query;
 }
 
+async function getBelId(){
+  let a = await sql.query(`SELECT TOP 1 PalData_Id FROM PalData WHERE PalData_Id NOT IN (SELECT PalData_Id FROM  PalDataBelHistory) ORDER BY NEWID();`);
+  return a.recordset[0].PalData_Id;
+}
+
+async function genBelQuery(query, palette, mom) {
+
+  let belId = await getBelId(); // id of the payload (belegung)
+
+  query.push(
+    `INSERT INTO PalDataBelHistory (PalData_Id, PalNo, TimeStamp) VALUES ('${belId}', ${palette}, '${moment(mom).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
+
+  return query;
+}
 /*
 generates a set of queries for each Taktplatz. 
 If the Taktplatz type is of TP it generates 2 queries
@@ -156,6 +171,11 @@ if the Taktplatz type is QV it generates 5 queries:
 */
 async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
   await db.connect();
+
+  // if taktplatz TP6 is the current taktlatz --> generate the query to set the payload (belegung)
+  if(taktplatz == "TP 6") await genBelQuery(query, palette, startMoment);
+
+
   // first query - sets the moment at wich the palette arrives at the
   query.push(
     `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, '${moment(
