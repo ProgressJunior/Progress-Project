@@ -147,17 +147,20 @@ async function genQvQuery(query, taktplatz, startMoment, endMoment) {
   return query;
 }
 
-async function getBelId(){
-  let a = await sql.query(`SELECT TOP 1 PalData_Id FROM PalData WHERE PalData_Id NOT IN (SELECT PalData_Id FROM  PalDataBelHistory) ORDER BY NEWID();`);
+async function getBelId() {
+  let a = await sql.query(
+    `SELECT TOP 1 PalData_Id FROM PalData WHERE PalData_Id NOT IN (SELECT PalData_Id FROM  PalDataBelHistory) ORDER BY NEWID();`
+  );
   return a.recordset[0].PalData_Id;
 }
 
 async function genBelQuery(query, palette, mom) {
-
   let belId = await getBelId(); // id of the payload (belegung)
 
   query.push(
-    `INSERT INTO PalDataBelHistory (PalData_Id, PalNo, TimeStamp) VALUES ('${belId}', ${palette}, '${moment(mom).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+    `INSERT INTO PalDataBelHistory (PalData_Id, PalNo, TimeStamp) VALUES ('${belId}', ${palette}, '${moment(
+      mom
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
   return query;
@@ -173,8 +176,7 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
   await db.connect();
 
   // if taktplatz TP6 is the current taktlatz --> generate the query to set the payload (belegung)
-  if(taktplatz == "TP 6") await genBelQuery(query, palette, startMoment);
-
+  if (taktplatz == "TP 6") await genBelQuery(query, palette, startMoment);
 
   // first query - sets the moment at wich the palette arrives at the
   query.push(
@@ -194,44 +196,27 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
 
   if (taktplatz == "TP 5") {
     query.push(
-      "INSERT INTO PalDataMilestonesHistory (RemovedFromPalUnit) VALUES ('true');"
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},1,0,0,0,0,0,0');`
     );
   } else if (taktplatz == "TP 6") {
-    if (
-      (await db.queryDatabase(
-        "SELECT * FROM PalDataBelHistory WHERE PalNo = '" + palette + "';"
-      ).recordset) == 0
-    ) {
-      console.log(
-        "Palette " +
-          palette +
-          " is not assigned to a PalUnit, assigning it now..."
-      );
-      query.push("INSERT INTO PalData (ProdSeqIdx) VALUES (" + palette + ");");
-      query.push(
-        "INSERT INTO PalDataBelHistory (PalNo, TimeStamp) VALUES (" +
-          palette +
-          "," +
-          startMoment +
-          ")"
-      );
-    }
     console.log("Adding Milestone : Shuttering Finished");
     query.push(
-      "INSERT INTO PalDataMilestonesHistory (ShutteringFinished) VALUES (1);"
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,0,0,0,0,0');`
     );
   } else if (taktplatz == "TP 12") {
     console.log("Adding Milestone : Bars Placed");
-    query.push("insert into PalDataMilestonesHistory (BarsPlaced) values (1);");
+    query.push(
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,0,0,0,0');`
+    );
   } else if (taktplatz == "TP 13") {
     console.log("Adding Milestone : Girders Placed");
     query.push(
-      "insert into PalDataMilestonesHistory (GirdersPlaced) values (1);"
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,1,0,0,0');`
     );
   } else if (taktplatz == "TP 23") {
     console.log("Adding Milestone : Concreting Finished");
     query.push(
-      "insert into PalDataMilestonesHistory (ConcretingFinished) values (1);"
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,1,1,0,0');`
     );
   }
   // LG bei Path einfuegen
@@ -239,13 +224,13 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
   else if (taktplatz.startsWith("LG")) {
     console.log("Adding Milestone : Entered In Drying Chamber");
     query.push(
-      "INSERT INTO PalDataMilestonesHistory (EnteredInDryingChamber) VALUES (1);"
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,1,1,1,0');`
     );
   }
   // Finished Variable bei Path einfuegen
   else if (taktplatz == "tbd") {
     query.push(
-      "INSERT INTO PalDataMilestonesHistory (RemovedFromDryingChamber) VALUES (1);"
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,1,1,1,1');`
     );
   }
   if (taktplatz == "TP 24") {
@@ -323,18 +308,16 @@ async function occLG(timeStamp) {
 
   // console.log(timeStamp);
 
-  timeStamp= new Date (timeStamp);
-  timeStamp= moment(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
+  timeStamp = new Date(timeStamp);
+  timeStamp = moment(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
   console.log(timeStamp);
 
-   startMoment = moment(timeStamp).add(35, "minutes");
+  startMoment = moment(timeStamp).add(35, "minutes");
 
-   endMoment = moment(startMoment).add(10, "hours");
+  endMoment = moment(startMoment).add(10, "hours");
 
   console.log(startMoment);
   console.log(endMoment);
-
-  
 
   let lgs = await db.queryDatabase(
     `SELECT * FROM LocPalHistory WHERE LocationName LIKE 'LG%' AND TimeStamp >= '${moment(
@@ -347,7 +330,6 @@ async function occLG(timeStamp) {
   // console.dir(lgs.recordset);
 
   let arrayLG = [];
-
 
   lgs.recordset.forEach(async (lg) => {
     arrayLG.push(lg.LocationName);
