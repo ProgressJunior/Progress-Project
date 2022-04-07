@@ -24,11 +24,12 @@
 }
 
 .disabled{
-    background-color: #333333;
+    background-color: #595959;
+    //drop shadow white
+    box-shadow: -0.25vw -0.25vw 1vw 0 rgba(255, 255, 255, 1);
+    box-shadow: 0.25vw 0.25vw 1vw 0 rgb(0, 0, 0);
 }
 
 .empty{
-    // width: 5vw;
-    // height: 2.5vh;
     background-color: rgba(0, 0, 0, 0);
 }

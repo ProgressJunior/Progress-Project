@@ -80,7 +80,7 @@ function StorageSelect({ childToParent, date }) {
 
     function updatePath(row, col) {
         childToParent("row: " + row + " col: " + col)
-        navigate("/date");
+        navigate("/lastStep");
     }
 
     let storageRows = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
@@ -93,16 +93,12 @@ function StorageSelect({ childToParent, date }) {
                 </div>
             </div>
 
-            <p>{date}</p>
-
-
             <Button
                 className="backButton"
                 variant="outline-primary"
                 onClick={() => {
                     navigate("/date");
-                }}
-            >Back</Button>
+                }}  >Back</Button>
 
         </div>
     );

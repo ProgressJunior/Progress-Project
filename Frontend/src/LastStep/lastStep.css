@@ -1,0 +1,26 @@
+.lastStepParent {
+  width: 100vw;
+  height: 100vh;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: #4bae4f;
+  color: white;
+  font-size: 20vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.lastButton {
+  width: 50vw;
+  height: 20vw;
+}
+/*# sourceMappingURL=lastStep.css.map */

@@ -24,7 +24,11 @@
 }
 
 .disabled {
-  background-color: #333333;
+  background-color: #595959;
+  -webkit-box-shadow: -0.25vw -0.25vw 1vw 0 white;
+          box-shadow: -0.25vw -0.25vw 1vw 0 white;
+  -webkit-box-shadow: 0.25vw 0.25vw 1vw 0 black;
+          box-shadow: 0.25vw 0.25vw 1vw 0 black;
 }
 
 .empty {

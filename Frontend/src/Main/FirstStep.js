@@ -18,7 +18,7 @@ import Path from "./Path";
 import "./firstStep.css"
 
 function FirstStep({ childToParent }) {
-    const [path, setPath] = useState("Path 1");
+    const [path, setPath] = useState("1");
 
     let navigate = useNavigate();
 
@@ -29,20 +29,20 @@ function FirstStep({ childToParent }) {
 
     return (
         // <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <div>
+            <div className="componentParent">
                 
                 <div className="optionsWrapper "> 
 
                 <Dropdown className="fixed20vw">
                     <Dropdown.Toggle variant="outline-primary" id="dropdown-basic"  className="fixed20vw">
-                        {path}
+                        Path {path}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu className="fixed20vw">
-                        <Dropdown.Item onClick={()=> {setPath("Path 1")}}>Path 1</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> {setPath("Path 2")}}>Path 2</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> {setPath("Path 3")}}>Path 3</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> {setPath("Path 4")}}>Path 4</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> {setPath("1")}}>Path 1</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> {setPath("2")}}>Path 2</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> {setPath("3")}}>Path 3</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> {setPath("4")}}>Path 4</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
 
