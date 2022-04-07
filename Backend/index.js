@@ -174,19 +174,22 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
 
   if (taktplatz == "TP 5") {
     query.push(
-      "INSERT INTO dbo.PalDataMilestoneHistory (PalUnitAssigned) VALUES ('RemovedFromPalUnit');"
+      "INSERT INTO PalDataMilestonesHistory (RemovedFromPalUnit) VALUES ('true');"
     );
   } else if (taktplatz == "TP 6") {
     if (
       (await db.queryDatabase(
-        "SELECT * FROM dbo.PalDataBelHistory WHERE PalNo = '" + palette + "';"
+        "SELECT * FROM PalDataBelHistory WHERE PalNo = '" + palette + "';"
       ).recordset) == 0
     ) {
-      query.push(
-        "INSERT INTO dbo.PalData (ProdSeqIdx) VALUES (" + palette + ");"
+      console.log(
+        "Palette " +
+          palette +
+          " is not assigned to a PalUnit, assigning it now..."
       );
+      query.push("INSERT INTO PalData (ProdSeqIdx) VALUES (" + palette + ");");
       query.push(
-        "INSERT INTO dbo.PalDataBelHistory (PalNo, TimeStamp) VALUES (" +
+        "INSERT INTO PalDataBelHistory (PalNo, TimeStamp) VALUES (" +
           palette +
           "," +
           startMoment +
@@ -195,36 +198,34 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
     }
     console.log("Adding Milestone : Shuttering Finished");
     query.push(
-      "INSERT INTO dbo.PalDataMilestoneHistory (PalUnitAssigned) VALUES ('ShutteringFinished');"
+      "INSERT INTO PalDataMilestonesHistory (ShutteringFinished) VALUES (1);"
     );
   } else if (taktplatz == "TP 12") {
     console.log("Adding Milestone : Bars Placed");
-    query.push(
-      "insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('BarsPlaced');"
-    );
+    query.push("insert into PalDataMilestonesHistory (BarsPlaced) values (1);");
   } else if (taktplatz == "TP 13") {
     console.log("Adding Milestone : Girders Placed");
     query.push(
-      "insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('GirdersPlaced');"
+      "insert into PalDataMilestonesHistory (GirdersPlaced) values (1);"
     );
   } else if (taktplatz == "TP 23") {
     console.log("Adding Milestone : Concreting Finished");
     query.push(
-      "insert into dbo.PalDataMilestoneHistory (PalUnitAssigned) values ('ConcretingFinished');"
+      "insert into PalDataMilestonesHistory (ConcretingFinished) values (1);"
     );
   }
   // LG bei Path einfuegen
   // Lagerplatz bestimmen
-  else if (taktplatz == "LG 1") {
+  else if (taktplatz.startsWith("LG")) {
     console.log("Adding Milestone : Entered In Drying Chamber");
     query.push(
-      "INSERT INTO dbo.PalDataMilestoneHistory (PalUnitAssigned) VALUES ('EnteredInDryingChamber');"
+      "INSERT INTO PalDataMilestonesHistory (EnteredInDryingChamber) VALUES (1);"
     );
   }
   // Finished Variable bei Path einfuegen
   else if (taktplatz == "tbd") {
     query.push(
-      "INSERT INTO dbo.PalDataMilestoneHistory (PalUnitAssigned) VALUES ('RemovedFromDryingChamber');"
+      "INSERT INTO PalDataMilestonesHistory (RemovedFromDryingChamber) VALUES (1);"
     );
   }
   if (taktplatz == "TP 24") {
