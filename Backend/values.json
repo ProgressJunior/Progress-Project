@@ -17,7 +17,10 @@
       "name": "R 1",
       "index": 2350
     },
-    { "name": "R 2", "index": 5660 },
+    {
+      "name": "R 2",
+      "index": 5660
+    },
     {
       "name": "R 3",
       "index": 8800

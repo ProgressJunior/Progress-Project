@@ -73,7 +73,7 @@ async function writeToDB() {
 }
 
 async function nextFreeTime(station) {
-  return await sql.query`SELECT TOP 1 TimeStamp FROM dbo.LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`;
+  return await sql.query`SELECT TOP 1 TimeStamp FROM LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`;
 }
 
 /*
@@ -245,15 +245,18 @@ async function moveRBG(query, palette, endMoment) {
   destEtage = temp[0];
   destRow = temp[1];
 
+  console.log(destEtage);
+  console.log(destRow);
+
   //move cran to TP 24
 
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
       storage_index["TP 24"]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
       storage_index["E 0"]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -263,12 +266,12 @@ async function moveRBG(query, palette, endMoment) {
   endMoment = moment(endMoment).add(3, "minutes");
 
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
       storage_index["R " + destEtage]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
       storage_index["E " + destRow]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -278,13 +281,13 @@ async function moveRBG(query, palette, endMoment) {
   //move cran to final
 
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
-      storage_index["E " + destEtage]
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+      storage_index["R " + destEtage]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
-      storage_index["R " + destRow]
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+      storage_index["E " + destRow]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
