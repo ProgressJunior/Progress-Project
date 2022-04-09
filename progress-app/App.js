@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import PathSelection from "./Views/PathSelection/PathSelection";
-import DateSelection from "./Views/DateSelection/DateSelection";
+import PathSelection from "./Views/PathSelection/PathSelection.js";
+import DateSelection from "./Views/DateSelection/DateSelection.js";
 
 import { NavigationContainer } from "@react-navigation/native";
 
