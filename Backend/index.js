@@ -16,11 +16,11 @@ let queries = [];
 let minute = 0;
 let dt = new Date();
 
-async function writeToDB() {
+async function writeToDB(date) {
   await db.connect();
 
-  let startDate = moment(new Date());
-  let endDate = moment(new Date());
+  let startDate = moment(date);
+  let endDate = moment(date);
   let duration = 0;
 
   for (let i = 0; i < path.length; i++) {
@@ -365,7 +365,7 @@ function start(path_number = -1, date, storageindex) {
   console.log(storage_index);
   console.log(qv_index);
   console.log("Chosen path:" + values.paths[path_number].name);
-  writeToDB();
+  writeToDB(date);
 }
 // export functions
 module.exports = {
