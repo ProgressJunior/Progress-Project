@@ -315,12 +315,12 @@ async function occLG(timeStamp) {
   timeStamp = moment(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
   console.log(timeStamp);
 
-  startMoment = moment(timeStamp).add(35, "minutes");
+  let startMoment = moment(timeStamp).add(29, "minutes");
 
-  endMoment = moment(startMoment).add(10, "hours");
+  let endMoment = moment(startMoment).add(10, "hours");
 
-  console.log(startMoment);
-  console.log(endMoment);
+  console.log("occLG startMoment: " + startMoment.format("YYYY-MM-DD HH:mm:ss.SSS"));
+  console.log("occLG endMoment: " + endMoment.format("YYYY-MM-DD HH:mm:ss.SSS"));
 
   let lgs = await db.queryDatabase(
     `SELECT * FROM LocPalHistory WHERE LocationName LIKE 'LG%' AND TimeStamp >= '${moment(
@@ -337,6 +337,8 @@ async function occLG(timeStamp) {
   lgs.recordset.forEach(async (lg) => {
     arrayLG.push(lg.LocationName);
   });
+  console.log("Occupied LGs:");
+  console.log(arrayLG);
   return arrayLG;
 }
 
