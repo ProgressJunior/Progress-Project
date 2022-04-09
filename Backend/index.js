@@ -70,6 +70,7 @@ async function writeToDB(date) {
   queries.forEach(async (query) => {
     await sql.query(`${query}`);
   });
+  queries = [];
 }
 
 async function nextFreeTime(station) {
