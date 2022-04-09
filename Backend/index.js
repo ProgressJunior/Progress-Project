@@ -246,8 +246,12 @@ async function moveRBG(query, palette, endMoment) {
   destEtage = temp[0];
   destRow = temp[1];
 
-  console.log(destEtage);
-  console.log(destRow);
+  
+  query.push(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', ${palette}, '${moment(
+      endMoment
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
 
   //move cran to TP 24
 
@@ -279,7 +283,7 @@ async function moveRBG(query, palette, endMoment) {
 
   endMoment = moment(endMoment).add(1, "minutes");
 
-  //move cran to final
+  //move cran to final destination
 
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
@@ -292,6 +296,15 @@ async function moveRBG(query, palette, endMoment) {
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
+
+  query.push(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', 0}, '${moment(
+      endMoment
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
+
+
+
   endMoment = moment(endMoment).add(1, "minutes");
 
   //store palette
@@ -301,9 +314,17 @@ async function moveRBG(query, palette, endMoment) {
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
+
+  endMoment = moment(endMoment).add(8, "hours");
+
+  query.push(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',0, '${moment(
+      endMoment
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+  );
 }
 
-async function getLager(storageIndex) {}
+
 
 // freeLG function to check if a Lagerplatz is free
 async function occLG(timeStamp) {
