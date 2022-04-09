@@ -132,3 +132,5 @@ dist
 #personal test files
 a.js
 progress/
+clearDB.js
+fetchDB.js
