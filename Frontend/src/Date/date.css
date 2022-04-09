@@ -9,18 +9,29 @@
           align-items: center;
   width: 90vw;
   height: 5vw;
-  background-color: #fff;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.11);
+  border-bottom-right-radius: 0.5vw;
+  -webkit-box-shadow: 0.5vw 0.5vw 1vw black;
+          box-shadow: 0.5vw 0.5vw 1vw black;
 }
 
 .timeWrapper {
   margin-right: 5vw;
 }
 
+.timeWrapper input {
+  color: white;
+}
+
+.timeWrapper select {
+  color: white;
+}
+
 .dateWrapper {
   margin-left: 2vw;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  border-radius: 0.5vw;
 }
 
 .react-time-picker__clock-button {

@@ -11,6 +11,7 @@ function App() {
     const [path, setPath] = useState("");
     const [storage, setStorage] = useState("");
     const [date, setDate] = useState("");
+    let newTry = true;
 
     const updatePath = (path) =>{
         setPath(path);
@@ -31,17 +32,21 @@ function App() {
 
             const url = "http://localhost:3030/path/"+path+"/"+date+"/"+col + "|" + row
             // console.log(url);
+            newTry = true;
             fetchData(url)
 
     }
 
     const fetchData = async (url) => {
-        try {
-            const response = await fetch(url);
-            const json = await response.json();
-            console.log(json)
-        } catch (error) {
-            console.log("error", error);
+        if(newTry){
+            newTry = false;
+            try {
+                const response = await fetch(url);
+                const json = await response.json();
+                console.log(json)
+            } catch (error) {
+                console.log("error", error);
+            }
         }
     };
 
