@@ -73,7 +73,7 @@ async function writeToDB() {
 }
 
 async function nextFreeTime(station) {
-  return await sql.query`SELECT TOP 1 TimeStamp FROM dbo.LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`;
+  return await sql.query`SELECT TOP 1 TimeStamp FROM LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`;
 }
 
 /*
@@ -193,30 +193,29 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
+  endMoment = moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS");
 
   if (taktplatz == "TP 5") {
-    query.push(
-      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},1,0,0,0,0,0,0');`
-    );
+    query.push();
   } else if (taktplatz == "TP 6") {
     console.log("Adding Milestone : Shuttering Finished");
     query.push(
-      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,0,0,0,0,0');`
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryChamber,RemovedFromDryChamber) VALUES ('${palette}', '${endMoment}',0,1,0,0,0,0,0);`
     );
   } else if (taktplatz == "TP 12") {
     console.log("Adding Milestone : Bars Placed");
     query.push(
-      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,0,0,0,0');`
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryChamber,RemovedFromDryChamber) VALUES ('${palette}', '${endMoment}',0,1,1,0,0,0,0);`
     );
   } else if (taktplatz == "TP 13") {
     console.log("Adding Milestone : Girders Placed");
     query.push(
-      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,1,0,0,0');`
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryChamber,RemovedFromDryChamber) VALUES ('${palette}', '${endMoment}',0,1,1,1,0,0,0);`
     );
   } else if (taktplatz == "TP 23") {
     console.log("Adding Milestone : Concreting Finished");
     query.push(
-      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,1,1,0,0');`
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryChamber,RemovedFromDryChamber) VALUES ('${palette}', '${endMoment}',0,1,1,1,1,0,0);`
     );
   }
   // LG bei Path einfuegen
@@ -224,13 +223,13 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
   else if (taktplatz.startsWith("LG")) {
     console.log("Adding Milestone : Entered In Drying Chamber");
     query.push(
-      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,1,1,1,0');`
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryChamber,RemovedFromDryChamber) VALUES ('${palette}', '${endMoment}',0,1,1,1,1,1,0);`
     );
   }
   // Finished Variable bei Path einfuegen
   else if (taktplatz == "tbd") {
     query.push(
-      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryingChamber,RemovedFromDryingChamber) VALUES ('${palette}', '${endMoment},0,1,1,1,1,1,1');`
+      `INSERT INTO PalDataMilestonesHistory (PalData_Id, TimeStamp, RemovedFromPalUnit,ShutteringFinished,BarsPlaced,GirdersPlaced,ConcretingFinished,EnteredInDryChamber,RemovedFromDryChamber) VALUES ('${palette}', '${endMoment}',0,1,1,1,1,1,1);`
     );
   }
   if (taktplatz == "TP 24") {
@@ -246,15 +245,18 @@ async function moveRBG(query, palette, endMoment) {
   destEtage = temp[0];
   destRow = temp[1];
 
+  console.log(destEtage);
+  console.log(destRow);
+
   //move cran to TP 24
 
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
       storage_index["TP 24"]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
       storage_index["E 0"]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -264,13 +266,13 @@ async function moveRBG(query, palette, endMoment) {
   endMoment = moment(endMoment).add(3, "minutes");
 
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
-      storage_index["E " + destEtage]
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+      storage_index["R " + destEtage]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
-      storage_index["R " + destRow]
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+      storage_index["E " + destRow]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
@@ -279,13 +281,13 @@ async function moveRBG(query, palette, endMoment) {
   //move cran to final
 
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
-      storage_index["E " + destEtage]
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
+      storage_index["R " + destEtage]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
-    `insert into dbo.SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
-      storage_index["R " + destRow]
+    `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
+      storage_index["E " + destRow]
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
