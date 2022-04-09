@@ -22,6 +22,7 @@ async function writeToDB(date) {
   let startDate = moment(date);
   let endDate = moment(date);
   let duration = 0;
+  let palette = await genPalNum(startDate);
 
   for (let i = 0; i < path.length; i++) {
     startDate = endDate;
@@ -63,7 +64,7 @@ async function writeToDB(date) {
       }
     }
 
-    queries = await genQuery(queries, path[i], 3, startDate, endDate);
+    queries = await genQuery(queries, path[i], palette, startDate, endDate);
   }
 
   console.log(queries);
@@ -74,7 +75,7 @@ async function writeToDB(date) {
 }
 
 async function nextFreeTime(station) {
-  return await sql.query`SELECT TOP 1 TimeStamp FROM LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`;
+  return sql.query`SELECT TOP 1 TimeStamp FROM LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`;
 }
 
 /*
@@ -298,7 +299,7 @@ async function moveRBG(query, palette, endMoment) {
 
 
   query.push(
-    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', 0}, '${moment(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', 0, '${moment(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -391,6 +392,34 @@ function start(path_number = -1, date, storageindex) {
   console.log("Chosen path:" + values.paths[path_number].name);
   writeToDB(date);
 }
+
+/*
+  Function to generate a random Palettenumber
+  The importance here is to generate a number that is not already in the database
+*/
+async function genPalNum(timeStamp) {
+
+  //timeStamp = new Date(timeStamp);
+  timeStamp = moment(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
+  console.log(timeStamp);
+
+  let startMoment = moment(timeStamp);
+
+  let endMoment = moment(startMoment).add(40, "minutes");
+
+  let palNum = Math.floor(Math.random() * 100);
+  let query = `SELECT * FROM LocPalHistory WHERE PalNo LIKE ${palNum} AND TimeStamp >= ${moment(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")} AND Timestamp <= ${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")};`
+  console.log(query);
+  let palNumExists = await db.queryDatabase(
+    `SELECT * FROM LocPalHistory WHERE PalNo LIKE ${palNum} AND TimeStamp >= '${moment(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}' AND Timestamp <= '${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}';`
+  );
+  if (palNumExists.recordset.length > 0) {
+    palNum = await genPalNum();
+  }
+  return palNum;
+}
+
+
 // export functions
 module.exports = {
   start,
