@@ -18,7 +18,7 @@ import Path from "./Path";
 import "./firstStep.css"
 
 function FirstStep({ childToParent }) {
-    const [path, setPath] = useState("1");
+    const [path, setPath] = useState("0");
 
     let navigate = useNavigate();
 
@@ -39,10 +39,10 @@ function FirstStep({ childToParent }) {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu className="fixed20vw">
-                        <Dropdown.Item onClick={()=> {setPath("1")}}>Path 1</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> {setPath("2")}}>Path 2</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> {setPath("3")}}>Path 3</Dropdown.Item>
-                        <Dropdown.Item onClick={()=> {setPath("4")}}>Path 4</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> {setPath("0")}}>Path 1</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> {setPath("1")}}>Path 2</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> {setPath("2")}}>Path 3</Dropdown.Item>
+                        <Dropdown.Item onClick={()=> {setPath("3")}}>Path 4</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
 
