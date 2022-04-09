@@ -2,6 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import PathSelection from "./Views/PathSelection/PathSelection.js";
 import DateSelection from "./Views/DateSelection/DateSelection.js";
+import StorageSelection from "./Views/StorageSelection/StorageSelection.js";
 
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -16,6 +17,7 @@ export default function App() {
             >
                 <Stack.Screen name="PathSelection" component={PathSelection} />
                 <Stack.Screen name="DateSelection" component={DateSelection} />
+                <Stack.Screen name="StorageSelection" component={StorageSelection} />
                 {/* <Stack.Screen name="Notifications" component={Notifications} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Settings" component={Settings} /> */}

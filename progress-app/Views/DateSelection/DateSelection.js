@@ -44,7 +44,7 @@ export default function PathSelection({route, navigation}) {
 
                 <Pressable
                     style={styles.button}
-                    // onPress={() => navigation.navigate('DateSelection')}
+                    onPress={() => navigation.navigate('StorageSelection',{path: {path}, date: {date}})}
                 ><Text>Next</Text></Pressable>
 
             </View>
