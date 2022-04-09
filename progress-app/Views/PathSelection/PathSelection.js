@@ -15,11 +15,6 @@ import ArrowDown from "react-native-bootstrap-icons/icons/arrow-down";
 import ArrowLeft from "react-native-bootstrap-icons/icons/arrow-left";
 import ArrowRight from "react-native-bootstrap-icons/icons/arrow-right";
 
-import ArrowUpLeft from "react-native-bootstrap-icons/icons/arrow-90deg-left"
-import ArrowUpRight from "react-native-bootstrap-icons/icons/arrow-90deg-right"
-import ArrowLeftUp from "react-native-bootstrap-icons/icons/arrow-90deg-up"
-import ArrowLeftDown from "react-native-bootstrap-icons/icons/arrow-90deg-down"
-
 export default function PathSelection({navigation}) {
 
     let pathTemplate = [
@@ -30,16 +25,7 @@ export default function PathSelection({navigation}) {
         ["TP2", "TP1", "EMPTY", "TP26", "EMPTY", "TP19"],
         ["EMPTY", "EMPTY", "EMPTY", "TP27", "TP21", "TP20"],
     ];
-
-    let arrowTemplatesPath1 = [
-        <Text color="red">Test</Text>, <Text/>, <Text/>, <Text/>, <Text/>, <Text/>,
-        <ArrowUpRight color={"white"}/>, <ArrowRight/>, <Text/>, <Text/>, <Text/>, <Text/>,
-        <ArrowLeftUp/>,<ArrowUpLeft/>, <Text/>, <Text/>, <Text/>, <Text/>,
-        <ArrowUpRight/>, <ArrowUp/>, <Text/>, <Text/>, <Text/>, <Text/>,
-        <ArrowLeftUp/>, <ArrowBarLeft/>, <Text/>, <Text/>, <Text/>, <Text/>,
-        <Text/>, <Text/>, <Text/>, <Text/>, <Text/>, <Text/>,
-    ]
-
+    
     let pathArray = {
         "Path 1": [
             "TP8",
@@ -198,8 +184,32 @@ export default function PathSelection({navigation}) {
         ],
     };
 
-    let count = 0;
+    let arrowArray = {
+        // The empty entries in the array need to be there
+        // because some elements never change, these get taken from "Path 1"
+        // and for correct counting there need to be some empty elements
+        "Path 1": [ ,,,,,,
+            <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
+            <ArrowUp width="50" fill="rgb(255,0,0)"/>,<ArrowLeft width="50" fill="rgb(255,0,0)"/>,,<ArrowLeft width="50" fill="rgb(255,0,0)"/>, <ArrowLeft width="50" fill="rgb(255,0,0)"/>, <ArrowLeft width="50" fill="rgb(255,0,0)"/>,
+            <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowUp width="50" fill="rgb(255,0,0)"/>,,,,,
+            <ArrowUp width="50" fill="rgb(255,0,0)"/>, <ArrowBarLeft width="50" fill="rgb(255,0,0)"/>,,,,,
+            ,,,,,,],
+        
+        "Path 2": [ <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,,,,
+            <ArrowUp width="50" fill="rgb(255,0,0)"/>,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
+            ,,,,,,,,,,,,,,,,,,,,,,,,],
+        
+        "Path 3": [ ,,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
+            <ArrowRight width="50" fill="rgb(255,0,0)"/>,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowUp width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
+            ,,,,,,,,,,,,,,,,,,,,,,,,],
+        
+        "Path 4": [ <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
+            <ArrowUp width="50" fill="rgb(255,0,0)"/>,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowUp width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
+            ,,,,,,,,,,,,,,,,,,,,,,,,],
+    };
 
+
+    let count = 0;
     // For dropdown
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState("Path 1");
@@ -224,9 +234,9 @@ export default function PathSelection({navigation}) {
                         temp.push(<View style={styles.empty}></View>);
                     } else {
                         if (pathArray["Path 1"][count - 1] === "ACTIVE") {
-                            temp.push(<View style={styles.boxActive}>{arrowTemplatesPath1[count - 1]}</View>);
+                            temp.push(<View style={styles.boxActive}>{arrowArray["Path 1"][count - 1]}</View>);
                         } else if (pathArray[value][count - 1] === "ACTIVED")
-                            temp.push(<View style={styles.boxActiveD}></View>);
+                            temp.push(<View style={styles.boxActiveD}>{arrowArray[value][count - 1]}</View>);
                         else
                             temp.push(
                                 <View style={styles.boxActiveDisabled}></View>
@@ -245,9 +255,6 @@ export default function PathSelection({navigation}) {
                 setItems={setItems}
             />
 
-            {/* Text for items */}
-            {/* <Text id="elem1" style={styles.text}>{value}</Text> */}
-
             <Pressable
                 style={styles.button}
                 onPress={() => navigation.navigate('DateSelection',{path: {value}})}
@@ -265,6 +272,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    turnedRight: {
+        transform: [{ rotate: "90deg" }],
+        margin: 0,
+        padding: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "green"
+    },
     box: {
         width: windowWidth / 6.5,
         height: 50,
@@ -274,14 +290,21 @@ const styles = StyleSheet.create({
     boxActive: {
         width: windowWidth / 6.5,
         height: 50,
-        backgroundColor: "green",
+        backgroundColor: "#098BCA",
         margin: windowWidth / 200,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+
     },
     boxActiveD: {
         width: windowWidth / 6.5,
         height: 50,
-        backgroundColor: "blue",
+        backgroundColor: "#FEDD00",
         margin: windowWidth / 200,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
     },
     boxActiveDisabled: {
         width: windowWidth / 6.5,

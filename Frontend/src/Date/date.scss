@@ -1,39 +1,46 @@
-.dateContainer{
+.dateContainer {
     display: flex;
-    // flex-direction: column; 
-
     justify-content: space-around;
     align-items: center;
     width: 90vw;
     height: 5vw;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.11);
+    border-bottom-right-radius: 0.5vw;
+    box-shadow: 0.5vw 0.5vw 1vw rgba(0, 0, 0, 1);
 }
 
-.timeWrapper{
+.timeWrapper {
     margin-right: 5vw;
+
+    input {
+        color: white;
+    }
+    select {
+        color: white;
+    }
 }
 
-.dateWrapper{
+.dateWrapper {
     margin-left: 2vw;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border-radius: 0.5vw;
 }
 
-.react-time-picker__clock-button{
+.react-time-picker__clock-button {
     display: none;
 }
 
-.react-time-picker__clear-button{
+.react-time-picker__clear-button {
     display: none;
 }
 
-.react-time-picker__clock{
+.react-time-picker__clock {
     display: none;
 }
 
-.buttonContainer{
+.buttonContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
 }
