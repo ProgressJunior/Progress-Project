@@ -7,12 +7,13 @@ const windowHeight = Dimensions.get("window").height;
 export default StorageSelection = ({ route, navigation }) => {
 
     BackHandler.addEventListener('hardwareBackPress', function () {
-        navigation.navigate('PathSelection')
+        return navigation.navigate('PathSelection')
     });
 
     const { path } = route.params.path;
     const { date } = route.params.date;
 
+    let childrenKeyCounter = 0;
     let storageRows = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     let occupied = [];
     let storageRowButtons = [];
@@ -38,7 +39,6 @@ export default StorageSelection = ({ route, navigation }) => {
     // Finally setLoading is set to false to show the buttons
     // and the loading screen is hidden
     useEffect(() => {
-
         fetch(url)
             .then((response) => response.json())
             .then((json) =>
@@ -91,6 +91,7 @@ export default StorageSelection = ({ route, navigation }) => {
                 if (!occupied.includes(i + "-" + e)) {
                     storageColumn.push(
                         <Pressable
+                            key={i + "-" + e}
                             style={styles.button}
                             onPress={() => selectPath(e, i)}
                         >
@@ -101,9 +102,8 @@ export default StorageSelection = ({ route, navigation }) => {
                     );
                 } else {
                     storageColumn.push(
-                        <Pressable style={styles.buttonOccupied}>
+                        <Pressable key={i + "-" + e} style={styles.buttonOccupied}>
                             <Text style={styles.buttonOccupiedText}>
-                                {" "}
                                 R {e} | C {i}
                             </Text>
                         </Pressable>
@@ -114,6 +114,7 @@ export default StorageSelection = ({ route, navigation }) => {
         });
     }
 
+
     return (
         <View style={styles.container}>
             {isLoading ? (
@@ -121,7 +122,7 @@ export default StorageSelection = ({ route, navigation }) => {
             ) : (
                 <View>
                     {buttons.map((e) => {
-                        return <View style={styles.rowWrapper}>{e}</View>;
+                        return <View key={++childrenKeyCounter} style={styles.rowWrapper}>{e}</View>;
                     })}
                 </View>
             )}
