@@ -9,7 +9,8 @@ app.use(cors());
 
 require("dotenv").config();
 const sql = require("mssql");
-var moment = require("moment");
+var dayjs = require('dayjs');
+dayjs().format();
 const db = require("./db");
 
 let queries = [];
@@ -17,10 +18,11 @@ let minute = 0;
 let dt = new Date();
 
 async function writeToDB(date) {
+  try{
   await db.connect();
 
-  let startDate = moment(date);
-  let endDate = moment(date);
+  let startDate = dayjs(date);
+  let endDate = dayjs(date);
   let duration = 0;
   let palette = await genPalNum(startDate);
 
@@ -31,16 +33,17 @@ async function writeToDB(date) {
       let freeStartTime = await nextFreeTime(path[i]);
 
       if (freeStartTime.recordset.length > 0) {
-        startDate = moment(freeStartTime.recordset[0].TimeStamp).subtract(
-          2,
-          "hours"
-        );
-        startDate = moment(startDate).add(1, "minutes");
+        // startDate = dayjs(freeStartTime.recordset[0].TimeStamp).subtract(
+        //   2,
+        //   "h"
+        // );
+        console.log("Freestarttime.recordset.length > 0 --> Adding a minute");
+        startDate = dayjs(startDate).add(1, "m");
       }
     }
 
     path[i].startsWith("Q") ? (duration = 2) : (duration = 1);
-    endDate = moment(startDate).add(duration, "minutes");
+    endDate = dayjs(startDate).add(duration, "m");
 
     // 1 hour needs to be subtract because casting to moment adds 1 hour
     let nextFreeTs;
@@ -49,16 +52,16 @@ async function writeToDB(date) {
     }
     //check if attribute of json is empty
     if (nextFreeTs.recordset.length > 0) {
-      nextFreeTs = moment(nextFreeTs.recordset[0].TimeStamp).subtract(
+      nextFreeTs = dayjs(nextFreeTs.recordset[0].TimeStamp).subtract(
         2,
-        "hours"
+        "h"
       );
-      nextFreeTs = moment(nextFreeTs).add(1, "minutes");
+      nextFreeTs = dayjs(nextFreeTs).add(1, "m");
       console.log(
         "NextFreeTs: " + nextFreeTs.format("YYYY-MM-DD HH:mm:ss.SSS")
       );
 
-      if (moment(endDate).isBefore(nextFreeTs)) {
+      if (dayjs(endDate).isBefore(dayjs(nextFreeTs))) {
         console.log("Palette has to wait");
         endDate = nextFreeTs;
       }
@@ -71,7 +74,11 @@ async function writeToDB(date) {
   queries.forEach(async (query) => {
     await sql.query(`${query}`);
   });
+}catch{
+  console.log("Error in writeToDB. Continuing... Life goes on and on and on and on");
+}
   queries = [];
+
 }
 
 async function nextFreeTime(station) {
@@ -114,7 +121,7 @@ async function genQvQuery(query, taktplatz, startMoment, endMoment) {
   //let queryStr = `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`;
 
   query.push(
-    `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(
+    `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${dayjs(
       startMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -132,7 +139,7 @@ async function genQvQuery(query, taktplatz, startMoment, endMoment) {
   //queryStr += `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`;
 
   query.push(
-    `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(
+    `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${dayjs(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -140,7 +147,7 @@ async function genQvQuery(query, taktplatz, startMoment, endMoment) {
   // query threee - set the kran to defaultposition one minute after  endmoment
   //queryStr += `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`;
   query.push(
-    `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${temp}, '${moment(
+    `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${temp}, '${dayjs(
       endMoment
     )
       .add(1, "m")
@@ -161,7 +168,7 @@ async function genBelQuery(query, palette, mom) {
   let belId = await getBelId(); // id of the payload (belegung)
 
   query.push(
-    `INSERT INTO PalDataBelHistory (PalData_Id, PalNo, TimeStamp) VALUES ('${belId}', ${palette}, '${moment(
+    `INSERT INTO PalDataBelHistory (PalData_Id, PalNo, TimeStamp) VALUES ('${belId}', ${palette}, '${dayjs(
       mom
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -183,7 +190,7 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
 
   // first query - sets the moment at wich the palette arrives at the
   query.push(
-    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, '${moment(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', ${palette}, '${dayjs(
       startMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -192,11 +199,11 @@ async function genQuery(query, taktplatz, palette, startMoment, endMoment) {
     await genQvQuery(query, taktplatz, startMoment, endMoment);
   // seccond query - frees up the taktplatz - at the same moment the palette gets set to new taktplatz
   query.push(
-    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, '${moment(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}', 0, '${dayjs(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
-  endMoment = moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS");
+  endMoment = dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS");
 
   if (taktplatz == "TP 5") {
     query.push();
@@ -250,7 +257,7 @@ async function moveRBG(query, palette, endMoment) {
 
   
   query.push(
-    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', ${palette}, '${moment(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', ${palette}, '${dayjs(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -260,67 +267,67 @@ async function moveRBG(query, palette, endMoment) {
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
       storage_index["TP 24"]
-    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+    },'${dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
       storage_index["E 0"]
-    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+    },'${dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
   //move cran to destination with delay
 
-  endMoment = moment(endMoment).add(3, "minutes");
+  endMoment = dayjs(endMoment).add(3, "m");
 
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
       storage_index["R " + destEtage]
-    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+    },'${dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
       storage_index["E " + destRow]
-    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+    },'${dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
-  endMoment = moment(endMoment).add(1, "minutes");
+  endMoment = dayjs(endMoment).add(1, "m");
 
   //move cran to final destination
 
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
       storage_index["R " + destEtage]
-    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+    },'${dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
       storage_index["E " + destRow]
-    },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
+    },'${dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
 
   query.push(
-    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', 0, '${moment(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', 0, '${dayjs(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
 
 
-  endMoment = moment(endMoment).add(1, "minutes");
+  endMoment = dayjs(endMoment).add(1, "m");
 
   //store palette
   taktplatz = "LG " + storageIndex;
   query.push(
-    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',${palette} , '${moment(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',${palette} , '${dayjs(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
-  endMoment = moment(endMoment).add(8, "hours");
+  endMoment = dayjs(endMoment).add(8, "h");
 
   query.push(
-    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',0, '${moment(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('${taktplatz}',0, '${dayjs(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
@@ -335,20 +342,20 @@ async function occLG(timeStamp) {
   // console.log(timeStamp);
 
   timeStamp = new Date(timeStamp);
-  timeStamp = moment(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
+  timeStamp = dayjs(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
   console.log(timeStamp);
 
-  let startMoment = moment(timeStamp).add(29, "minutes");
+  let startMoment = dayjs(timeStamp).add(29, "m");
 
-  let endMoment = moment(startMoment).add(10, "hours");
+  let endMoment = dayjs(startMoment).add(10, "h");
 
   console.log("occLG startMoment: " + startMoment.format("YYYY-MM-DD HH:mm:ss.SSS"));
   console.log("occLG endMoment: " + endMoment.format("YYYY-MM-DD HH:mm:ss.SSS"));
 
   let lgs = await db.queryDatabase(
-    `SELECT * FROM LocPalHistory WHERE LocationName LIKE 'LG%' AND TimeStamp >= '${moment(
+    `SELECT * FROM LocPalHistory WHERE LocationName LIKE 'LG%' AND TimeStamp >= '${dayjs(
       startMoment
-    ).format("YYYY-MM-DD HH:mm:ss.SSS")}' AND TimeStamp <=  '${moment(
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}' AND TimeStamp <=  '${dayjs(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}';`
   );
@@ -401,19 +408,19 @@ function start(path_number = -1, date, storageindex) {
 async function genPalNum(timeStamp) {
 
   //timeStamp = new Date(timeStamp);
-  timeStamp = moment(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
+  timeStamp = dayjs(timeStamp).format("YYYY-MM-DD HH:mm:ss.SSS");
   console.log(timeStamp);
 
-  let startMoment = moment(timeStamp);
+  let startMoment = dayjs(timeStamp);
 
-  let endMoment = moment(startMoment).add(40, "minutes");
+  let endMoment = dayjs(startMoment).add(40, "m");
 
   let palNum = Math.floor(Math.random() * 40);
   palNum++;
-  let query = `SELECT * FROM LocPalHistory WHERE PalNo LIKE ${palNum} AND TimeStamp >= ${moment(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")} AND Timestamp <= ${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")};`
+  let query = `SELECT * FROM LocPalHistory WHERE PalNo LIKE ${palNum} AND TimeStamp >= ${dayjs(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")} AND Timestamp <= ${dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")};`
   console.log(query);
   let palNumExists = await db.queryDatabase(
-    `SELECT * FROM LocPalHistory WHERE PalNo LIKE ${palNum} AND TimeStamp >= '${moment(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}' AND Timestamp <= '${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}';`
+    `SELECT * FROM LocPalHistory WHERE PalNo LIKE ${palNum} AND TimeStamp >= '${dayjs(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}' AND Timestamp <= '${dayjs(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}';`
   );
   if (palNumExists.recordset.length > 0) {
     palNum = await genPalNum();
