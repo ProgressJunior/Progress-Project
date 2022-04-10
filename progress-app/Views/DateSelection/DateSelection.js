@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Dimensions, Pressable } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
@@ -15,8 +15,6 @@ export default function PathSelection({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            {/* <Text>{JSON.stringify(path)}</Text> */}
-
             <DatePicker
                 date={date}
                 onDateChange={setDate}
@@ -28,18 +26,15 @@ export default function PathSelection({ route, navigation }) {
             <Pressable
                 style={[styles.button, styles.dangerButton]}
                 onPress={() => setDate(new Date())}
-                // onPress={() => navigation.navigate('DateSelection')}
             >
             <Text style={styles.text}>Reset Date</Text>
             </Pressable>
-            {/* <Text id="elem2" style={styles.text}>{date.toISOString()}</Text> */}
 
             <View style={styles.buttonContainer}>
                 <Pressable
                     style={[styles.button, styles.warningButton]}
                     onPress={() => navigation.navigate("PathSelection")}
-                >
-                <Text style={styles.text}>Back</Text>
+                ><Text style={styles.text}>Back</Text>
                 </Pressable>
 
                 <Pressable

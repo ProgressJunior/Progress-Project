@@ -1,13 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useRef } from "react";
-import {
-    StyleSheet,
-    Text,
-    View,
-    Dimensions,
-    Pressable,
-    Alert,
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Dimensions, Pressable, Alert } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -24,12 +17,12 @@ import ArrowRight from "react-native-bootstrap-icons/icons/arrow-right";
 
 export default function PathSelection({ navigation }) {
     let pathTemplate = [
-        ["TP8", "TP9", "TP11", "EMPTY", "TP14.1", "TP18"],
-        ["TP7", "TP10", "TP12", "TP13", "TP14", "TP16"],
-        ["TP6", "TP5", "EMPTY", "TP24", "TP22", "TP17"],
-        ["TP3", "TP4", "EMPTY", "TP25", "TP23", "TP18"],
-        ["TP2", "TP1", "EMPTY", "TP26", "EMPTY", "TP19"],
-        ["EMPTY", "EMPTY", "EMPTY", "TP27", "TP21", "TP20"],
+        ["TP8",  "TP9",  "TP11", "EMTY", "TP14.1", "TP18"],
+        ["TP7",  "TP10", "TP12", "TP13", "TP14",   "TP16"],
+        ["TP6",  "TP5",  "EMTY", "TP24", "TP22",   "TP17"],
+        ["TP3",  "TP4",  "EMTY", "TP25", "TP23",   "TP18"],
+        ["TP2",  "TP1",  "EMTY", "TP26", "EMTY",   "TP19"],
+        ["EMTY", "EMTY", "EMTY", "TP27", "TP21",   "TP20"],
     ];
 
     let pathArray = {
@@ -37,75 +30,75 @@ export default function PathSelection({ navigation }) {
             "TP8",
             "TP9",
             "TP11",
-            "EMPTY",
+            "EMTY",
             "TP14.1",
             "TP18",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVE",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
+            "ACTD",
+            "ACTD",
+            "ACT",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACT",
+            "ACT",
+            "EMTY",
+            "ACT",
+            "ACT",
+            "ACT",
+            "ACT",
+            "ACT",
+            "EMTY",
             "TP25",
             "TP23",
             "TP18",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
+            "ACT",
+            "ACT",
+            "EMTY",
             "TP26",
-            "EMPTY",
+            "EMTY",
             "TP19",
-            "EMPTY",
-            "EMPTY",
-            "EMPTY",
+            "EMTY",
+            "EMTY",
+            "EMTY",
             "TP27",
             "TP21",
             "TP20",
         ],
 
         "Path 2": [
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "EMPTY",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "EMTY",
             "TP14.1",
             "TP18",
-            "ACTIVED",
+            "ACTD",
             "TP10",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACT",
+            "ACT",
+            "EMTY",
+            "ACT",
+            "ACT",
+            "ACT",
+            "ACT",
+            "ACT",
+            "EMTY",
             "TP25",
             "TP23",
             "TP18",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
+            "ACT",
+            "ACT",
+            "EMTY",
             "TP26",
-            "EMPTY",
+            "EMTY",
             "TP19",
-            "EMPTY",
-            "EMPTY",
-            "EMPTY",
+            "EMTY",
+            "EMTY",
+            "EMTY",
             "TP27",
             "TP21",
             "TP20",
@@ -115,75 +108,75 @@ export default function PathSelection({ navigation }) {
             "TP8",
             "TP9",
             "TP11",
-            "EMPTY",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
+            "EMTY",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACT",
+            "ACT",
+            "EMTY",
+            "ACT",
+            "ACT",
+            "ACT",
+            "ACT",
+            "ACT",
+            "EMTY",
             "TP25",
             "TP23",
             "TP18",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
+            "ACT",
+            "ACT",
+            "EMTY",
             "TP26",
-            "EMPTY",
+            "EMTY",
             "TP19",
-            "EMPTY",
-            "EMPTY",
-            "EMPTY",
+            "EMTY",
+            "EMTY",
+            "EMTY",
             "TP27",
             "TP21",
             "TP20",
         ],
 
         "Path 4": [
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "EMPTY",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "EMTY",
+            "ACTD",
+            "ACTD",
+            "ACTD",
             "TP10",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVED",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACTD",
+            "ACT",
+            "ACT",
+            "EMTY",
+            "ACT",
+            "ACT",
+            "ACT",
+            "ACT",
+            "ACT",
+            "EMTY",
             "TP25",
             "TP23",
             "TP18",
-            "ACTIVE",
-            "ACTIVE",
-            "EMPTY",
+            "ACT",
+            "ACT",
+            "EMTY",
             "TP26",
-            "EMPTY",
+            "EMTY",
             "TP19",
-            "EMPTY",
-            "EMPTY",
-            "EMPTY",
+            "EMTY",
+            "EMTY",
+            "EMTY",
             "TP27",
             "TP21",
             "TP20",
@@ -191,164 +184,59 @@ export default function PathSelection({ navigation }) {
     };
 
     let arrowArray = {
-        // The empty entries in the array need to be there
+        // The Empty entries in the array need to be there
         // because some elements never change, these get taken from "Path 1"
-        // and for correct counting there need to be some empty elements
-        "Path 1": [
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowDown width="50" fill="rgb(255,0,0)" />,
-            <ArrowUp width="50" fill="rgb(255,0,0)" />,
-            <ArrowLeft width="50" fill="rgb(255,0,0)" />,
-            ,
-            <ArrowLeft width="50" fill="rgb(255,0,0)" />,
-            <ArrowLeft width="50" fill="rgb(255,0,0)" />,
-            <ArrowLeft width="50" fill="rgb(255,0,0)" />,
-            <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowUp width="50" fill="rgb(255,0,0)" />,
-            ,
-            ,
-            ,
-            ,
-            <ArrowUp width="50" fill="rgb(255,0,0)" />,
-            <ArrowBarLeft width="50" fill="rgb(255,0,0)" />,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
+        // and for correct counting there need to be some EMTY elements
+        "Path 1": [,,,,,,
+            <ArrowRight   width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight   width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight   width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight   width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight   width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown    width="50" fill="rgb(255,0,0)" />,
+            <ArrowUp      width="50" fill="rgb(255,0,0)" />,
+            <ArrowLeft    width="50" fill="rgb(255,0,0)" />,,
+            <ArrowLeft    width="50" fill="rgb(255,0,0)" />,
+            <ArrowLeft    width="50" fill="rgb(255,0,0)" />,
+            <ArrowLeft    width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight   width="50" fill="rgb(255,0,0)" />,
+            <ArrowUp      width="50" fill="rgb(255,0,0)" />,,,,,
+            <ArrowUp      width="50" fill="rgb(255,0,0)" />,
+            <ArrowBarLeft width="50" fill="rgb(255,0,0)" />,,,,,,,,,,,
         ],
 
         "Path 2": [
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowDown width="50" fill="rgb(255,0,0)" />,
-            ,
-            ,
-            ,
-            <ArrowUp width="50" fill="rgb(255,0,0)" />,
-            ,
-            ,
+            <ArrowDown  width="50" fill="rgb(255,0,0)" />,,,,
+            <ArrowUp    width="50" fill="rgb(255,0,0)" />,,,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowDown width="50" fill="rgb(255,0,0)" />,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
+            <ArrowDown  width="50" fill="rgb(255,0,0)" />
+            ,,,,,,,,,,,,,,,,,,,,,,,,,,
         ],
 
-        "Path 3": [
-            ,
-            ,
-            ,
-            ,
+        "Path 3": [,,,,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown  width="50" fill="rgb(255,0,0)" />,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            ,
-            <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowUp width="50" fill="rgb(255,0,0)" />,
-            <ArrowDown width="50" fill="rgb(255,0,0)" />,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-        ],
+            <ArrowUp    width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown  width="50" fill="rgb(255,0,0)" />,
+            ,,,,,,,,,,,,,,,,,,,,,,,,],
 
         "Path 4": [
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowDown width="50" fill="rgb(255,0,0)" />,
-            ,
+            <ArrowDown  width="50" fill="rgb(255,0,0)" />,,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowDown width="50" fill="rgb(255,0,0)" />,
-            <ArrowUp width="50" fill="rgb(255,0,0)" />,
-            ,
-            ,
+            <ArrowDown  width="50" fill="rgb(255,0,0)" />,
+            <ArrowUp    width="50" fill="rgb(255,0,0)" />,,,
             <ArrowRight width="50" fill="rgb(255,0,0)" />,
-            <ArrowUp width="50" fill="rgb(255,0,0)" />,
-            <ArrowDown width="50" fill="rgb(255,0,0)" />,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
-            ,
+            <ArrowUp    width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown  width="50" fill="rgb(255,0,0)" />,
+            ,,,,,,,,,,,,,,,,,,,,,,,,
         ],
     };
 
@@ -390,42 +278,39 @@ export default function PathSelection({ navigation }) {
 
     return (
         <View style={styles.container}>
-            {/* draw arrow from elsoderfer/react-arrow */}
-
-            {/* Draws correct rectangles for stations */}
             {pathTemplate.map((element) => {
-                let temp = [];
+                let storageRows = [];
                 for (let i = 0; i < element.length; i++) {
                     count++;
-                    if (element[i] == "EMPTY") {
-                        temp.push(
-                            <View key={count - 1} style={styles.empty}></View>
+                    if (element[i] == "EMTY") {
+                        storageRows.push(
+                            <View key={count - 1} style={styles.EMTY}></View>
                         );
                     } else {
-                        if (pathArray["Path 1"][count - 1] === "ACTIVE") {
-                            temp.push(
-                                <View key={count - 1} style={styles.boxActive}>
+                        if (pathArray["Path 1"][count - 1] === "ACT") {
+                            storageRows.push(
+                                <View key={count - 1} style={[styles.box, styles.boxActive]}>
                                     {arrowArray["Path 1"][count - 1]}
                                 </View>
                             );
-                        } else if (pathArray[value][count - 1] === "ACTIVED")
-                            temp.push(
-                                <View key={count - 1} style={styles.boxActiveD}>
+                        } else if (pathArray[value][count - 1] === "ACTD")
+                            storageRows.push(
+                                <View key={count - 1} style={[styles.box, styles.boxActiveD]}>
                                     {arrowArray[value][count - 1]}
                                 </View>
                             );
                         else
-                            temp.push(
+                            storageRows.push(
                                 <View
                                     key={count - 1}
-                                    style={styles.boxActiveDisabled}
+                                    style={[styles.box, styles.boxActiveDisabled]}
                                 ></View>
                             );
                     }
                 }
                 return (
                     <View key={count - 1} style={styles.rowWrapper}>
-                        {temp}
+                        {storageRows}
                     </View>
                 );
             })}
@@ -444,8 +329,7 @@ export default function PathSelection({ navigation }) {
                 <Pressable
                     style={[styles.button, styles.dangerButton]}
                     onPress={() => clearDb()}
-                >
-                    <Text style={styles.text}>Clear Database</Text>
+                ><Text style={styles.text}>Clear Database</Text>
                 </Pressable>
 
                 <Pressable
@@ -455,8 +339,7 @@ export default function PathSelection({ navigation }) {
                             path: { value },
                         })
                     }
-                >
-                    <Text style={styles.text}>Next</Text>
+                ><Text style={styles.text}>Next</Text>
                 </Pressable>
             </View>
             <StatusBar style="auto" />
@@ -508,64 +391,25 @@ const styles = StyleSheet.create({
     box: {
         width: windowWidth / 6.5,
         height: 50,
-        backgroundColor: "red",
         margin: windowWidth / 200,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
     },
     boxActive: {
-        width: windowWidth / 6.5,
-        height: 50,
         backgroundColor: "#098BCA",
-        margin: windowWidth / 200,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.43,
-        shadowRadius: 9.51,
-
-        elevation: 15,
     },
     boxActiveD: {
-        width: windowWidth / 6.5,
-        height: 50,
         backgroundColor: "#FEDD00",
-        margin: windowWidth / 200,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.43,
-        shadowRadius: 9.51,
-
-        elevation: 15,
     },
     boxActiveDisabled: {
-        width: windowWidth / 6.5,
-        height: 50,
         backgroundColor: "gray",
-        margin: windowWidth / 200,
-        // drop shadow
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.43,
-        shadowRadius: 9.51,
-
-        elevation: 15,
     },
-    empty: {
-        width: windowWidth / 6.5,
-        height: 50,
+    EMTY: {
         backgroundColor: "rgba(0,0,0,0)",
-        margin: windowWidth / 200,
     },
     rowWrapper: {
         flexDirection: "row",

@@ -1,37 +1,37 @@
 import React, { useEffect, useState } from "react";
-import {
-    StyleSheet,
-    Text,
-    View,
-    Dimensions,
-    Pressable,
-    BackHandler,
-    Alert,
-} from "react-native";
+import { StyleSheet, Text, View, Dimensions, Pressable, BackHandler, Alert } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default StorageSelection = ({ route, navigation }) => {
+    // disables Hardwarebackbuttonfunctionality
     BackHandler.addEventListener("hardwareBackPress", function () {
-        return navigation.navigate("PathSelection");
+        return false;
     });
 
     const { path } = route.params.path;
     const { date } = route.params.date;
+    const [buttons, setButtons] = useState([]);
+    const [isLoading, setLoading] = useState(true);
 
+    // ChildKeyCounter is used to give each button a unique key
+    // This is not needed but encouraged as best practice 
     let childrenKeyCounter = 0;
     let storageRows = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    // All storage units that are already occupied get saved here
     let occupied = [];
     let storageRowButtons = [];
-    const [buttons, setButtons] = useState([]);
-
+        
+    // add 2 hours to date because we need to convert to ISOString
+    // for the fetch requests but doing so sets time back 2 hours
+    // due to standartization of timezones
     let newDate = new Date(date);
     newDate.setHours(newDate.getHours() + 2);
     newDate = newDate.toISOString();
     newDate = newDate.substring(0, newDate.length - 1);
+    
     const url = "http://185.5.199.33:3030/occLG/" + newDate;
-    const [isLoading, setLoading] = useState(true);
 
     // Use effect first fetches occupied LGs
     // they are then filtered to return only the row and col number
@@ -63,45 +63,39 @@ export default StorageSelection = ({ route, navigation }) => {
 
     function selectPath(row, col) {
         let newPath = parseInt(path["value"].toString().substring(5, path["value"].length)) - 1;
-        // console.log("http://185.5.199.33:3030/path/"+newPath+"/"+newDate+"/"+col+"|"+row);
-        // add 2 hours to date because we need to convert to ISOString
-        // for the fetch requests but doing so sets time back 2 hours
-        // due to standartization of timezones
+
         fetch("http://185.5.199.33:3030/path/"+newPath+"/"+newDate+"/"+col+"|"+row)
             .then((response) => console.log(""))
             .catch((error) => {
-                Alert.alert("Error", "Server antwortet nicht", [{text: "Ok",},]);})
-            .finally(() => {
-                console.log("Request Sent");
-            });
+                Alert.alert("Error", "Server antwortet nicht", [{text: "Ok",},]);
+                return ""})
             navigation.navigate("LastScreen")
     }
 
+    // Filters unnecessary data from query
+    // LG 1 | 2 --> 1 - 2
     const filter = (query) => {
-        // remove LG from query
-
         let newQuery = query.replace("LG ", "");
         let filtered = newQuery.split("|");
         if(!occupied.includes(filtered[0] + "-" + filtered[1]))
             occupied.push(filtered[0] + "-" + filtered[1]);
     };
 
+    // Generates each row of all storage units
+    // it then pushes each row to storageRowButtons
     function genStorageButtons() {
-        
         storageRows.map((e) => {
             let storageColumn = [];
             for (let i = 5; i > 0; i--) {
                 if (!occupied.includes(i + "-" + e)) {
-
-                        storageColumn.push(
+                    storageColumn.push(
                         <Pressable
                             key={i + "-" + e}
                             style={[styles.button, styles.buttonNeutral]}
                             onPress={() => selectPath(e, i)}
-                        >
-                            <Text style={styles.buttonText}>
-                                R {e} | C {i}
-                            </Text>
+                        ><Text style={styles.buttonText}>
+                            R {e} | C {i}
+                        </Text>
                         </Pressable>
                     );
                 } else {
@@ -109,11 +103,9 @@ export default StorageSelection = ({ route, navigation }) => {
                         <Pressable
                             key={i + "-" + e}
                             style={[styles.button, styles.buttonOccupied]}
-
-                        >
-                            <Text style={styles.buttonText}>
-                                R {e} | C {i}
-                            </Text>
+                        ><Text style={styles.buttonText}>
+                            R {e} | C {i}
+                        </Text>
                         </Pressable>
                     );
                 }
@@ -133,9 +125,7 @@ export default StorageSelection = ({ route, navigation }) => {
                             <View
                                 key={++childrenKeyCounter}
                                 style={styles.rowWrapper}
-                            >
-                                {e}
-                            </View>
+                            >{e}</View>
                         );
                     })}
                 </View>

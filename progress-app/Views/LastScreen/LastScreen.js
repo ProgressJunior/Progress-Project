@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useRef } from "react";
+import React from "react";
 import { StyleSheet, Text, View, Dimensions, Pressable } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
