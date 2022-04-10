@@ -71,6 +71,8 @@ function StorageSelect({ childToParent, date }) {
                 } 
             }
             storageRowButtons.push(storageColumn);
+            // Done for best practice
+            return ""
         })
     }
 
