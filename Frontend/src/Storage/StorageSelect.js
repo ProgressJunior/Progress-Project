@@ -12,7 +12,9 @@ import "./Storage.css";
 function StorageSelect({ childToParent, date }) {
     let navigate = useNavigate();
     const [buttons, setButtons] = useState([]);
+    let storageRows = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     let storageRowButtons = [];
+    // Sotrage units which are already occupied get stored here
     let occupied = []
 
     // UseEffect is called on component did mount
@@ -39,8 +41,16 @@ function StorageSelect({ childToParent, date }) {
         fetchData();
     }, []);
 
+    // Filters unnecessary data from query
+    // LG 1 | 2 --> 1 - 2
+    const filter = (query) => {
+        let newQuery = query.replace("LG ", "");
+        let filtered = newQuery.split("|");
+        occupied.push(filtered[0] + "-" + filtered[1]);
+    };
 
-
+    // genStorageButtons generates each row of buttons
+    // it then pushes each row into storageRowButtons
     function genStorageButtons(){ 
         storageRows.map((e) => {
             let storageColumn = [];
@@ -60,26 +70,18 @@ function StorageSelect({ childToParent, date }) {
                     )
                 } 
             }
-            // console.log(storageColumn)
             storageRowButtons.push(storageColumn);
         })
     }
 
-
-    const filter = (query) => {
-        // remove LG from query
-        let newQuery = query.replace("LG ", "");
-        let filtered = newQuery.split("|");
-        occupied.push(filtered[0] + "-" + filtered[1]);
-    };
-
-
+    // updatePath is called when a button is clicked
+    // it then calls the parent function to set the sotrage unit there
+    // so it can be accessed when sending the final request
     function updatePath(row, col) {
         childToParent("row: " + row + " col: " + col)
         navigate("/lastStep");
     }
 
-    let storageRows = [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
     return (
         <div className="backgroundDark">
@@ -94,7 +96,7 @@ function StorageSelect({ childToParent, date }) {
                 variant="outline-primary"
                 onClick={() => {
                     navigate("/date");
-                }}  >Back</Button>
+            }}>Back</Button>
 
         </div>
     );
