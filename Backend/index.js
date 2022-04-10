@@ -408,7 +408,8 @@ async function genPalNum(timeStamp) {
 
   let endMoment = moment(startMoment).add(40, "minutes");
 
-  let palNum = Math.floor(Math.random() * 100);
+  let palNum = Math.floor(Math.random() * 40);
+  palNum++;
   let query = `SELECT * FROM LocPalHistory WHERE PalNo LIKE ${palNum} AND TimeStamp >= ${moment(startMoment).format("YYYY-MM-DD HH:mm:ss.SSS")} AND Timestamp <= ${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")};`
   console.log(query);
   let palNumExists = await db.queryDatabase(
