@@ -17,6 +17,7 @@ let minute = 0;
 let dt = new Date();
 
 async function writeToDB(date) {
+  try{
   await db.connect();
 
 
@@ -78,6 +79,9 @@ async function writeToDB(date) {
   queries.forEach(async (query) => {
     await sql.query(`${query}`);
   });
+}catch{
+  console.log("Error in writeToDB. Continuing. Life goes on and on adn on and on");
+}
   queries = [];
 }
 
