@@ -6,11 +6,12 @@
   -ms-grid-rows: (1fr)[16];
       grid-template-rows: repeat(16, 1fr);
   grid-column-gap: 2.5vw;
-  grid-row-gap: 0vw;
+  grid-row-gap: 0.5vw;
   margin: 1vw;
 }
 
 .storageParentContainer {
+  background-color: #333333;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -26,6 +27,7 @@
   width: 15vw;
   height: 3vw;
   font-size: 0.8vw;
+  border-width: 0.1vw;
 }
 
 .storageButtonDisabled {
@@ -39,5 +41,9 @@
 
 .storageButtonDisabled:hover {
   background-color: red;
+}
+
+.backgroundDark {
+  background-color: #333333;
 }
 /*# sourceMappingURL=Storage.css.map */
