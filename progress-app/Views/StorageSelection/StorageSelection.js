@@ -67,11 +67,15 @@ export default StorageSelection = ({ route, navigation }) => {
     }, []);
 
     function selectPath(row, col) {
-        fetch("https://185.5.199.33:3030/path/"+path["value"]+"/"+newDate.toISOString()+"/"+col + "|" + row)
+        fetch("http://185.5.199.33:3030/path/"+path["value"]+"/"+newDate.toISOString()+"/"+col + "|" + row)
             .then((response) => setData(response))
             .catch((error) => console.error(error))
             .finally(() => {console.log("Request Sent")});
-        console.log("https://185.5.199.33:3030/path/"+path["value"]+"/"+newDate.toISOString()+"/"+col + "|" + row);
+        let newPath = path["value"].toString().substring(5, path["value"].length)
+        // cast newPath to int
+        newPath = parseInt(newPath)-1;
+        console.log(newPath);
+        console.log("http://185.5.199.33:3030/path/"+newPath+"/"+newDate.toISOString()+"/"+col + "|" + row);
         // navigate to /lastStep
         // navigation.navigate("/lastStep");
 
@@ -111,7 +115,7 @@ export default StorageSelection = ({ route, navigation }) => {
     }
 
     return (
-        <View style={{ flex: 1, padding: 24 }}>
+        <View style={styles.container}>
             {isLoading ? (
                 <Text>Loading...</Text>
             ) : (
@@ -129,8 +133,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#333333",
-        alignItems: "center",
-        justifyContent: "center",
+        paddingTop : windowHeight/20,
+        // alignItems: "center",
+        // justifyContent: "center",
     },
     button: {
         color: "#333333",

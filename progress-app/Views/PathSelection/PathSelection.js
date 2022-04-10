@@ -196,11 +196,11 @@ export default function PathSelection({navigation}) {
             ,,,,,,],
         
         "Path 2": [ <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,,,,
-            <ArrowUp width="50" fill="rgb(255,0,0)"/>,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
+            <ArrowUp width="50" fill="rgb(255,0,0)"/>,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,,
             ,,,,,,,,,,,,,,,,,,,,,,,,],
         
         "Path 3": [ ,,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
-            <ArrowRight width="50" fill="rgb(255,0,0)"/>,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowUp width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
+            <ArrowRight width="50" fill="rgb(255,0,0)"/>,<ArrowRight width="50" fill="rgb(255,0,0)"/>,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowUp width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
             ,,,,,,,,,,,,,,,,,,,,,,,,],
         
         "Path 4": [ <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,

@@ -17,7 +17,7 @@ export default function PathSelection({route, navigation}) {
     return (
         <View style={styles.container}>
 
-            <Text>{JSON.stringify(path)}</Text>
+            {/* <Text>{JSON.stringify(path)}</Text> */}
 
             <DatePicker
                 date={date}
@@ -34,7 +34,7 @@ export default function PathSelection({route, navigation}) {
             >
                 <Text>Reset Date</Text>
             </Pressable>
-            <Text id="elem2" style={styles.text}>{date.toISOString()}</Text>
+            {/* <Text id="elem2" style={styles.text}>{date.toISOString()}</Text> */}
 
             <View style={styles.navigationButtonWrapper}>
 
