@@ -53,7 +53,7 @@ export default StorageSelection = ({ route, navigation }) => {
                 json.forEach((e) => {
                     filter(e);
                 }))                
-            .catch((error) => console.error(error))
+            .catch((error) => Alert.alert("Error", "Server antwortet nicht", [{text: "Ok"}]))
             .finally(() => {
                 genStorageButtons();
                 setLoading(false);
@@ -96,7 +96,7 @@ export default StorageSelection = ({ route, navigation }) => {
                         storageColumn.push(
                         <Pressable
                             key={i + "-" + e}
-                            style={styles.button}
+                            style={[styles.button, styles.buttonNeutral]}
                             onPress={() => selectPath(e, i)}
                         >
                             <Text style={styles.buttonText}>
@@ -108,9 +108,10 @@ export default StorageSelection = ({ route, navigation }) => {
                     storageColumn.push(
                         <Pressable
                             key={i + "-" + e}
-                            style={styles.buttonOccupied}
+                            style={[styles.button, styles.buttonOccupied]}
+
                         >
-                            <Text style={styles.buttonOccupiedText}>
+                            <Text style={styles.buttonText}>
                                 R {e} | C {i}
                             </Text>
                         </Pressable>
@@ -169,7 +170,8 @@ const styles = StyleSheet.create({
         marginLeft: windowWidth / 3,
     },
     button: {
-        backgroundColor: "#098BCA",
+        backgroundColor: "transparent",
+        borderWidth: windowWidth / 250,
         width: windowWidth / 7,
         height: windowHeight / 22,
         borderRadius: windowWidth / 50,
@@ -177,6 +179,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginTop: windowHeight / 100,
+    },
+    buttonNeutral: {
+        backgroundColor: "#098BCA",
+        borderWidth: 0,
+    },
+    buttonOccupied: {
+        borderColor: "#D9534F",
     },
     buttonText: {
         color: "#ffffff",
@@ -184,17 +193,6 @@ const styles = StyleSheet.create({
     },
     buttonOccupiedText: {
         color: "#333333",
-    },
-    buttonOccupied: {
-        color: "#333333",
-        backgroundColor: "red",
-        width: windowWidth / 7,
-        height: windowHeight / 22,
-        borderRadius: windowWidth / 50,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: windowHeight / 100,
     },
     rowWrapper: {
         flexDirection: "row",

@@ -8,14 +8,13 @@ const windowHeight = Dimensions.get("window").height;
 // Date Picker
 import DatePicker from "react-native-date-picker";
 
-export default function PathSelection({route, navigation}) {
+export default function PathSelection({ route, navigation }) {
     // For date picker
     const [date, setDate] = useState(new Date());
-    const {path} = route.params;
+    const { path } = route.params;
 
     return (
         <View style={styles.container}>
-
             {/* <Text>{JSON.stringify(path)}</Text> */}
 
             <DatePicker
@@ -27,26 +26,33 @@ export default function PathSelection({route, navigation}) {
             />
 
             <Pressable
-                style={styles.button}
+                style={[styles.button, styles.dangerButton]}
                 onPress={() => setDate(new Date())}
                 // onPress={() => navigation.navigate('DateSelection')}
             >
-                <Text>Reset Date</Text>
+            <Text style={styles.text}>Reset Date</Text>
             </Pressable>
             {/* <Text id="elem2" style={styles.text}>{date.toISOString()}</Text> */}
 
-            <View style={styles.navigationButtonWrapper}>
+            <View style={styles.buttonContainer}>
+                <Pressable
+                    style={[styles.button, styles.warningButton]}
+                    onPress={() => navigation.navigate("PathSelection")}
+                >
+                <Text style={styles.text}>Back</Text>
+                </Pressable>
 
                 <Pressable
-                    style={styles.button}
-                    onPress={() => navigation.navigate('PathSelection')}
-                ><Text>Back</Text></Pressable>
-
-                <Pressable
-                    style={styles.button}
-                    onPress={() => navigation.navigate('StorageSelection',{path: {path}, date: {date}})}
-                ><Text>Next</Text></Pressable>
-
+                    style={[styles.button, styles.successButton]}
+                    onPress={() =>
+                        navigation.navigate("StorageSelection", {
+                            path: { path },
+                            date: { date },
+                        })
+                    }
+                >
+                <Text style={styles.text}>Next</Text>
+                </Pressable>
             </View>
 
             <StatusBar style="auto" />
@@ -61,20 +67,33 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    navigationButtonWrapper: {
+    text: {
+        color: "#ffffff",
+    },
+    buttonContainer: {
+        width: windowWidth,
         flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: windowHeight / 100,
-        width: windowWidth / 1.1
+        justifyContent: "space-evenly",
     },
     button: {
         color: "#333333",
-        backgroundColor: "#ffffff",
+        backgroundColor: "transparent",
         width: windowWidth / 3,
         height: windowHeight / 20,
         borderRadius: windowWidth / 50,
+        borderWidth: windowWidth / 150,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        marginTop: windowHeight / 50,
+    },
+    dangerButton: {
+        borderColor: "#D9534F",
+    },
+    successButton: {
+        borderColor: "#5CB85C",
+    },
+    warningButton: {
+        borderColor: "#F0AD4E",
     },
 });

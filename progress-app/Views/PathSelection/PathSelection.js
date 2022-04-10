@@ -221,12 +221,12 @@ export default function PathSelection({navigation}) {
     ]);
 
     function clearDb(){
-        fetch("http://185.5.199.33:3030")
-            .then((response) => console.log(response))
-            .catch((error) => console.error(error))
-            .finally(() => {
-                console.log("cleared");
-            });
+        fetch("http://185.5.199.33:3030/clear")
+            .then((response) => response.json())
+            .then((json) => {if (json["OK!"]==="OK!") {
+                Alert.alert("Cleared", "Datenbank wurde gecleart!", [{text: "Ok"}])}
+                else{Alert.alert("Error", "Datenbank konnte nicht gecleart werden!", [{text: "Ok"}])}})
+            .catch((error) => Alert.alert("Error", "Datenbank konnte nicht gecleart werden!", [{text: "Ok"}]));
     }
 
     return (
@@ -265,16 +265,18 @@ export default function PathSelection({navigation}) {
                 style={styles.dropdown}
             />
 
-            <Pressable
-                style={styles.button}
-                onPress={() => navigation.navigate('DateSelection',{path: {value}})}
-            ><Text>Next</Text></Pressable>
+            <View style={styles.buttonContainer}>  
+                <Pressable
+                    style={[styles.button, styles.dangerButton]}
+                    onPress={() => clearDb()}
+                ><Text style={styles.text}>Clear Database</Text></Pressable>
 
-            <Pressable
-                style={styles.button}
-                onPress={() => clearDb()}
-            ><Text>Clear Database</Text></Pressable>
+                <Pressable
+                    style={[styles.button, styles.successButton]}
+                    onPress={() => navigation.navigate('DateSelection',{path: {value}})}
+                ><Text style={styles.text}>Next</Text></Pressable>
 
+            </View>
             <StatusBar style="auto" />
         </View>
     );
@@ -287,19 +289,39 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    text: {
+        color: "#ffffff",
+    },
+    buttonContainer: {
+        width: windowWidth,
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+    },
+    button: {
+        color: "#333333",
+        backgroundColor: "transparent",
+        width: windowWidth / 3,
+        height: windowHeight / 20,
+        borderRadius: windowWidth / 50,
+        borderWidth: windowWidth/150,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: windowHeight / 50,
+    },
+    dangerButton: {
+        borderColor: "#D9534F",
+    },
+    successButton: {
+        borderColor: "#5CB85C",
+    },
+    warningButton: {
+        borderColor: "#F0AD4E",
+    },
     dropdown: {
         marginLeft: windowWidth/4,
         marginTop: windowHeight/20,
         width: windowWidth / 2,
-    },
-    turnedRight: {
-        transform: [{ rotate: "90deg" }],
-        margin: 0,
-        padding: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "green"
     },
     box: {
         width: windowWidth / 6.5,
@@ -341,18 +363,5 @@ const styles = StyleSheet.create({
     rowWrapper: {
         flexDirection: "row",
     },
-    text: {
-        color: "#ffffff",
-    },
-    button: {
-        color: "#333333",
-        backgroundColor: "#ffffff",
-        width: windowWidth / 3,
-        height: windowHeight / 20,
-        borderRadius: windowWidth / 50,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: windowHeight / 50,
-    },
+    
 });
