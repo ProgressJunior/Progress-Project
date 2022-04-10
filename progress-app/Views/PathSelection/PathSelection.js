@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, Dimensions, Pressable } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Pressable, Alert } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -220,6 +220,15 @@ export default function PathSelection({navigation}) {
         { label: "Path 4", value: "Path 4" },
     ]);
 
+    function clearDb(){
+        fetch("http://185.5.199.33:3030")
+            .then((response) => console.log(response))
+            .catch((error) => console.error(error))
+            .finally(() => {
+                console.log("cleared");
+            });
+    }
+
     return (
         <View style={styles.container}>
 
@@ -253,12 +262,18 @@ export default function PathSelection({navigation}) {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
+                style={styles.dropdown}
             />
 
             <Pressable
                 style={styles.button}
                 onPress={() => navigation.navigate('DateSelection',{path: {value}})}
             ><Text>Next</Text></Pressable>
+
+            <Pressable
+                style={styles.button}
+                onPress={() => clearDb()}
+            ><Text>Clear Database</Text></Pressable>
 
             <StatusBar style="auto" />
         </View>
@@ -271,6 +286,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#333333",
         alignItems: "center",
         justifyContent: "center",
+    },
+    dropdown: {
+        marginLeft: windowWidth/4,
+        marginTop: windowHeight/20,
+        width: windowWidth / 2,
     },
     turnedRight: {
         transform: [{ rotate: "90deg" }],

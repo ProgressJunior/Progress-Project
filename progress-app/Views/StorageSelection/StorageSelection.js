@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Dimensions, Pressable, BackHandler } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Dimensions,
+    Pressable,
+    BackHandler,
+    Alert,
+} from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default StorageSelection = ({ route, navigation }) => {
-
-    BackHandler.addEventListener('hardwareBackPress', function () {
-        return navigation.navigate('PathSelection')
+    BackHandler.addEventListener("hardwareBackPress", function () {
+        return navigation.navigate("PathSelection");
     });
 
     const { path } = route.params.path;
@@ -18,10 +25,11 @@ export default StorageSelection = ({ route, navigation }) => {
     let occupied = [];
     let storageRowButtons = [];
     const [buttons, setButtons] = useState([]);
-    
+
     let newDate = new Date(date);
     newDate.setHours(newDate.getHours() + 2);
-    newDate = newDate.toISOString().substring(0,newDate.toISOString().length-1)
+    newDate = newDate.toISOString();
+    newDate = newDate.substring(0, newDate.length - 1);
     const url = "http://185.5.199.33:3030/occLG/" + newDate;
     const [isLoading, setLoading] = useState(true);
 
@@ -41,55 +49,51 @@ export default StorageSelection = ({ route, navigation }) => {
     useEffect(() => {
         fetch(url)
             .then((response) => response.json())
-            .then((json) =>
+            .then((json) => 
                 json.forEach((e) => {
                     filter(e);
-                })
-            )
+                }))                
             .catch((error) => console.error(error))
             .finally(() => {
                 genStorageButtons();
                 setLoading(false);
             });
-        // let json = ["LG 1|1", "LG 2|2", "LG 3|3", "LG 4|7"];
-
-        // json.forEach((e) => {
-        //     filter(e);
-        // });
-        genStorageButtons();
         setButtons(storageRowButtons);
-        setLoading(false);
     }, []);
 
     function selectPath(row, col) {
         let newPath = parseInt(path["value"].toString().substring(5, path["value"].length)) - 1;
-        
+        // console.log("http://185.5.199.33:3030/path/"+newPath+"/"+newDate+"/"+col+"|"+row);
         // add 2 hours to date because we need to convert to ISOString
         // for the fetch requests but doing so sets time back 2 hours
         // due to standartization of timezones
-        fetch("http://185.5.199.33:3030/path/"+newPath+"/"+newDate.substring(0,newDate.toISOString().length-1)+"/"+col+"|"+row)
+        fetch("http://185.5.199.33:3030/path/"+newPath+"/"+newDate+"/"+col+"|"+row)
             .then((response) => console.log(""))
-            .catch((error) => console.error(error))
+            .catch((error) => {
+                Alert.alert("Error", "Server antwortet nicht", [{text: "Ok",},]);})
             .finally(() => {
                 console.log("Request Sent");
             });
-        navigation.navigate("LastScreen");
+            navigation.navigate("LastScreen")
     }
 
     const filter = (query) => {
         // remove LG from query
+
         let newQuery = query.replace("LG ", "");
         let filtered = newQuery.split("|");
-        occupied.push(filtered[0] + "-" + filtered[1]);
+        if(!occupied.includes(filtered[0] + "-" + filtered[1]))
+            occupied.push(filtered[0] + "-" + filtered[1]);
     };
 
     function genStorageButtons() {
+        
         storageRows.map((e) => {
             let storageColumn = [];
-
             for (let i = 5; i > 0; i--) {
                 if (!occupied.includes(i + "-" + e)) {
-                    storageColumn.push(
+
+                        storageColumn.push(
                         <Pressable
                             key={i + "-" + e}
                             style={styles.button}
@@ -102,7 +106,10 @@ export default StorageSelection = ({ route, navigation }) => {
                     );
                 } else {
                     storageColumn.push(
-                        <Pressable key={i + "-" + e} style={styles.buttonOccupied}>
+                        <Pressable
+                            key={i + "-" + e}
+                            style={styles.buttonOccupied}
+                        >
                             <Text style={styles.buttonOccupiedText}>
                                 R {e} | C {i}
                             </Text>
@@ -114,7 +121,6 @@ export default StorageSelection = ({ route, navigation }) => {
         });
     }
 
-
     return (
         <View style={styles.container}>
             {isLoading ? (
@@ -122,11 +128,25 @@ export default StorageSelection = ({ route, navigation }) => {
             ) : (
                 <View>
                     {buttons.map((e) => {
-                        return <View key={++childrenKeyCounter} style={styles.rowWrapper}>{e}</View>;
+                        return (
+                            <View
+                                key={++childrenKeyCounter}
+                                style={styles.rowWrapper}
+                            >
+                                {e}
+                            </View>
+                        );
                     })}
                 </View>
             )}
-            <Pressable onPress={()=>{navigation.navigate("PathSelection")}} style={styles.backButton}><Text>Back</Text></Pressable>
+            <Pressable
+                onPress={() => {
+                    navigation.navigate("PathSelection");
+                }}
+                style={styles.backButton}
+            >
+                <Text>Back</Text>
+            </Pressable>
         </View>
     );
 };
@@ -167,9 +187,9 @@ const styles = StyleSheet.create({
     },
     buttonOccupied: {
         color: "#333333",
-        backgroundColor: "#FEDD00",
-        width: windowWidth / 8,
-        height: windowHeight / 20,
+        backgroundColor: "red",
+        width: windowWidth / 7,
+        height: windowHeight / 22,
         borderRadius: windowWidth / 50,
         display: "flex",
         justifyContent: "center",

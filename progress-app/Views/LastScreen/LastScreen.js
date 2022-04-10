@@ -5,13 +5,13 @@ import { StyleSheet, Text, View, Dimensions, Pressable } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-export default function LastScreen({route, navigation}) {
-
-
+export default function LastScreen({navigation}) {
     return (
         <View style={styles.container}>
             <Text style={styles.thankYou}>Thank you</Text>
-            <Pressable onPress={navigation.navigate("PathSelection")} style={styles.restartButton}><Text style={styles.restartText}>Restart</Text></Pressable>
+            <Pressable onPress={()=>{navigation.navigate("PathSelection")}} style={styles.restartButton}>
+                <Text style={styles.restartText}>Restart</Text>
+            </Pressable>
         </View>
     );
 }
