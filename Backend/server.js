@@ -18,7 +18,11 @@ function startServer() {
   });
 
   app.get("/", (req, res) => {
-    res.send({"Hello World!": "Hello World!"});
+    res.send("Hello World!");
+  });
+
+  app.get("/clear", (req, res) => {
+    res.send({"OK!": "OK!"});
   });
 
 
