@@ -19,6 +19,9 @@ let dt = new Date();
 async function writeToDB(date) {
   await db.connect();
 
+
+  console.log(date);
+
   let startDate = moment(date);
   let endDate = moment(date);
   let duration = 0;
@@ -28,9 +31,13 @@ async function writeToDB(date) {
     startDate = endDate;
     // check if first station is free and wait if its not
     if (i == 0) {
-      let freeStartTime = await nextFreeTime(path[i]);
+      let freeStartTime = await nextFreeTime(path[i],startDate);
+
+      console.log(freeStartTime);
+
 
       if (freeStartTime.recordset.length > 0) {
+   
         startDate = moment(freeStartTime.recordset[0].TimeStamp).subtract(
           2,
           "hours"
@@ -45,7 +52,7 @@ async function writeToDB(date) {
     // 1 hour needs to be subtract because casting to moment adds 1 hour
     let nextFreeTs;
     if (i != path.length) {
-      nextFreeTs = await nextFreeTime(path[i + 1]);
+      nextFreeTs = await nextFreeTime(path[i + 1],startDate);
     }
     //check if attribute of json is empty
     if (nextFreeTs.recordset.length > 0) {
@@ -74,8 +81,18 @@ async function writeToDB(date) {
   queries = [];
 }
 
-async function nextFreeTime(station) {
-  return sql.query`SELECT TOP 1 TimeStamp FROM LocPalHistory WHERE LocationName LIKE ${station} AND PalNo = 0 ORDER BY TimeStamp DESC`;
+async function nextFreeTime(station,startDate) {
+  await db.connect();
+  endDate = moment(startDate).add(1, "days");
+  console.log("WICHTIG       "+ moment(endDate).format("YYYY-MM-DD HH:mm:ss.SSS"));
+  
+  return await db.queryDatabase(
+    `SELECT TOP 1 TimeStamp FROM LocPalHistory WHERE LocationName LIKE '${station}' AND PalNo = 0 AND TimeStamp >= '${moment(
+      startDate
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}' AND TimeStamp <=  '${moment(
+      endDate
+    ).format("YYYY-MM-DD HH:mm:ss.SSS")}' ORDER BY TimeStamp Desc;`
+  );
 }
 
 /*
@@ -300,7 +317,7 @@ async function moveRBG(query, palette, endMoment) {
 
 
   query.push(
-    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG', 0, '${moment(
+    `INSERT INTO LocPalHistory (LocationName, PalNo, TimeStamp) VALUES ('RBG',0,'${moment(
       endMoment
     ).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
