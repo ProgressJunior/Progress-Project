@@ -48,23 +48,23 @@ function Path(props) {
     }
     
     let arrowPaths = {
-        "0": [ {start: "TP7"   , end: "TP10"  },
+        "0": [      {start: "TP7"   , end: "TP10"  },
                     {start: "TP10"  , end: "TP12"  },
                     {start: "TP14"  , end: "TP16"  }],
 
-        "1": [ {start: "TP7"   , end: "TP8"   },
+        "1": [      {start: "TP7"   , end: "TP8"   },
                     {start: "TP8"   , end: "TP9"   },
                     {start: "TP9"   , end: "TP11"  },
                     {start: "TP11"  , end: "TP12"  },
                     {start: "TP14"  , end: "TP16"  }],
 
-        "2": [ {start: "TP7"   , end: "TP10"  },
+        "2": [      {start: "TP7"   , end: "TP10"  },
                     {start: "TP10"  , end: "TP12"  },
                     {start: "TP14"  , end: "TP14.1"},
                     {start: "TP14.1", end: "TP15"  },
                     {start: "TP15"  , end: "TP16"  }],
 
-        "3": [ {start: "TP7"   , end: "TP8"   },
+        "3": [      {start: "TP7"   , end: "TP8"   },
                     {start: "TP8"   , end: "TP9"   },
                     {start: "TP9"   , end: "TP11"  },
                     {start: "TP11"  , end: "TP12"  },
@@ -73,7 +73,7 @@ function Path(props) {
                     {start: "TP15"  , end: "TP16"  }],        
     }
 
-    let fixedArrows = [{start: "TP1",   end: "TP2"},
+    let fixedArrows = [ {start: "TP1",   end: "TP2"},
                         {start: "TP2",  end: "TP3"},
                         {start: "TP3",  end: "TP4"},
                         {start: "TP4",  end: "TP5"},
@@ -83,8 +83,7 @@ function Path(props) {
                         {start: "TP13", end: "TP14"},
                         {start: "TP16", end: "TP17"},
                         {start: "TP17", end: "TP22"},
-                        {start: "TP22", end: "TP24"}
-    ]
+                        {start: "TP22", end: "TP24"}]
 
     let temp = props.path;
 

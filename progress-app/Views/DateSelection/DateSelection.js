@@ -12,7 +12,6 @@ export default function PathSelection({route, navigation}) {
     // For date picker
     const [date, setDate] = useState(new Date());
     const {path} = route.params;
-    console.log(date)
 
     return (
         <View style={styles.container}>

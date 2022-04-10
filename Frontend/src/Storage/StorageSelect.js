@@ -22,7 +22,7 @@ function StorageSelect({ childToParent, date }) {
     // it then sets the buttons to the state
 
     useEffect(() => {
-        const url = "http://localhost:3030/occLG/"+date;
+        const url = "http://185.5.199.33:3030/occLG/"+date;
         // console.log(url);
 
         const fetchData = async () => {

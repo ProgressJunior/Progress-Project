@@ -35,7 +35,7 @@ function FirstStep({ childToParent }) {
 
                 <Dropdown className="fixed20vw">
                     <Dropdown.Toggle variant="outline-primary" id="dropdown-basic"  className="fixed20vw">
-                        Path {path}
+                        Path {parseInt(path)+1}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu className="fixed20vw">

@@ -30,8 +30,8 @@ function App() {
         // console.log(col + "|" + row);
         // console.log(date);
 
-            const url = "http://localhost:3030/path/"+path+"/"+date+"/"+col + "|" + row
-            // console.log(url);
+            const url = "http://185.5.199.33:3030/path/"+path+"/"+date+"/"+col + "|" + row
+            console.log(url);
             newTry = true;
             fetchData(url)
 
