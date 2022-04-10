@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const index = require("./index.js");
+//import cleardb
+const clearDB = require("./clearDB.js");
 require("dotenv").config();
 
 const cors = require("cors");
@@ -22,13 +24,14 @@ function startServer() {
   });
 
   app.get("/clear", (req, res) => {
+    clearDB.main();
     res.send({"OK!": "OK!"});
   });
 
 
   app.get("/path/:path/:date/:storageindex", (req, res) => {
     //console.log(req.params.arg);
-    console.log("gavaii was here")
+    // console.log("gavaii was here")
     index.start(req.params.path, req.params.date,req.params.storageindex);
   });
 
