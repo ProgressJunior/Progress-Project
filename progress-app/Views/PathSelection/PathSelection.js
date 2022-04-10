@@ -284,7 +284,7 @@ export default function PathSelection({ navigation }) {
                     count++;
                     if (element[i] == "EMTY") {
                         storageRows.push(
-                            <View key={count - 1} style={styles.EMTY}></View>
+                            <View key={count - 1} style={[styles.box, styles.EMTY]}></View>
                         );
                     } else {
                         if (pathArray["Path 1"][count - 1] === "ACT") {
@@ -391,10 +391,8 @@ const styles = StyleSheet.create({
     box: {
         width: windowWidth / 6.5,
         height: 50,
+        backgroundColor: "red",
         margin: windowWidth / 200,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

@@ -13,7 +13,7 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator 
-                // hide navigation header (thx github copilot ;P )
+                // hide navigation header
                 screenOptions={{
                 headerShown: false
             }}>
