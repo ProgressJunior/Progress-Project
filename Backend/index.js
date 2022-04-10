@@ -107,6 +107,7 @@ async function genQvQuery(query, taktplatz, startMoment, endMoment) {
 
   // get the index of the taktplatz before
   let index = qv_index[taktplatzbef];
+  let temp = index;
 
   // query one - set the startindex and the startmoment of the kran
 
@@ -139,7 +140,7 @@ async function genQvQuery(query, taktplatz, startMoment, endMoment) {
   // query threee - set the kran to defaultposition one minute after  endmoment
   //queryStr += `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${index}, '${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`;
   query.push(
-    `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', 0, '${moment(
+    `INSERT INTO SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) VALUES ('${kranId}', ${temp}, '${moment(
       endMoment
     )
       .add(1, "m")
