@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, Dimensions, Pressable, Alert } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Dimensions,
+    Pressable,
+    Alert,
+} from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -15,8 +22,7 @@ import ArrowDown from "react-native-bootstrap-icons/icons/arrow-down";
 import ArrowLeft from "react-native-bootstrap-icons/icons/arrow-left";
 import ArrowRight from "react-native-bootstrap-icons/icons/arrow-right";
 
-export default function PathSelection({navigation}) {
-
+export default function PathSelection({ navigation }) {
     let pathTemplate = [
         ["TP8", "TP9", "TP11", "EMPTY", "TP14.1", "TP18"],
         ["TP7", "TP10", "TP12", "TP13", "TP14", "TP16"],
@@ -25,7 +31,7 @@ export default function PathSelection({navigation}) {
         ["TP2", "TP1", "EMPTY", "TP26", "EMPTY", "TP19"],
         ["EMPTY", "EMPTY", "EMPTY", "TP27", "TP21", "TP20"],
     ];
-    
+
     let pathArray = {
         "Path 1": [
             "TP8",
@@ -188,26 +194,163 @@ export default function PathSelection({navigation}) {
         // The empty entries in the array need to be there
         // because some elements never change, these get taken from "Path 1"
         // and for correct counting there need to be some empty elements
-        "Path 1": [ ,,,,,,
-            <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
-            <ArrowUp width="50" fill="rgb(255,0,0)"/>,<ArrowLeft width="50" fill="rgb(255,0,0)"/>,,<ArrowLeft width="50" fill="rgb(255,0,0)"/>, <ArrowLeft width="50" fill="rgb(255,0,0)"/>, <ArrowLeft width="50" fill="rgb(255,0,0)"/>,
-            <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowUp width="50" fill="rgb(255,0,0)"/>,,,,,
-            <ArrowUp width="50" fill="rgb(255,0,0)"/>, <ArrowBarLeft width="50" fill="rgb(255,0,0)"/>,,,,,
-            ,,,,,,],
-        
-        "Path 2": [ <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,,,,
-            <ArrowUp width="50" fill="rgb(255,0,0)"/>,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,,
-            ,,,,,,,,,,,,,,,,,,,,,,,,],
-        
-        "Path 3": [ ,,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
-            <ArrowRight width="50" fill="rgb(255,0,0)"/>,<ArrowRight width="50" fill="rgb(255,0,0)"/>,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowUp width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
-            ,,,,,,,,,,,,,,,,,,,,,,,,],
-        
-        "Path 4": [ <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
-            <ArrowUp width="50" fill="rgb(255,0,0)"/>,,,<ArrowRight width="50" fill="rgb(255,0,0)"/>, <ArrowUp width="50" fill="rgb(255,0,0)"/>, <ArrowDown width="50" fill="rgb(255,0,0)"/>,
-            ,,,,,,,,,,,,,,,,,,,,,,,,],
-    };
+        "Path 1": [
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            <ArrowUp width="50" fill="rgb(255,0,0)" />,
+            <ArrowLeft width="50" fill="rgb(255,0,0)" />,
+            ,
+            <ArrowLeft width="50" fill="rgb(255,0,0)" />,
+            <ArrowLeft width="50" fill="rgb(255,0,0)" />,
+            <ArrowLeft width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowUp width="50" fill="rgb(255,0,0)" />,
+            ,
+            ,
+            ,
+            ,
+            <ArrowUp width="50" fill="rgb(255,0,0)" />,
+            <ArrowBarLeft width="50" fill="rgb(255,0,0)" />,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+        ],
 
+        "Path 2": [
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            ,
+            ,
+            ,
+            <ArrowUp width="50" fill="rgb(255,0,0)" />,
+            ,
+            ,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+        ],
+
+        "Path 3": [
+            ,
+            ,
+            ,
+            ,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            ,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowUp width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+        ],
+
+        "Path 4": [
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            ,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            <ArrowUp width="50" fill="rgb(255,0,0)" />,
+            ,
+            ,
+            <ArrowRight width="50" fill="rgb(255,0,0)" />,
+            <ArrowUp width="50" fill="rgb(255,0,0)" />,
+            <ArrowDown width="50" fill="rgb(255,0,0)" />,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+            ,
+        ],
+    };
 
     let count = 0;
     // For dropdown
@@ -220,18 +363,33 @@ export default function PathSelection({navigation}) {
         { label: "Path 4", value: "Path 4" },
     ]);
 
-    function clearDb(){
+    function clearDb() {
         fetch("http://185.5.199.33:3030/clear")
             .then((response) => response.json())
-            .then((json) => {if (json["OK!"]==="OK!") {
-                Alert.alert("Cleared", "Datenbank wurde gecleart!", [{text: "Ok"}])}
-                else{Alert.alert("Error", "Datenbank konnte nicht gecleart werden!", [{text: "Ok"}])}})
-            .catch((error) => Alert.alert("Error", "Datenbank konnte nicht gecleart werden!", [{text: "Ok"}]));
+            .then((json) => {
+                if (json["OK!"] === "OK!") {
+                    Alert.alert("Cleared", "Datenbank wurde gecleart!", [
+                        { text: "Ok" },
+                    ]);
+                } else {
+                    Alert.alert(
+                        "Error",
+                        "Datenbank konnte nicht gecleart werden!",
+                        [{ text: "Ok" }]
+                    );
+                }
+            })
+            .catch((error) =>
+                Alert.alert(
+                    "Error",
+                    "Datenbank konnte nicht gecleart werden!",
+                    [{ text: "Ok" }]
+                )
+            );
     }
 
     return (
         <View style={styles.container}>
-
             {/* draw arrow from elsoderfer/react-arrow */}
 
             {/* Draws correct rectangles for stations */}
@@ -240,19 +398,36 @@ export default function PathSelection({navigation}) {
                 for (let i = 0; i < element.length; i++) {
                     count++;
                     if (element[i] == "EMPTY") {
-                        temp.push(<View key={count-1} style={styles.empty}></View>);
+                        temp.push(
+                            <View key={count - 1} style={styles.empty}></View>
+                        );
                     } else {
                         if (pathArray["Path 1"][count - 1] === "ACTIVE") {
-                            temp.push(<View key={count-1} style={styles.boxActive}>{arrowArray["Path 1"][count - 1]}</View>);
+                            temp.push(
+                                <View key={count - 1} style={styles.boxActive}>
+                                    {arrowArray["Path 1"][count - 1]}
+                                </View>
+                            );
                         } else if (pathArray[value][count - 1] === "ACTIVED")
-                            temp.push(<View key={count-1} style={styles.boxActiveD}>{arrowArray[value][count - 1]}</View>);
+                            temp.push(
+                                <View key={count - 1} style={styles.boxActiveD}>
+                                    {arrowArray[value][count - 1]}
+                                </View>
+                            );
                         else
                             temp.push(
-                                <View key={count-1} style={styles.boxActiveDisabled}></View>
+                                <View
+                                    key={count - 1}
+                                    style={styles.boxActiveDisabled}
+                                ></View>
                             );
                     }
                 }
-                return <View key={count-1} style={styles.rowWrapper}>{temp}</View>;
+                return (
+                    <View key={count - 1} style={styles.rowWrapper}>
+                        {temp}
+                    </View>
+                );
             })}
 
             <DropDownPicker
@@ -265,17 +440,24 @@ export default function PathSelection({navigation}) {
                 style={styles.dropdown}
             />
 
-            <View style={styles.buttonContainer}>  
+            <View style={styles.buttonContainer}>
                 <Pressable
                     style={[styles.button, styles.dangerButton]}
                     onPress={() => clearDb()}
-                ><Text style={styles.text}>Clear Database</Text></Pressable>
+                >
+                    <Text style={styles.text}>Clear Database</Text>
+                </Pressable>
 
                 <Pressable
                     style={[styles.button, styles.successButton]}
-                    onPress={() => navigation.navigate('DateSelection',{path: {value}})}
-                ><Text style={styles.text}>Next</Text></Pressable>
-
+                    onPress={() =>
+                        navigation.navigate("DateSelection", {
+                            path: { value },
+                        })
+                    }
+                >
+                    <Text style={styles.text}>Next</Text>
+                </Pressable>
             </View>
             <StatusBar style="auto" />
         </View>
@@ -303,7 +485,7 @@ const styles = StyleSheet.create({
         width: windowWidth / 3,
         height: windowHeight / 20,
         borderRadius: windowWidth / 50,
-        borderWidth: windowWidth/150,
+        borderWidth: windowWidth / 150,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -319,8 +501,8 @@ const styles = StyleSheet.create({
         borderColor: "#F0AD4E",
     },
     dropdown: {
-        marginLeft: windowWidth/4,
-        marginTop: windowHeight/20,
+        marginLeft: windowWidth / 4,
+        marginTop: windowHeight / 20,
         width: windowWidth / 2,
     },
     box: {
@@ -337,7 +519,15 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.43,
+        shadowRadius: 9.51,
 
+        elevation: 15,
     },
     boxActiveD: {
         width: windowWidth / 6.5,
@@ -347,12 +537,29 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.43,
+        shadowRadius: 9.51,
+
+        elevation: 15,
     },
     boxActiveDisabled: {
         width: windowWidth / 6.5,
         height: 50,
         backgroundColor: "gray",
         margin: windowWidth / 200,
+        // drop shadow
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.43,
+        shadowRadius: 9.51,
+
+        elevation: 15,
     },
     empty: {
         width: windowWidth / 6.5,
@@ -363,5 +570,4 @@ const styles = StyleSheet.create({
     rowWrapper: {
         flexDirection: "row",
     },
-    
 });
