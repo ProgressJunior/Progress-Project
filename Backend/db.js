@@ -6,7 +6,7 @@ const sql = require("mssql");
 
 */
 const sqlConfig = {
-    user: process.env.USER,
+    user: process.env.DB_USER,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
     server: process.env.SERVER,

@@ -18,28 +18,28 @@ function Path(props) {
     ] 
 
     let pathArray = {
-        "1" : [    "TP8","TP9","TP11","EMPTY","TP14.1","TP15",
+        "0" : [    "TP8","TP9","TP11","EMPTY","TP14.1","TP15",
                         "ACTIVED","ACTIVED","ACTIVE","ACTIVED","ACTIVED","ACTIVED",
                         "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
                         "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
                         "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
                         "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
 
-        "2" : [    "ACTIVED","ACTIVED","ACTIVED","EMPTY","TP14.1","TP15",
+        "1" : [    "ACTIVED","ACTIVED","ACTIVED","EMPTY","TP14.1","TP15",
                         "ACTIVED","TP10","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
                         "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
                         "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
                         "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
                         "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
 
-        "3" : [    "TP8","TP9","TP11","EMPTY","ACTIVED","ACTIVED",
+        "2" : [    "TP8","TP9","TP11","EMPTY","ACTIVED","ACTIVED",
                         "ACTIVED","ACTIVED","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
                         "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
                         "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
                         "ACTIVE","ACTIVE","EMPTY","TP26","EMPTY","TP19",
                         "EMPTY","EMPTY","EMPTY","TP27","TP21","TP20"],
 
-        "4" : [    "ACTIVED","ACTIVED","ACTIVED","EMPTY","ACTIVED","ACTIVED",
+        "3" : [    "ACTIVED","ACTIVED","ACTIVED","EMPTY","ACTIVED","ACTIVED",
                         "ACTIVED","TP10","ACTIVED","ACTIVED","ACTIVED","ACTIVED",
                         "ACTIVE","ACTIVE","EMPTY","ACTIVE","ACTIVE","ACTIVE",
                         "ACTIVE","ACTIVE","EMPTY", "TP25","TP23","TP18",
@@ -48,23 +48,23 @@ function Path(props) {
     }
     
     let arrowPaths = {
-        "1": [ {start: "TP7"   , end: "TP10"  },
+        "0": [ {start: "TP7"   , end: "TP10"  },
                     {start: "TP10"  , end: "TP12"  },
                     {start: "TP14"  , end: "TP16"  }],
 
-        "2": [ {start: "TP7"   , end: "TP8"   },
+        "1": [ {start: "TP7"   , end: "TP8"   },
                     {start: "TP8"   , end: "TP9"   },
                     {start: "TP9"   , end: "TP11"  },
                     {start: "TP11"  , end: "TP12"  },
                     {start: "TP14"  , end: "TP16"  }],
 
-        "3": [ {start: "TP7"   , end: "TP10"  },
+        "2": [ {start: "TP7"   , end: "TP10"  },
                     {start: "TP10"  , end: "TP12"  },
                     {start: "TP14"  , end: "TP14.1"},
                     {start: "TP14.1", end: "TP15"  },
                     {start: "TP15"  , end: "TP16"  }],
 
-        "4": [ {start: "TP7"   , end: "TP8"   },
+        "3": [ {start: "TP7"   , end: "TP8"   },
                     {start: "TP8"   , end: "TP9"   },
                     {start: "TP9"   , end: "TP11"  },
                     {start: "TP11"  , end: "TP12"  },
@@ -99,7 +99,7 @@ function Path(props) {
                     return (<div className="empty"></div>)
                 }
                 else {
-                    if(pathArray["1"][count-1] === "ACTIVE")
+                    if(pathArray["0"][count-1] === "ACTIVE")
                         return (<div id={element} className="rectangle active" />)
                     else if(pathArray[temp][count-1] === "ACTIVED")
                         return (<div id={element} className="rectangle activeD" />)
