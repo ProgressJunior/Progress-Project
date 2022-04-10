@@ -26,24 +26,19 @@ function App() {
 
         let col = storage.substring(storage.indexOf('col:') + 5)
         let row = storage.substring(5, storage.indexOf('col:'))
-        // console.log(path);
-        // console.log(col + "|" + row);
-        // console.log(date);
 
-            const url = "http://185.5.199.33:3030/path/"+path+"/"+date+"/"+col + "|" + row
-            console.log(url);
-            newTry = true;
-            fetchData(url)
-
+        const url = "http://185.5.199.33:3030/path/"+path+"/"+date+"/"+col + "|" + row
+        newTry = true;
+        fetchData(url)
     }
 
+    // Needed so fetch doesn't continuesly try to fetch the same data
     const fetchData = async (url) => {
         if(newTry){
             newTry = false;
             try {
                 const response = await fetch(url);
                 const json = await response.json();
-                console.log(json)
             } catch (error) {
                 console.log("error", error);
             }
@@ -53,12 +48,11 @@ function App() {
     return (
         <Router>
             <Routes>
-                {/*Needed so you cant access prop directly without first selecting path, etc.*/}
-
                 <Route exact path="/" element={<FirstStep childToParent={updatePath}/>} />
-                {path != "" && (<Route path="/date" element={<DateSelect childToParent={updateDate} />} />)}
-                {path != "" && date != "" && (<Route path="/storage" element={<StorageSelect childToParent={updateStorage} date={date}/>} />)}
-                {path != "" && date != "" && storage != "" && (<Route path="/lastStep" element={<LastStep value={"test"}/>} />)}
+                {/*Needed so you cant access prop directly without first selecting path, etc.*/}
+                {path !== "" && (<Route path="/date" element={<DateSelect childToParent={updateDate} />} />)}
+                {path !== "" && date !== "" && (<Route path="/storage" element={<StorageSelect childToParent={updateStorage} date={date}/>} />)}
+                {path !== "" && date !== "" && storage !== "" && (<Route path="/lastStep" element={<LastStep value={"test"}/>} />)}
                 {/* Wildcard */}
                 <Route exact path="/*" element={<FirstStep childToParent={updatePath}/>} />
             </Routes>

@@ -17,14 +17,11 @@ function StorageSelect({ childToParent, date }) {
 
     // UseEffect is called on component did mount
     // it then fetechs which storage units are occupied
-    // it calls genStorageButtons which generates the Buttons
-    // and disables the ones where the storage is occupied
-    // it then sets the buttons to the state
-
+    // it calls genStorageButtons which generates each row of buttons
+    // each row is then pushed into storageRowButtons
+    // it then sets the storageRowButtons to the state
     useEffect(() => {
         const url = "http://185.5.199.33:3030/occLG/"+date;
-        // console.log(url);
-
         const fetchData = async () => {
             try {
                 const response = await fetch(url);
@@ -32,7 +29,6 @@ function StorageSelect({ childToParent, date }) {
                 json.forEach((e) => {
                     filter(e)
                 })
-            // console.log("occupied:" + occupied)
             } catch (error) {
                 console.log("error", error);
             }

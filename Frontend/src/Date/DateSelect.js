@@ -1,14 +1,7 @@
-import React, { useState, useEffect } from "react";
-
-
-// import use navigate
-import { useNavigate } from "react-router-dom";
-
-
-import Button from "react-bootstrap/Button";
-
-// for css
+import React, { useState } from "react";
 import "./date.css";
+import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 // for Date and Time Picker
 import DatePicker from "react-datepicker";
@@ -17,13 +10,12 @@ import TimePicker from 'react-time-picker'
 
 function DateSelect({ childToParent }) {
     let navigate = useNavigate();
-
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState('00:00')
 
     function updateDate() {
-        let temp = date.toISOString().substring(0,11) + time + ":00.000"
-        childToParent(temp);
+        let tempDate = date.toISOString().substring(0,11) + time + ":00.000"
+        childToParent(tempDate);
         navigate("/Storage")
     }
 
