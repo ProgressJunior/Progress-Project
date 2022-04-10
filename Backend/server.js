@@ -13,7 +13,7 @@ app.use(cors());
 */
 const express_port = process.env.EXPRESS_PORT;
 
-function startServer() {
+async function startServer() {
   app.listen(express_port, () => {
     console.log(`Example app listening on port ${express_port}`);
   });
@@ -22,7 +22,7 @@ function startServer() {
     res.send("Hello World!");
   });
 
-  app.get("/clear", (req, res) => {
+  app.get("/clear", async (req, res) => {
         // connect to db
         await db.connect();
         // clear db
