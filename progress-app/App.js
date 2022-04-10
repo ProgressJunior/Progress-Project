@@ -13,7 +13,9 @@ export default function App() {
         <NavigationContainer>
             <Stack.Navigator 
                 // hide navigation header (thx github copilot ;P )
-                headerMode="none"
+                screenOptions={{
+                    headerShown: false
+                }}
             >
                 <Stack.Screen name="PathSelection" component={PathSelection} />
                 <Stack.Screen name="DateSelection" component={DateSelection} />

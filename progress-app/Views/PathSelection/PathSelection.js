@@ -231,19 +231,19 @@ export default function PathSelection({navigation}) {
                 for (let i = 0; i < element.length; i++) {
                     count++;
                     if (element[i] == "EMPTY") {
-                        temp.push(<View style={styles.empty}></View>);
+                        temp.push(<View key={count-1} style={styles.empty}></View>);
                     } else {
                         if (pathArray["Path 1"][count - 1] === "ACTIVE") {
-                            temp.push(<View style={styles.boxActive}>{arrowArray["Path 1"][count - 1]}</View>);
+                            temp.push(<View key={count-1} style={styles.boxActive}>{arrowArray["Path 1"][count - 1]}</View>);
                         } else if (pathArray[value][count - 1] === "ACTIVED")
-                            temp.push(<View style={styles.boxActiveD}>{arrowArray[value][count - 1]}</View>);
+                            temp.push(<View key={count-1} style={styles.boxActiveD}>{arrowArray[value][count - 1]}</View>);
                         else
                             temp.push(
-                                <View style={styles.boxActiveDisabled}></View>
+                                <View key={count-1} style={styles.boxActiveDisabled}></View>
                             );
                     }
                 }
-                return <View style={styles.rowWrapper}>{temp}</View>;
+                return <View key={count-1} style={styles.rowWrapper}>{temp}</View>;
             })}
 
             <DropDownPicker
