@@ -27,7 +27,7 @@ function App() {
         let col = storage.substring(storage.indexOf('col:') + 5)
         let row = storage.substring(5, storage.indexOf('col:'))
 
-        const url = "http://185.5.199.33:3030/path/"+path+"/"+date+"/"+col + "|" + row
+        const url = "http://localhost:3030/path/"+path+"/"+date+"/"+col + "|" + row
         newTry = true;
         fetchData(url)
     }

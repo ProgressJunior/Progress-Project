@@ -23,11 +23,12 @@ function StorageSelect({ childToParent, date }) {
     // each row is then pushed into storageRowButtons
     // it then sets the storageRowButtons to the state
     useEffect(() => {
-        const url = "http://185.5.199.33:3030/occLG/"+date;
+        const url = "http://localhost:3030/occLG/"+date;
         const fetchData = async () => {
             try {
                 const response = await fetch(url);
                 const json = await response.json();
+                console.log(json)
                 json.forEach((e) => {
                     filter(e)
                 })

@@ -31,7 +31,7 @@ export default StorageSelection = ({ route, navigation }) => {
     newDate = newDate.toISOString();
     newDate = newDate.substring(0, newDate.length - 1);
     
-    const url = "http://185.5.199.33:3030/occLG/" + newDate;
+    const url = "http://localhost:3030/occLG/" + newDate;
 
     // Use effect first fetches occupied LGs
     // they are then filtered to return only the row and col number
@@ -64,7 +64,7 @@ export default StorageSelection = ({ route, navigation }) => {
     function selectPath(row, col) {
         let newPath = parseInt(path["value"].toString().substring(5, path["value"].length)) - 1;
 
-        fetch("http://185.5.199.33:3030/path/"+newPath+"/"+newDate+"/"+col+"|"+row)
+        fetch("http://localhost:3030/path/"+newPath+"/"+newDate+"/"+col+"|"+row)
             .then((response) => console.log(""))
             .catch((error) => {
                 Alert.alert("Error", "Server antwortet nicht", [{text: "Ok",},]);
