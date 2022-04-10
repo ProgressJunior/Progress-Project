@@ -23,7 +23,7 @@ function FirstStep({ childToParent }) {
 
     async function clearDb() {
         try {
-            const response = await fetch("http://localhost:3030/clear");
+            const response = await fetch("http://185.5.199.33:3030/clear");
             const json = await response.json();
             if (json["OK!"] === "OK!") {
                 alert("Database cleared!");

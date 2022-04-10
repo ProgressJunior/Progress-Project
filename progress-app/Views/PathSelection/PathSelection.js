@@ -252,7 +252,7 @@ export default function PathSelection({ navigation }) {
     ]);
 
     function clearDb() {
-        fetch("http://localhost:3030/clear")
+        fetch("http://185.5.199.33:3030/clear")
             .then((response) => response.json())
             .then((json) => {
                 if (json["OK!"] === "OK!") {
