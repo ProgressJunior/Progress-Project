@@ -47,7 +47,7 @@ async function writeToDB(date) {
       }
     }
 
-    path[i].startsWith("Q") ? (duration = 2) : (duration = 1);
+    path[i].startsWith("Q") ? (duration = 1) : (duration = 1);
     endDate = moment(startDate).add(duration, "minutes");
 
     // 1 hour needs to be subtract because casting to moment adds 1 hour
@@ -295,12 +295,12 @@ async function moveRBG(query, palette, endMoment) {
 
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (8,${
-      storage_index["R " + destEtage]
+      storage_index["R " + destEtage ]-50
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
   query.push(
     `insert into SampleValueHistoryT (Value_Id_Ref, Value, TimeStamp) values (2,${
-      storage_index["E " + destRow]
+      storage_index["E " + destRow]-50
     },'${moment(endMoment).format("YYYY-MM-DD HH:mm:ss.SSS")}');`
   );
 
